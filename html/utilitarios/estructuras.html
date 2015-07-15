@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h5 class="modal-title">ESTRUCTURAS</h5>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Infraestructura</label>
+        <div class="col-lg-6">
+            <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.infid" ng-options="infraestructura as infraestructura.infdescripcion for infraestructura in infraestructuras">
+            </select>
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

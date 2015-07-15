@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h3 class="modal-title">PRACTICA</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Practica</label>
+        <div class="col-lg-6">
+            <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.pprid" ng-options="practica as practica.pprdescripcion for practica in practicasProductivas">
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Organico</label>
+        <div class="col-lg-6">
+            <input ng-disabled="!{{items.editable}}" type="radio" ng-model="items.registro.ppucerorganico" value="S"> SI
+            <input ng-disabled="!{{items.editable}}" type="radio" ng-model="items.registro.ppucerorganico" value="N"> NO
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">SPG</label>
+        <div class="col-lg-6">
+            <input ng-disabled="!{{items.editable}}" type="radio" ng-model="items.registro.ppucerspg" value="S"> SI
+            <input ng-disabled="!{{items.editable}}" type="radio" ng-model="items.registro.ppucerspg" value="N"> NO
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

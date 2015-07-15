@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <h5 class="modal-title">REPRESENTANTES</h5>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Representante</label>
+        <div class="col-lg-6">
+            <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.usrid" ng-options="usuario as usuario.usrnombrecompleto for usuario in usuarios">
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Principal</label>
+        <div class="col-lg-6">
+            <input ng-disabled="!{{items.editable}}" type="radio" ng-model="items.registro.usorepresentante" value="S"> SI
+            <input ng-disabled="!{{items.editable}}" type="radio" ng-model="items.registro.usorepresentante" value="N"> NO
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

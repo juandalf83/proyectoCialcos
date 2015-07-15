@@ -1,0 +1,134 @@
+<div class="centrado">
+<div class="panel panel-primary">
+     <div class="panel-heading">
+          <h4 class="modal-title">{{titulo}}{{pantalla}}</h4>
+     </div>
+
+     <div class="panel-body">
+          <div class="alert alert-danger alert-dismissable" ng-show="items.isError">
+            <strong>Error!</strong> {{items.mensajeError}}.
+          </div>
+          <div class="col-xs-12">
+            <button class="btn btn-square btn-sm btn-info pull-right" ng-click="irAdicionales()">Datos adicionales</button>
+          </div>
+          <form class="form-horizontal">
+              <div class="form-group">
+                   <label class="col-lg-3 control-label" for="tarea">Tipo Cialco</label>
+                   <div class="col-lg-6">
+                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.tcoid" ng-options="tipo as tipo.tcodescripcion for tipo in tiposCialco">
+                       </select>
+                   </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Descripcion</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.ciadescripcion">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Observacion</label>
+                  <div class="col-lg-6">
+                      <textarea class="form-control" width="100%" ng-model="objeto.ciaobservacion"></textarea>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Aporte Cialco</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.ciaaportecialco">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Sistema de Registro</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciasistemaregistro" value="S"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciasistemaregistro" value="N"> NO
+                  </div>
+              </div>
+               <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Reglamento</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciareglamento" value="S"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciareglamento" value="N"> NO
+                  </div>
+              </div>
+               <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Garantia</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciagarantia" value="S"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciagarantia" value="N"> NO
+                  </div>
+              </div>
+               <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Entrega dispersa</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciaentregadispersa" value="S"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciaentregadispersa" value="N"> NO
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Entrega concentrada</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciaentregaconcentrada" value="S"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciaentregaconcentrada" value="N"> NO
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Direccion Entrega Concentrada</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.ciadireccionconcentrada">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Certificacion</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciacertificacion" value="S"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciacertificacion" value="N"> NO
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Venta local</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciavantalocal" value="S"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.ciavantalocal" value="N"> NO
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Costo de Canasta</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.ciacostocanasta">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Destino</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.ciadestino">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Tipo apoyo</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.ciatipoapoyo">
+                  </div>
+              </div>
+              <div class="form-group">
+                   <label class="col-lg-3 control-label" for="tarea">Proceso Contratacion</label>
+                   <div class="col-lg-6">
+                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.ptaid" ng-options="procesoContratacion as procesoContratacion.ptadescripcion for procesoContratacion in procesosContratacion">
+                       </select>
+                   </div>
+              </div>
+              <div class="form-group">
+                   <label class="col-lg-3 control-label" for="tarea">Frecuencia</label>
+                   <div class="col-lg-6">
+                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.freid" ng-options="frecuencia as frecuencia.fredescripcion for frecuencia in frecuencias">
+                       </select>
+                   </div>
+              </div>
+              <div class="modal-footer">
+                   <button ng-show="editable" class="btn btn-square btn-sm btn-primary" ng-click="guardar(objeto)">Guardar</button>
+                   <button class="btn btn-square btn-sm btn-warning" ng-click="cancelar()">Cancelar</button>
+              </div>
+          </form>
+     </div>
+</div>
+</div>

@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h3 class="modal-title">FUENTES INGRESOS</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Descripcion</label>
+        <div class="col-lg-6">
+            <input ng-disabled="!{{items.editable}}" type="text" class="form-control" ng-model="items.registro.findescripcion">
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

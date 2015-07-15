@@ -1,0 +1,77 @@
+<div class="centrado">
+<div class="panel panel-primary">
+     <div class="panel-heading">
+          <h4 class="modal-title">{{titulo}}{{pantalla}}</h4>
+     </div>
+
+     <div class="panel-body">
+          <div class="alert alert-danger alert-dismissable" ng-show="items.isError">
+            <strong>Error!</strong> {{items.mensajeError}}.
+          </div>
+          <form class="form-horizontal">
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Participante</label>
+                  <div class="col-lg-6">
+                      <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.pafid" ng-options="participante as participante.usrid.usrnombrecompleto for participante in participantes">
+                      </select>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Producto</label>
+                  <div class="col-lg-6">
+                      <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.uprid" ng-options="producto as producto.prodid.prodnombreproducto for producto in productos">
+                      </select>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Unidad de Medida</label>
+                  <div class="col-lg-6">
+                      <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.umeid" ng-options="unidadMedida as unidadMedida.umedescripcion for unidadMedida in unidadesMedida">
+                      </select>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Presentación</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.pappresentacion">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Precio</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.papprecio">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Cantidad</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.papcantidad">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Cantidad de Venta</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.papventacantidad">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Venta total</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.papventatotal">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Trueque</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.paptrueque" value="S"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.paptrueque" value="N"> NO
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button ng-show="editable" class="btn btn-square btn-sm btn-primary" ng-click="guardar(objeto)">Guardar</button>
+                  <button class="btn btn-square btn-sm btn-warning" ng-click="cancelar()">Cancelar</button>
+              </div>
+          </form>
+     </div>
+</div>
+</div>

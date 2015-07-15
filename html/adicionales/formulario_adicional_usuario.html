@@ -1,0 +1,293 @@
+<div class="centrado">
+<div class="panel panel-primary">
+     <div class="panel-heading">
+          <h4 class="modal-title">{{titulo}}{{pantalla}}</h4>
+     </div>
+
+     <div class="panel-body">
+          <div class="alert alert-danger alert-dismissable" ng-show="items.isError">
+            <strong>Error!</strong> {{items.mensajeError}}.
+          </div>
+          <div class="col-xs-12">
+            <button class="btn btn-square btn-sm btn-warning pull-right" ng-click="irUsuario()">Regresar</button>
+          </div>
+          <form class="form-horizontal">
+            <div class="panel-body centrado">
+                <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-md-12">
+                      <div class="row btn-primary margen-fila">
+                        <div class="col-xs-12">
+                          <div class="col-xs-9">
+                            <h5 class="modal-title"><strong>EMAILS</strong></h5>
+                          </div>
+                          <div class="col-xs-3">
+                            <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="openMails(mails,'')"></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-12">
+                            <table ng-table="tablaEmails" class="table table-striped table-bordered">
+                              <tr ng-repeat="mail in $data| filter:searchText">
+                              <div class="input-group col-md-3 pull-right" >
+                                  <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                  <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                              </div>
+                              <td data-title="'Tipo Telefono'" width="45%" sortable="'tipo_mail'">{{mail.tpmid.tpmdescripcion}}</td>
+                              <td data-title="'Email'" width="45%" sortable="'email'">{{mail.maidireccion}}</td>
+                              <td data-title="''" width="20%">
+                                  <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openMails(mails,mail)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                  <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(mail.maiid, 'mail')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                              </td>
+                              </tr>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                      <div class="row btn-primary margen-fila">
+                        <div class="col-xs-12">
+                          <div class="col-xs-9">
+                            <h5 class="modal-title"><strong>TELEFONOS</strong></h5>
+                          </div>
+                          <div class="col-xs-3">
+                            <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="openTelefonos(telfonos,'')"></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-12">
+                            <table ng-table="tablaTelefonos" class="table table-striped table-bordered">
+                              <tr ng-repeat="telfono in $data| filter:searchText">
+                              <div class="input-group col-md-3 pull-right" >
+                                  <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                  <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                              </div>
+                              <td data-title="'Tipo Telefono'" width="30%" sortable="'tipo_telefono'">{{telfono.tptid.tptdescripcion}}</td>
+                              <td data-title="'Numero'" width="30%" sortable="'numero'">{{telfono.tlfnumero}}</td>
+                              <td data-title="'Extension'" width="20%" sortable="'extension'">{{telfono.tlfextension}}</td>
+                              <td data-title="''" width="10%">
+                                  <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openTelefonos(telfonos,telfono)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                  <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(telfono.tlfid, 'telefono')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                              </td>
+                              </tr>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <div class="row btn-primary margen-fila">
+                          <div class="col-xs-12">
+                            <div class="col-xs-9">
+                              <h5 class="modal-title"><strong>DIRECCIONES</strong></h5>
+                            </div>
+                            <div class="col-xs-3">
+                              <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus pull-right" ng-click="openDirecciones(direcciones,'')"></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <table ng-table="tablaDirecciones" class="table table-striped table-bordered">
+                                <tr ng-repeat="direccion in $data| filter:searchText">
+                                <div class="input-group col-md-3 pull-right" >
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                </div>
+                                <td data-title="'Tipo Direccion'" width="45%" sortable="'tipo_direccion'">{{direccion.tdrid.tdrdescripcion}}</td>
+                                <td data-title="'Direccion'" width="45%" sortable="'direccion'">{{direccion.dircalleprincipal}} y {{direccion.dircallesecundaria}}</td>
+                                <td data-title="''" width="20%">
+                                    <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openDirecciones(direcciones, direccion)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(direccion.dirid, 'direccion')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                </td>
+                                </tr>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <div class="row btn-primary margen-fila">
+                          <div class="col-xs-12">
+                            <div class="col-xs-9">
+                              <h5 class="modal-title"><strong>PRACTICAS</strong></h5>
+                            </div>
+                            <div class="col-xs-3">
+                              <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus pull-right" ng-click="openPracticas(practicas,'')"></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <table ng-table="tablaPracticas" class="table table-striped table-bordered">
+                                <tr ng-repeat="practica in $data| filter:searchText">
+                                <div class="input-group col-md-3 pull-right" >
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                </div>
+                                <td data-title="'Descripcion'" width="30%" sortable="'descripcion'">{{practica.pprid.pprdescripcion}}</td>
+                                <td data-title="'Organico'" width="30%" sortable="'organico'">{{practica.ppucerorganico}}</td>
+                                <td data-title="'SPG'" width="30%" sortable="'spg'">{{practica.ppucerspg}}</td>
+                                <td data-title="''" width="20%">
+                                    <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openPracticas(practicas, practica)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(practica.ppuid, 'practica')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                </td>
+                                </tr>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="row btn-primary margen-fila">
+                          <div class="col-xs-12">
+                            <div class="col-xs-9">
+                              <h5 class="modal-title"><strong>APOYOS</strong></h5>
+                            </div>
+                            <div class="col-xs-3">
+                              <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus pull-right" ng-click="openApoyos(apoyos,'')"></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <table ng-table="tablaApoyo" class="table table-striped table-bordered">
+                                <tr ng-repeat="apoyo in $data| filter:searchText">
+                                <div class="input-group col-md-3 pull-right" >
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                </div>
+                                <td data-title="'Apoyo'" width="45%" sortable="'apoyo'">{{apoyo.apyid.apydescripcion}}</td>
+                                <td data-title="'Descripcion'" width="45%" sortable="'Descripcion'">{{apoyo.uapdescripcion}}</td>
+                                <td data-title="''" width="20%">
+                                    <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openApoyos(apoyos, apoyo)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(apoyo.uapid, 'apoyo')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                </td>
+                                </tr>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <div class="row btn-primary margen-fila">
+                          <div class="col-xs-12">
+                            <div class="col-xs-9">
+                              <h5 class="modal-title"><strong>DESTINOS</strong></h5>
+                            </div>
+                            <div class="col-xs-3">
+                              <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus pull-right" ng-click="openDestinos(destinos,'')"></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <table ng-table="tablaDestino" class="table table-striped table-bordered">
+                                <tr ng-repeat="destino in $data| filter:searchText">
+                                <div class="input-group col-md-3 pull-right" >
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                </div>
+                                <td data-title="'Descripcion'" width="45%" sortable="'descripcion'">{{destino.depdescripcion}}</td>
+                                <td data-title="'Porcentaje'" width="45%" sortable="'porcentaje'">{{destino.depporcentaje}}</td>
+                                <td data-title="''" width="20%">
+                                    <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openDestinos(destinos, destino)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(destino.depid, 'destino')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                </td>
+                                </tr>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <div class="row btn-primary margen-fila">
+                          <div class="col-xs-12">
+                            <div class="col-xs-9">
+                              <h5 class="modal-title"><strong>FUENTES DE INGRESO</strong></h5>
+                            </div>
+                            <div class="col-xs-3">
+                              <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus pull-right" ng-click="openFuentes(fuentes,'')"></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <table ng-table="tablaFuentes" class="table table-striped table-bordered">
+                                <tr ng-repeat="fuente in $data| filter:searchText">
+                                <div class="input-group col-md-3 pull-right" >
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                </div>
+                                <td data-title="'Descripcion'" width="45%" sortable="'descripcion'">{{fuente.findescripcion}}</td>
+                                <td data-title="''" width="20%">
+                                    <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openFuentes(fuentes, fuente)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(fuente.finid, 'fuente')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                </td>
+                                </tr>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <div class="row btn-primary margen-fila">
+                          <div class="col-xs-12">
+                            <div class="col-xs-9">
+                              <h5 class="modal-title"><strong>DESTINO INGRESOS</strong></h5>
+                            </div>
+                            <div class="col-xs-3">
+                              <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus pull-right" ng-click="openIngresos(ingresos,'')"></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <table ng-table="tablaIngresos" class="table table-striped table-bordered">
+                                <tr ng-repeat="ingreso in $data| filter:searchText">
+                                <div class="input-group col-md-3 pull-right" >
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                </div>
+                                <td data-title="'Destino'" width="45%" sortable="'descripcion'">{{ingreso.deiid.deidescripcion}}</td>
+                                <td data-title="''" width="20%">
+                                    <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openIngresos(ingresos, ingreso)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(ingreso.udiid, 'ingreso')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                </td>
+                                </tr>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <div class="row btn-primary margen-fila">
+                          <div class="col-xs-12">
+                            <div class="col-xs-9">
+                              <h5 class="modal-title"><strong>PRODUCTOS</strong></h5>
+                            </div>
+                            <div class="col-xs-3">
+                              <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus pull-right" ng-click="openProductos(productos,'')"></button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <table ng-table="tablaProductos" class="table table-striped table-bordered">
+                                <tr ng-repeat="producto in $data| filter:searchText">
+                                <div class="input-group col-md-3 pull-right" >
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                </div>
+                                <td data-title="'Descripcion'" width="45%" sortable="'descripcion'">{{producto.prodid.prodnombreproducto}}</td>
+                                <td data-title="''" width="20%">
+                                    <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openProductos(productos, producto)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(producto.uprid, 'producto')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                </td>
+                                </tr>
+                              </table>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </form>
+     </div>
+</div>
+</div>

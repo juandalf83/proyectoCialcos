@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h3 class="modal-title">EMAIL</h3>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Tipo</label>
+        <div class="col-lg-6">
+            <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.tpmid" ng-options="tipo as tipo.tpmdescripcion for tipo in tipos">
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Direccion</label>
+        <div class="col-lg-6">
+            <input ng-disabled="!{{items.editable}}" type="text" class="form-control" ng-model="items.registro.maidireccion">
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

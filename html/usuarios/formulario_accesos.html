@@ -1,0 +1,61 @@
+<div class="centrado">
+<div class="panel panel-primary">
+     <div class="panel-heading">
+          <h4 class="modal-title">{{titulo}} acceso</h4>
+     </div>
+
+     <div class="panel-body">
+          <div class="alert alert-danger alert-dismissable" ng-show="items.isError">
+            <strong>Error!</strong> {{items.mensajeError}}.
+          </div>
+          <form class="form-horizontal">
+              <div class="form-group">
+                   <label class="col-lg-3 control-label" for="tarea">Usuario</label>
+                   <div class="col-lg-6">
+                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.usrid" ng-options="usuario as usuario.usrnombrecompleto for usuario in usuarios">
+                       </select>
+                   </div>
+              </div>
+              <div class="form-group">
+                   <label class="col-lg-3 control-label" for="tarea">Pantalla url</label>
+                   <div class="col-lg-6">
+                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.panid" ng-options="pantalla as pantalla.panurl for pantalla in pantallas">
+                       </select>
+                   </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Crear</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.accactualizar" value="1"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.accactualizar" value="0"> NO
+                  </div>
+              </div> 
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Editar</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.acceditar" value="1"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.acceditar" value="0"> NO
+                  </div>
+              </div> 
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Consultar</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.accconsultar" value="1"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.accconsultar" value="0"> NO
+                  </div>
+              </div> 
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Eliminar</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.acceliminar" value="1"> SI
+                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.acceliminar" value="0"> NO
+                  </div>
+              </div>                
+          </form>
+     </div>
+     <div class="modal-footer">
+          <button ng-show="editable" class="btn btn-square btn-sm btn-primary" ng-click="guardar(objeto)">Guardar</button>
+          <button class="btn btn-square btn-sm btn-warning" ng-click="cancelar()">Cancelar</button>
+     </div>
+</div>
+</div>

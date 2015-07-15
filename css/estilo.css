@@ -1,0 +1,89 @@
+body{
+    font-family: Calibri;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.centrado {
+    width: 90%;
+    margin: 0 auto;
+    height: 100%;
+}
+
+.cabecera {
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom:10px;
+}
+
+.asterisco-obligatorio {
+    color: red;
+}
+
+.obligatorio{
+    border-color: red;
+}
+
+.align-text-right{
+    text-align: right;
+}
+
+.align-text-center{
+    text-align: center;
+}
+
+.panel-principal-color{
+    background-color: #428BCA;
+    color: white;
+}
+
+.panel-items-color{
+    background-color: #F2F2F2;
+}
+
+.menu-button{
+    padding:0px !important;
+}
+
+.element-width-all{
+    width:100%;
+}
+
+.separador{
+    color: blue;
+}
+
+.margen-fila{
+    height: 40px;
+    margin-bottom: 10px;
+    padding-top:10px;
+}
+
+.margen-left{
+    margin-left: 10px;
+}
+
+.seleccionado{
+    color: #81DAF5;
+}
+
+.seleccionable{
+    cursor: pointer;
+}
+
+textarea {
+	resize: none;
+}
+
+.btn-square {
+  border-radius: 0 0 0 0;
+}
+
+.menu{
+  font-family: Calibri;
+  font-size: 10px;
+}
+
+input{
+  text-transform: uppercase;
+}

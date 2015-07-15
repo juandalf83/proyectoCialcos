@@ -1,0 +1,103 @@
+<html>
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="lib/bootstrap-3.1.1/css/bootstrap.min.css"/>
+        <link href="lib/jqueryui-1.10.4/jquery-ui-1.10.4.custom.min.css" rel="stylesheet" type="text/css"/>
+        <link href="lib/ng-table/ng-table.min.css" rel="stylesheet" type="text/css"/>
+        <link href="lib/select2/select2.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="css/estilo.css"/>
+    </head>
+    <body ng-app="cialcosApp">
+        <div class="row cabecera">
+            <h2 class="pull-left">PROYECTO CIALCOS</h2>
+            <img class="img-responsive pull-right" src="imagenes/logo_magap.png" alt="" />
+        </div>
+        <div ng-controller="MenuCtrl">
+        <div class="row cabecera">
+            <button class="btn btn-danger pull-right" ng-click="salir()">Salir</button>
+        </div>
+        <div class="row menu">
+            <div class="col-xs-12 col-md-3">
+                <nav ng-show="usrConectado.estaConectado">
+                    <div class="list-group">
+                        <!-- <a href="#" class="list-group-item" ng-repeat="link in menu">{{ link.name }}</a> -->
+                        <div ng-repeat="grupo in menu">
+                            <span class="list-group-item panel-principal-color" ng-click="openSubMenu(grupo)">{{ grupo.nombre }}</span>
+                            <div class="list-group" ng-show="grupo.isOpen">
+                                <div class="btn-group-vertical element-width-all" role="group">
+                                    <div ng-repeat="submenu in grupo.submenu" class="col-xs-12 col-md-12 menu-button">
+                                        <button ng-if="!submenu.submenu1" type="button"
+                                                class="btn btn-default element-width-all"
+                                                aria-expanded="false"
+                                                ng-click="irPantalla(submenu)">
+                                            {{submenu.nombre}}
+                                        </button>
+                                        <button ng-if="submenu.submenu1" type="button"
+                                                class="btn btn-default dropdown-toggle element-width-all"
+                                                data-toggle="dropdown"
+                                                aria-expanded="false">
+                                            {{submenu.nombre}}
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu element-width-all" role="menu">
+                                            <li><a ng-repeat="item in submenu.submenu1" ng-click="irPantalla(item)">{{item.nombre}}</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-9">
+                <div ng-view></div>
+            </div>
+        </div>
+        </div>
+        <script type="text/javascript" src="lib/jquery-1.11.1/jquery-1.11.1.min.js"></script>
+        <script type="text/javascript" src="lib/bootstrap-3.1.1/js/bootstrap.js"></script>
+        <script type="text/javascript" src="lib/angular-1.2.16/angular.js"></script>
+        <script type="text/javascript" src="lib/angular-1.2.16/angular-resource.js"></script>
+        <script type="text/javascript" src="lib/angular-1.2.16/angular-cookies.min.js"></script>
+        <script type="text/javascript" src="lib/angular-1.2.16/angular-route.min.js"></script>
+        <script type="text/javascript" src="lib/angular-1.2.16/ui-bootstrap-0.9.0.min.js"></script>
+        <script type="text/javascript" src="lib/angular-1.2.16/ui-bootstrap-tpls-0.11.0.min.js"></script>
+        <script type="text/javascript" src="lib/jqueryui-1.10.4/jquery-ui-1.10.4.custom.min.js"></script>
+        <script type="text/javascript" src="lib/ng-table/ng-table.js"></script>
+        <script type="text/javascript" src="lib/select2/select2.min.js"></script>
+        <script type="text/javascript" src="lib/soap/soapclient.js"></script>
+        <script type="text/javascript" src="lib/soap/angular.soap.js"></script>
+        <script type="text/javascript" src="js/utilitarios/validacion_documento.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+        <script type="text/javascript" src="js/fabricas/entidad.js"></script>
+        <script type="text/javascript" src="js/fabricas/validacion.js"></script>
+        <script type="text/javascript" src="js/fabricas/login.js"></script>
+        <script type="text/javascript" src="js/directivas/dateTime.js"></script>
+        <script type="text/javascript" src="js/directivas/selectElement.js"></script>
+        <script type="text/javascript" src="js/directivas/select2sortable.js"></script>
+        <script type="text/javascript" src="js/directivas/decimal.js"></script>
+        <script type="text/javascript" src="js/controlador/inicio.js"></script>
+        <script type="text/javascript" src="js/controlador/menu.js"></script>
+        <script type="text/javascript" src="js/controlador/listado.js"></script>
+        <script type="text/javascript" src="js/controlador/usuarios.js"></script>
+        <script type="text/javascript" src="js/controlador/formulario_usuarios.js"></script>
+        <script type="text/javascript" src="js/controlador/organizaciones.js"></script>
+        <script type="text/javascript" src="js/controlador/formulario_organizacion.js"></script>
+        <script type="text/javascript" src="js/controlador/cialcos.js"></script>
+        <script type="text/javascript" src="js/controlador/formulario_cialcos.js"></script>
+        <script type="text/javascript" src="js/controlador/territorios.js"></script>
+        <script type="text/javascript" src="js/controlador/direcciones.js"></script>
+        <script type="text/javascript" src="js/controlador/comercializacion.js"></script>
+        <script type="text/javascript" src="js/controlador/pantallas.js"></script>
+        <script type="text/javascript" src="js/controlador/perfiles.js"></script>
+        <script type="text/javascript" src="js/controlador/ingreso_menu.js"></script>
+        <script type="text/javascript" src="js/controlador/accesos.js"></script>
+        <script type="text/javascript" src="js/controlador/usuarios_perfiles.js"></script>
+        <script type="text/javascript" src="js/controlador/perfiles_menu.js"></script>
+        <script type="text/javascript" src="js/controlador/productos.js"></script>
+        <script type="text/javascript" src="js/controlador/participante_producto.js"></script>
+        <script type="text/javascript" src="js/controlador/formulario_participante_producto.js"></script>
+    </body>
+</html>

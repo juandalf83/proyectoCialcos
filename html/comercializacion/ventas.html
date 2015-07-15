@@ -1,0 +1,46 @@
+<div id="container" class="row">
+    <div class="centrado">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">VENTAS</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-xs-12 col-md-12">
+                    <div class="row col-xs-12 col-md-3">
+                      <input type="text" placeholder="Filtrar" class="form-control" ng-model="filtro">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm btn-square pull-right" ng-click="open(true, 0)">Nuevo</button>
+                </div>
+                <div class="col-xs-10 col-md-12">
+                    <hr class="separador" noshade="noshade" size="2"/>
+                    <table class="table table-hover" id="table">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center"><h5><strong>Cliente</strong></h5></th>
+                                <th class="text-center"><h5><strong>Producto</strong></h5></th>
+                                <th class="text-center"><h5><strong>Cantidad</strong></h5></th>
+                                <th class="text-center"><h5><strong>Precio unitario</strong></h5></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <tr ng-repeat="objeto in objetos | filter:filtro | orderBy:'comnombre'">
+                                <td class="text-center">{{objeto.usuario}}</td>
+                                <td class="text-center">{{objeto.producto}}</td>
+                                <td class="text-center">{{objeto.vencantidad}}</td>
+                                <td class="text-center">{{objeto.venpreciounitario}}</td>
+                                <td>
+                                    <div class="pull-right">
+                                        <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil" ng-click="open(true, objeto.id)"></button>
+                                        <button popover="Ver" popover-trigger="mouseenter" class="btn btn-sm btn-success btn-square glyphicon glyphicon-search" ng-click="open(false, objeto.id)"></button>
+                                        <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-sm btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminar(objeto)"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

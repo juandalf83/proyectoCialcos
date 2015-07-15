@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <h5 class="modal-title"><strong>DIFUSIONES</strong></h5>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Tipo Difusion</label>
+        <div class="col-lg-6">
+            <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.tpdid" ng-options="tipos as tipos.tpddescripcion for tipos in tiposDifusion">
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-lg-3 control-label" for="tarea">Quien Financia</label>
+        <div class="col-lg-6">
+            <input ng-disabled="!{{items.editable}}" type="text" class="form-control" ng-model="items.registro.dfcquienfinancia">
+        </div>
+    </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
