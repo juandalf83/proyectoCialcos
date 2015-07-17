@@ -33,6 +33,7 @@ angular.module('cialcosApp')
 
     $scope.irPantalla = function(item){
       $rootScope.menuSeleccionado = item;
+      $cookieStore.put('menuSeleccionado', item);
       $rootScope.guardarBitacora($rootScope.menuSeleccionado, $rootScope.mensajes.ingresoMenu+$rootScope.menuSeleccionado.nombre);
       $location.path(item.url);
     };
@@ -44,8 +45,8 @@ angular.module('cialcosApp')
     var usr = $cookieStore.get('usuario');
     var perfilUsuario = $cookieStore.get('perfil');
     var acceso = $cookieStore.get('acceso');
-
-    if (usr != null) {
+    console.log(usr);
+    if (usr !== undefined) {
       $scope.perfilUsuario = perfilUsuario;
       $scope.acceso = acceso;
       $scope.usrConectado.id = usr.usrid;
@@ -130,18 +131,19 @@ angular.module('cialcosApp')
     }
 
     $rootScope.guardarBitacoraCRUD = function(editable, id, eliminar){
+      var menuSeleccionado = $cookieStore.get('menuSeleccionado');
+      console.log(menuSeleccionado.nombre);
       if(editable){
         if(id){
-          console.log($rootScope.menuSeleccionado.nombre);
-          $rootScope.guardarBitacora($rootScope.menuSeleccionado, $rootScope.mensajes.editar+$rootScope.menuSeleccionado.nombre);
+          $rootScope.guardarBitacora(menuSeleccionado, $rootScope.mensajes.editar+menuSeleccionado.nombre);
         }else{
-          $rootScope.guardarBitacora($rootScope.menuSeleccionado, $rootScope.mensajes.crear+$rootScope.menuSeleccionado.nombre);
+          $rootScope.guardarBitacora(menuSeleccionado, $rootScope.mensajes.crear+menuSeleccionado.nombre);
         }
       }else{
-        $rootScope.guardarBitacora($rootScope.menuSeleccionado, $rootScope.mensajes.vizualizar+$rootScope.menuSeleccionado.nombre);
+        $rootScope.guardarBitacora(menuSeleccionado, $rootScope.mensajes.vizualizar+menuSeleccionado.nombre);
       }
       if(eliminar){
-        $rootScope.guardarBitacora($rootScope.menuSeleccionado, $rootScope.mensajes.eliminar+$rootScope.menuSeleccionado.nombre);
+        $rootScope.guardarBitacora(menuSeleccionado, $rootScope.mensajes.eliminar+menuSeleccionado.nombre);
       }
     };
   }

@@ -87,3 +87,14 @@ textarea {
 input{
   text-transform: uppercase;
 }
+
+.objeto-lg{
+  width:100%;
+}
+.objeto-sm{
+  /*width:60%;*/
+  height:25px;
+}
+.objeto-xs{
+  width:30%;
+}

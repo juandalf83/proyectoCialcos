@@ -13,16 +13,25 @@
           </div>
           <form class="form-horizontal">
               <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Tipo Usuario</label>
+                  <div class="col-lg-6">
+                      <!-- <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.tpuid" ng-options="tipos as tipos.tpudescripcion for tipos in tiposUsuario">
+                      </select> -->
+                      <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione tipo usuario" ng-model="objeto.tpuid" simple-query="getTiposUsuario">
+                      <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('tipousuario')"></button>
+                  </div>
+              </div>
+              <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Tipo Identificacion</label>
                   <div class="col-lg-6">
-                      <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.usrtipoidentificacion" ng-options="tipos.codigo as tipos.text for tipos in tiposIdentificacion">
+                      <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrtipoidentificacion" ng-options="tipos.codigo as tipos.text for tipos in tiposIdentificacion">
                       </select>
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Identificacion</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.usridentificacion" ng-blur="validacionDocumento(objeto)">
+                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usridentificacion" ng-blur="validacionDocumento(objeto)">
                   </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
@@ -64,31 +73,29 @@
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Etnia</label>
                    <div class="col-lg-6">
-                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.etnid" ng-options="etnia as etnia.etndescripcion for etnia in etnias">
-                       </select>
+                       <!-- <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.etnid" ng-options="etnia as etnia.etndescripcion for etnia in etnias">
+                       </select> -->
+                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione etnia" ng-model="objeto.etnid" simple-query="getEtnias">
                        <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('etnia')"></button>
                    </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Nivel de escolaridad</label>
                    <div class="col-lg-6">
-                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.nieid" ng-options="nivel as nivel.niedescripcion for nivel in nivelEscolaridad">
-                       </select>
+                       <!-- <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.nieid" ng-options="nivel as nivel.niedescripcion for nivel in nivelEscolaridad">
+                       </select> -->
+                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione nivel escolaridad" ng-model="objeto.nieid" simple-query="getNivelesEscolaridad">
+                       <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('nivelescolaridad')"></button>
                    </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Posesión de tierras</label>
                    <div class="col-lg-6">
-                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.ptrid" ng-options="posesion as posesion.ptrdescripcion for posesion in posesionTierras">
-                       </select>
+                       <!-- <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.ptrid" ng-options="posesion as posesion.ptrdescripcion for posesion in posesionTierras">
+                       </select> -->
+                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione posesion tierra" ng-model="objeto.ptrid" simple-query="getPosesionTierras">
+                       <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('posesiontierra')"></button>
                    </div>
-              </div>
-              <div class="form-group">
-                  <label class="col-lg-3 control-label" for="tarea">Tipo Usuario</label>
-                  <div class="col-lg-6">
-                      <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.tpuid" ng-options="tipos as tipos.tpudescripcion for tipos in tiposUsuario">
-                      </select>
-                  </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Usuario</label>

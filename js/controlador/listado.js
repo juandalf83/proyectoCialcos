@@ -28,7 +28,8 @@ angular.module('cialcosApp')
       };
 
       $scope.objetos = [];
-      $scope.tituloListado = $rootScope.menuSeleccionado.nombre;
+      var menuSeleccionado = $cookieStore.get('menuSeleccionado');
+      $scope.tituloListado = menuSeleccionado.nombre;
       $scope.identificador = $scope.identificadores[$routeParams.ubicacion];
       cargar();
 
@@ -37,7 +38,7 @@ angular.module('cialcosApp')
         Entidad.get({tabla:$routeParams.ubicacion, id:$routeParams.id}, function(item) {
           reg = angular.copy(item);
           if(reg[$scope.identificador+"id"] === undefined){
-            $scope.titulo = "INGRESO DE "+$rootScope.menuSeleccionado.nombre;
+            $scope.titulo = "INGRESO DE "+menuSeleccionado.nombre;
             $scope.objeto ={
               descripcion: '',
               estado: 1,
@@ -45,7 +46,7 @@ angular.module('cialcosApp')
               ususariocreacion: ''
             };
           }else{
-            $scope.titulo = "EDICION DE "+$rootScope.menuSeleccionado.nombre;
+            $scope.titulo = "EDICION DE "+menuSeleccionado.nombre;
             $scope.objeto ={
               id: reg[$scope.identificador+'id'],
               descripcion: reg[$scope.identificador+'descripcion'],
@@ -66,8 +67,9 @@ angular.module('cialcosApp')
         var fecha = new Date();
         var data = {};
         if(objeto.id === 0 || objeto.id === '' || objeto.id === undefined){
+          data[$scope.identificador+'id'] = getIdFormulario($scope.objetos, $scope.identificador);
           data[$scope.identificador+'descripcion'] = objeto.descripcion;
-          data[$scope.identificador+'estado'] = 1;
+          data[$scope.identificador+'estado'] = 'A';
           data[$scope.identificador+'fechacreacion'] = fecha;
           usr = $cookieStore.get('usuario');
           data[$scope.identificador+'usuariocreacion'] = usr.usrid;
@@ -81,7 +83,7 @@ angular.module('cialcosApp')
         }else{
           data[$scope.identificador+'id'] = objeto.id;
           data[$scope.identificador+'descripcion'] = objeto.descripcion;
-          data[$scope.identificador+'estado'] = 1;
+          data[$scope.identificador+'estado'] = 'A';
           data[$scope.identificador+'fechacreacion'] = fecha;
           usr = $cookieStore.get('usuario');
           data[$scope.identificador+'usuariocreacion'] = usr.usrid;
@@ -101,7 +103,7 @@ angular.module('cialcosApp')
 
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
-          $rootScope.guardarBitacoraCRUD(false, id, true);
+          $rootScope.guardarBitacoraCRUD(false, objeto.id, true);
           Entidad.delete({tabla:$routeParams.ubicacion, id:objeto.id}, function(result){
             cargar();
           });
@@ -123,6 +125,25 @@ angular.module('cialcosApp')
             $scope.objetos.sort();
           });
         });
+      }
+
+      function getIdFormulario(objetos, tipo){
+        var index = 0;
+        if(objetos !== undefined){
+          index = objetos.length;
+        }
+        var id = 1;
+        if(index > 0){
+          objetos.sort();
+          id = objetos[0].id;
+          angular.forEach(objetos, function (objeto) {
+            if(id < objeto.id){
+              id = objeto.id;
+            }
+          });
+          id = id + 1;
+        }
+        return id;
       }
   }
 ]);

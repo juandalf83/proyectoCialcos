@@ -3,6 +3,7 @@ angular.module('cialcosApp', [
   'ngRoute',
   'ngTable',
   'ngCookies',
+  'ngStorage',
   'ui.bootstrap',
   'EntidadFactory',
   'MagapFactory'
