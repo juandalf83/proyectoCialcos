@@ -6,29 +6,37 @@
     <div class="form-group">
         <label class="col-lg-3 control-label" for="tarea">Productor</label>
         <div class="col-lg-6">
-            <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.usrid" ng-options="usuario as usuario.usrnombrecompleto for usuario in listaUsuarios">
-            </select>
+            <!-- <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.usrid" ng-options="usuario as usuario.usrnombrecompleto for usuario in listaUsuarios">
+            </select> -->
+            <input ng-disabled="!{{items.editable}}" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione usuario" ng-model="items.registro.usrid" simple-query="getUsuario">
+            <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('usuario')"></button>
         </div>
     </div>
     <div class="form-group">
         <label class="col-lg-3 control-label" for="tarea">Frecuencia</label>
         <div class="col-lg-6">
-            <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.freid" ng-options="frecuencia as frecuencia.fredescripcion for frecuencia in listaFrecuencias">
-            </select>
+            <!-- <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.freid" ng-options="frecuencia as frecuencia.fredescripcion for frecuencia in listaFrecuencias">
+            </select> -->
+            <input ng-disabled="!{{items.editable}}" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione frecuencia" ng-model="items.registro.freid" simple-query="getFrecuencias">
+            <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('frecuencia')"></button>
         </div>
     </div>
     <div class="form-group">
         <label class="col-lg-3 control-label" for="tarea">Movilización</label>
         <div class="col-lg-6">
-            <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.movid" ng-options="movilizacion as movilizacion.movdescripcion for movilizacion in listaMovilizaciones">
-            </select>
+            <!-- <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.movid" ng-options="movilizacion as movilizacion.movdescripcion for movilizacion in listaMovilizaciones">
+            </select> -->
+            <input ng-disabled="!{{items.editable}}" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione movilizacion" ng-model="items.registro.movid" simple-query="getMovilizaciones">
+            <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('movilizacion')"></button>
         </div>
     </div>
     <div class="form-group">
         <label class="col-lg-3 control-label" for="tarea">Parentesco</label>
         <div class="col-lg-6">
-            <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.prcid" ng-options="parentesco as parentesco.prcdescripcion for parentesco in listaParentescos">
-            </select>
+            <!-- <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.prcid" ng-options="parentesco as parentesco.prcdescripcion for parentesco in listaParentescos">
+            </select> -->
+            <input ng-disabled="!{{items.editable}}" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione parentesco" ng-model="items.registro.prcid" simple-query="getParentescos">
+            <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('parentesco')"></button>
         </div>
     </div>
     <div class="form-group">

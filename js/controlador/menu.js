@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('MenuCtrl', ['$scope', '$element', '$location', '$cookieStore', 'Entidad', '$rootScope',
-  function($scope, $element, $location, $cookieStore, Entidad, $rootScope) {
+.controller('MenuCtrl', ['$scope', '$element', '$location', '$cookieStore', 'Entidad', '$rootScope', '$interval',
+  function($scope, $element, $location, $cookieStore, Entidad, $rootScope, $interval) {
     $scope.usrConectado = {nombre: '', estaConectado: '', id: ''};
     $('.dropdown-toggle').dropdown();
     $scope.baseUrl = "#/";
@@ -21,6 +21,29 @@ angular.module('cialcosApp')
       bitfechacreacion: '',
       bitusuariocreacion: '',
       bitestado: ''
+    };
+
+    $scope.infoTabla = {
+      'apoyoproduccion': 'APOYO PRODUCCION',
+      'destinoingresos': 'DESTINO INGRESOS',
+      'etnia': 'ETNIA',
+      'nivelescolaridad': 'NIVELES ESCOLARIDAD',
+      'practicaproductiva': 'PRACTICA PRODUCTIVA',
+      'posesiontierra': 'POSESION TIERRA',
+      'tipodireccion': 'TIPO DIRECCCION',
+      'tipomail': 'TIPO EMAIL',
+      'tipotelefono': 'TIPO TELEFONO',
+      'tipousuario': 'TIPO USUARIO',
+      'equipamientodisponible': 'EQUIPAMENTO DISPONIBLE',
+      'frecuencia': 'FRECUENCIA',
+      'infraestructura': 'INFRAESTRUCTURA',
+      'movilizacion': 'MOVILIZACION',
+      'parentesco': 'PARENTESCO',
+      'procesocontratacion': 'PROCESO CONTRATACION',
+      'tipocialco': 'TIPO CIALCO',
+      'tipodifusion': 'TIPO DIFUSION',
+      'tipoproducto': 'TIPO PRODUCTO',
+      'unidadmedida': 'UNIDAD MEDIDA'
     };
 
     $scope.openSubMenu = function(item){
@@ -145,6 +168,26 @@ angular.module('cialcosApp')
       if(eliminar){
         $rootScope.guardarBitacora(menuSeleccionado, $rootScope.mensajes.eliminar+menuSeleccionado.nombre);
       }
+    };
+
+    $scope.showMensajeError = function(mensaje) {
+        $scope.isErrorView = true;
+        $scope.mensajeErrorView = mensaje;
+        var intervalo = $interval(function() {
+            $scope.mensajeErrorView = "";
+            $scope.isErrorView = false;
+            $interval.cancel(intervalo);
+        }, 8000);
+    };
+
+    $scope.showMensajeErrorModal = function(item, mensaje) {
+        item.isError = true;
+        item.mensajeError = mensaje;
+        var intervalo = $interval(function() {
+            item.mensajeError = "";
+            item.isError = false;
+            $interval.cancel(intervalo);
+        }, 8000);
     };
   }
 ]);

@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('ParametrizacionCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore) {
+.controller('ParametrizacionCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore','$localStorage',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, $localStorage) {
 
       $scope.identificadores ={
         apoyoproduccion: 'apy',
@@ -26,7 +26,7 @@ angular.module('cialcosApp')
         unidadmedida: 'ume',
         zona: 'zon',
       };
-
+      
       $scope.objetos = [];
       var menuSeleccionado = $cookieStore.get('menuSeleccionado');
       $scope.tituloListado = menuSeleccionado.nombre;
@@ -37,8 +37,20 @@ angular.module('cialcosApp')
         $scope.editable = $routeParams.editable;
         Entidad.get({tabla:$routeParams.ubicacion, id:$routeParams.id}, function(item) {
           reg = angular.copy(item);
+          var nombre = menuSeleccionado.nombre;
+          var usr = $cookieStore.get('usuario');
+          if($localStorage.dataRedireccion){
+            var redireccion = $localStorage.dataRedireccion[usr.usrid];
+            if(redireccion){
+              if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
+                console.log($routeParams.ubicacion);
+                console.log($scope.infoTabla[$routeParams.ubicacion]);
+                nombre = $scope.infoTabla[$routeParams.ubicacion];
+              }
+            }
+          }
           if(reg[$scope.identificador+"id"] === undefined){
-            $scope.titulo = "INGRESO DE "+menuSeleccionado.nombre;
+            $scope.titulo = "INGRESO DE "+nombre;
             $scope.objeto ={
               descripcion: '',
               estado: 1,
@@ -46,7 +58,7 @@ angular.module('cialcosApp')
               ususariocreacion: ''
             };
           }else{
-            $scope.titulo = "EDICION DE "+menuSeleccionado.nombre;
+            $scope.titulo = "EDICION DE "+nombre;
             $scope.objeto ={
               id: reg[$scope.identificador+'id'],
               descripcion: reg[$scope.identificador+'descripcion'],
@@ -75,7 +87,7 @@ angular.module('cialcosApp')
           data[$scope.identificador+'usuariocreacion'] = usr.usrid;
           Entidad.save({tabla:$routeParams.ubicacion},data).$promise
             .then(function(data) {
-              $location.path("listado/"+$routeParams.ubicacion);
+              redireccionar();
             })
             .catch(function(error) {
               console.log("rejected " + JSON.stringify(error));
@@ -98,7 +110,7 @@ angular.module('cialcosApp')
       };
 
       $scope.cancelar = function(objeto){
-        $location.path("listado/"+$routeParams.ubicacion);
+        redireccionar();
       };
 
       $scope.eliminar = function(objeto){
@@ -144,6 +156,21 @@ angular.module('cialcosApp')
           id = id + 1;
         }
         return id;
+      }
+
+      function redireccionar(){
+        var usr = $cookieStore.get('usuario');
+        if($localStorage.dataRedireccion){
+          var redireccion = $localStorage.dataRedireccion[usr.usrid];
+          if(redireccion){
+            if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
+              $location.path(redireccion.pantalla);
+            else
+              $location.path("listado/"+$routeParams.ubicacion);
+          }
+        }else{
+          $location.path("listado/"+$routeParams.ubicacion);
+        }
       }
   }
 ]);

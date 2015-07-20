@@ -1,4 +1,5 @@
 angular.module('cialcosApp', [
+  'ui.bootstrap',
   'ngResource',
   'ngRoute',
   'ngTable',
@@ -6,7 +7,9 @@ angular.module('cialcosApp', [
   'ngStorage',
   'ui.bootstrap',
   'EntidadFactory',
-  'MagapFactory'
+  'MagapFactory',
+  'DataTablaFactory',
+  'AdministracionDataFactory'
 ])
 
 .run(function($rootScope, $location, $cookieStore) {
