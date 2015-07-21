@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('TerritoriosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams,$rootScope, $cookieStore) {
+.controller('TerritoriosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams,$rootScope, $cookieStore, Administracion) {
       $scope.disabledZona = true;
       $scope.disabledProvincia = true;
       $scope.disabledCanton = true;
@@ -68,7 +68,7 @@ angular.module('cialcosApp')
       $scope.eliminar = function(objeto, tabla, identificador){
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, id, true);
-          Entidad.delete({tabla:tabla, id:objeto[identificador+'id']}, function(result){
+          Administracion.eliminar(tabla, objeto[identificador+'id'], objeto, function(result){
             cargar();
           });
         }
@@ -161,16 +161,20 @@ angular.module('cialcosApp')
       };
 
       function cargar(){
-        $scope.zonas = Entidad.query({tabla:'zona'});
-        angular.forEach($scope.zonas, function(zona){
-          zona.cssSelect = '';
-          zona.select = false;
-          $scope.provincias = [];
-          $scope.provincia = {};
-          $scope.cantones = [];
-          $scope.canton = {};
-          $scope.parroquias = [];
-          $scope.parroquia = {};
+        // $scope.zonas = Entidad.query({tabla:'zona'});
+        Administracion.cargar('zona',function(objetos){
+          $scope.zonas = objetos;
+          $scope.zonas.sort();
+          angular.forEach($scope.zonas, function(zona){
+            zona.cssSelect = '';
+            zona.select = false;
+            $scope.provincias = [];
+            $scope.provincia = {};
+            $scope.cantones = [];
+            $scope.canton = {};
+            $scope.parroquias = [];
+            $scope.parroquia = {};
+          });
         });
       }
 
@@ -240,7 +244,7 @@ angular.module('cialcosApp')
 
       function getElementos(id, tabla, tipo, callback){
         array = [];
-        Entidad.query({tabla:tabla}, function(elementos){
+        Entidad.query({tabla:tabla, id:'cargar'}, function(elementos){
           angular.forEach(elementos, function(item){
             console.log(item);
             if(item[tipo+"id"][tipo+"id"] == id){

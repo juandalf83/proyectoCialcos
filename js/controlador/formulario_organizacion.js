@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('FormularioOrganizacionCtrl', ['$scope', '$window', '$modal', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$log', '$cookieStore',
-  function($scope, $window, $modal, $location, ngTableParams, $filter, Entidad, $routeParams, $log, $cookieStore) {
+.controller('FormularioOrganizacionCtrl', ['$scope', '$window', '$modal', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$log', '$cookieStore', 'Administracion',
+  function($scope, $window, $modal, $location, ngTableParams, $filter, Entidad, $routeParams, $log, $cookieStore, Administracion) {
       $scope.pantalla = "organizacion";
       $scope.estructuras = [];
       $scope.representantes = [];

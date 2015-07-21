@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('ProductosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore) {
+.controller('ProductosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, Administracion) {
 
       $scope.tabla = "producto";
       $scope.tiposProductos = Entidad.query({tabla:'tipoproducto'});
@@ -32,34 +32,12 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        var fecha = new Date();
-        console.log(objeto);
-        if(objeto.prodid === undefined){
-          objeto.prodestado = 1;
-          objeto.prodfechacreacion = fecha;
-          objeto.produsuariocreacion = 2;
-          objeto.prodprecio = parseFloat(objeto.prodprecio);
-          console.log(objeto);
-          Entidad.save({tabla:$scope.tabla}, objeto).$promise
-            .then(function(data) {
-              $location.path("producto");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }else{
-          objeto.prodestado = 1;
-          objeto.prodfechacreacion = fecha;
-          objeto.produsuariocreacion = 2;
-          objeto.prodprecio = parseFloat(objeto.prodprecio);
-          Entidad.update({tabla:$scope.tabla, id:objeto.prodid}, objeto).$promise
-            .then(function(data) {
-              $location.path("producto");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }
+        objeto.prodprecio = parseFloat(objeto.prodprecio);
+        Administracion.guardar($scope.tabla, 'prod', objeto, function(id){
+          if($.isNumeric(id)){
+            $location.path("producto");
+          }
+        });
       };
 
       $scope.cancelar = function(objeto){
@@ -76,7 +54,7 @@ angular.module('cialcosApp')
       };
 
       function cargar(){
-        Entidad.query({tabla:$scope.tabla},function(objetos){
+        Administracion.cargar($scope.tabla,function(objetos){
           $scope.objetos = objetos;
           $scope.objetos.sort();
         });

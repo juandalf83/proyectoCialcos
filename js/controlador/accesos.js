@@ -1,33 +1,33 @@
 angular.module('cialcosApp')
-.controller('AccesosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore) {
+.controller('AccesosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion', '$localStorage',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, Administracion, $localStorage) {
 
       $scope.tabla = "acceso";
       $scope.objetos = [];
       cargar();
 
       if($routeParams.id){
-        $scope.usuarios = Entidad.query({tabla:'usuario'});
-        $scope.pantallas = Entidad.query({tabla:'pantalla'});
         $scope.editable = $routeParams.editable;
         Entidad.get({tabla:$scope.tabla, id:$routeParams.id}, function(item) {
           registro = angular.copy(item);
-          console.log(registro);
+          var usr = $cookieStore.get('usuario');
+          if($localStorage.dataRedireccion){
+            var redireccion = $localStorage.dataRedireccion[usr.usrid];
+            if(redireccion){
+              if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
+                registro = redireccion.respaldoUsuario;
+                if($localStorage.dataRedireccion[usr.usrid].tabla == 'acceso')
+                  delete $localStorage.dataRedireccion[usr.usrid];
+              }
+            }
+          }
           if(registro.accid === undefined){
             $scope.titulo = "Ingreso de";
           }else{
             $scope.titulo = "Edicion de";
             $scope.objeto = registro;
-            angular.forEach($scope.usuarios, function(item){
-              if(item.usrid == $scope.objeto.usrid.usrid){
-                $scope.objeto.usrid = item;
-              }
-            });
-            angular.forEach($scope.pantallas, function(item){
-              if(item.panid == $scope.objeto.panid.panid){
-                $scope.objeto.panid = item;
-              }
-            });
+            agregarCampos('usr', $scope.objeto.usrid);
+            agregarCampos('pan', $scope.objeto.panid);
             console.log($scope.objeto);
           }
         });
@@ -39,32 +39,11 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        var fecha = new Date();
-
-        if(objeto.accid === undefined){
-          objeto.accestado = 1;
-          objeto.accfechacreacion = fecha;
-          objeto.accusuariocreacion = 2;
-          console.log(objeto);
-          Entidad.save({tabla:$scope.tabla}, objeto).$promise
-            .then(function(data) {
-              $location.path("accesos");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }else{
-          objeto.accestado = 1;
-          objeto.accfechacreacion = fecha;
-          objeto.accusuariocreacion = 2;
-          Entidad.update({tabla:$scope.tabla, id:objeto.accid}, objeto).$promise
-            .then(function(data) {
-              $location.path("accesos");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }
+        Administracion.guardar($scope.tabla, 'acc', objeto, function(id){
+          if($.isNumeric(id)){
+            $location.path("accesos");
+          }
+        });
       };
 
       $scope.cancelar = function(objeto){
@@ -73,19 +52,89 @@ angular.module('cialcosApp')
 
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
-          $rootScope.guardarBitacoraCRUD(false, id, true);
-          Entidad.delete({tabla:$scope.tabla, id:objeto.accid}, function(result){
+          $rootScope.guardarBitacoraCRUD(false, objeto.accid, true);
+          Administracion.eliminar($scope.tabla, 'acc', objeto, function(result){
             cargar();
           });
         }
       };
 
       function cargar(){
-        Entidad.query({tabla:$scope.tabla},function(objetos){
+        Administracion.cargar($scope.tabla,function(objetos){
           $scope.objetos = objetos;
           $scope.objetos.sort();
-          console.log($scope.objetos);
         });
       }
+
+      $scope.getUsuarios = function(term, done){
+        getListado ('usuario', 'usr', function(resultados){
+          done($filter('filter')(resultados, {text: term}, 'text'));
+        });
+      };
+      $scope.getPantallas = function(term, done){
+        getListado ('pantalla', 'pan', function(resultados){
+          done($filter('filter')(resultados, {text: term}, 'text'));
+        });
+      };
+
+      function getListado (tabla, tipo, callback){
+        var resultados = [];
+        Entidad.query({tabla:tabla}, function(data){
+          values = angular.copy(data);
+          for(var i = 0; i < values.length; i++){
+            if(values[i][tipo+'estado'] == 'A'){
+              values[i].id = values[i][tipo+'id'];
+              if(tabla == 'usuario'){
+                values[i].text = values[i][tipo+'nombrecompleto'];
+              }else{
+                values[i].text = values[i][tipo+'url'];
+              }
+              console.log(values);
+              resultados.push(values[i]);
+            }
+          }
+          callback(resultados);
+        });
+      }
+
+      function agregarCampos (tipo, objeto){
+        if(objeto){
+          objeto.id = objeto[tipo+'id'];
+          objeto.text = objeto[tipo+'url'];
+          if(tipo == 'usr'){
+            objeto.text = objeto[tipo+'nombrecompleto'];
+          }
+        }
+      }
+
+      $scope.agregarNuevo = function(tabla){
+        irPantallaNuevo(tabla);
+      };
+
+      var irPantallaNuevo = function (tabla){
+        var usr = $cookieStore.get('usuario');
+        var data = {};
+        registros = {
+          respaldoUsuario: $scope.objeto,
+          usuarioConectado: usr,
+          irPantalla: true,
+          tabla: 'acceso',
+          pantalla: $location.url()
+        };
+        if($localStorage.dataRedireccion){
+          $localStorage.dataRedireccion[usr.usrid] = registros;
+        }else{
+          data[usr.usrid] = registros;
+          $localStorage.$default({
+            dataRedireccion: data
+          });
+        }
+        console.log($localStorage.dataRedireccion);
+        if(tabla == 'usuario'){
+          $location.path('formulario_usuario/0/true');
+        }else{
+          $location.path('formulario_pantalla/0/true');
+        }
+      };
   }
 ]);

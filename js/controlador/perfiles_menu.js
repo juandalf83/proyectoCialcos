@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('PerfilesMenuCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore) {
+.controller('PerfilesMenuCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, Administracion) {
 
       $scope.tabla = "perfilmenu";
       $scope.perfiles = Entidad.query({tabla:'perfil'});
@@ -38,32 +38,11 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        var fecha = new Date();
-        console.log(objeto);
-        if(objeto.pemid === undefined){
-          objeto.pemestado = 1;
-          objeto.pemfechacreacion = fecha;
-          objeto.pemusuariocreacion = 2;
-          console.log(objeto);
-          Entidad.save({tabla:$scope.tabla}, objeto).$promise
-            .then(function(data) {
-              $location.path("perfilmenu");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }else{
-          objeto.pemestado = 1;
-          objeto.pemfechacreacion = fecha;
-          objeto.pemusuariocreacion = 2;
-          Entidad.update({tabla:$scope.tabla, id:objeto.perid}, objeto).$promise
-            .then(function(data) {
-              $location.path("perfilmenu");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }
+        Administracion.guardar($scope.tabla, 'pem', objeto, function(id){
+          if($.isNumeric(id)){
+            $location.path("accesos");
+          }
+        });
       };
 
       $scope.cancelar = function(objeto){
@@ -73,14 +52,14 @@ angular.module('cialcosApp')
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, id, true);
-          Entidad.delete({tabla:$scope.tabla, id:objeto.pemid}, function(result){
+          Administracion.eliminar($scope.tabla, 'pem', objeto, function(result){
             cargar();
           });
         }
       };
 
       function cargar(){
-        Entidad.query({tabla:$scope.tabla},function(objetos){
+        Administracion.cargar($scope.tabla,function(objetos){
           $scope.objetos = objetos;
           $scope.objetos.sort();
         });

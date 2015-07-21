@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('FormularioCialcosCtrl', ['$scope', '$window', '$modal', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$log','$cookieStore',
-  function($scope, $window, $modal, $location, ngTableParams, $filter, Entidad, $routeParams, $log, $cookieStore) {
+.controller('FormularioCialcosCtrl', ['$scope', '$window', '$modal', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$log','$cookieStore', 'Administracion',
+  function($scope, $window, $modal, $location, ngTableParams, $filter, Entidad, $routeParams, $log, $cookieStore, Administracion) {
       $scope.pantalla = "cialco";
       $scope.organizaciones = [];
       $scope.difusiones = [];
@@ -127,40 +127,14 @@ angular.module('cialcosApp')
       }
 
       $scope.guardar = function(objeto){
-        var fecha = new Date();
-        if(objeto.ciaid === undefined){
-          objeto.ciaid = $scope.getMaximoId();
-          objeto.ciacoordX = 0;
-          objeto.ciacoordY = 0;
-          objeto.ciacoordZ = 0;
-          objeto.ciaestado = 1;
-          objeto.ciafechacreacion = fecha;
-          usr = $cookieStore.get('usuario');
-          objeto.ciausuariocreacion = usr.usrid;
-          console.log(objeto);
-          Entidad.save({tabla:$scope.pantalla}, objeto).$promise
-            .then(function(data) {
-              $location.path("cialcos");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }else{
-          objeto.ciacoordX = 0;
-          objeto.ciacoordY = 0;
-          objeto.ciacoordZ = 0;
-          objeto.ciaestado = 1;
-          objeto.ciafechacreacion = fecha;
-          usr = $cookieStore.get('usuario');
-          objeto.ciausuariocreacion = usr.usrid;
-          Entidad.update({tabla:$scope.pantalla, id:objeto.ciaid}, objeto).$promise
-            .then(function(data) {
-              $location.path("cialcos");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }
+        objeto.ciacoordX = 0;
+        objeto.ciacoordY = 0;
+        objeto.ciacoordZ = 0;
+        Administracion.guardar($scope.tabla, 'acc', objeto, function(id){
+          if($.isNumeric(id)){
+            $location.path("cialcos");
+          }
+        });
       };
 
 

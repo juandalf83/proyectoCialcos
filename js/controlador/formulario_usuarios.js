@@ -40,7 +40,8 @@ angular.module('cialcosApp')
             if(redireccion){
               if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
                 reg = redireccion.respaldoUsuario;
-                delete $localStorage.dataRedireccion[usr.usrid];
+                if($localStorage.dataRedireccion[usr.usrid].tabla == 'usuario')
+                  delete $localStorage.dataRedireccion[usr.usrid];
               }
             }
           }
@@ -102,8 +103,23 @@ angular.module('cialcosApp')
       };
 
       $scope.cancelar = function(objeto){
-        $location.path("usuarios");
+        redireccionar("usuario");
       };
+
+      function redireccionar(urlRegresar){
+        var usr = $cookieStore.get('usuario');
+        if($localStorage.dataRedireccion){
+          var redireccion = $localStorage.dataRedireccion[usr.usrid];
+          if(redireccion){
+            if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
+              $location.path(redireccion.pantalla);
+            else
+              $location.path(urlRegresar);
+          }
+        }else{
+          $location.path(urlRegresar);
+        }
+      }
 
       $scope.validacionDocumento = function(objeto){
           if (validarDocumento(objeto.usridentificacion)){
@@ -141,7 +157,7 @@ angular.module('cialcosApp')
       };
 
       $scope.irUsuario = function(){
-        $location.path("formulario_usuario/"+$routeParams.id+"/"+$routeParams.editable);
+        redireccionar("formulario_usuario/"+$routeParams.id+"/"+$routeParams.editable);
       };
 
       $scope.eliminarLista = function(registro, tabla, tipo, objetoTabla){
@@ -203,30 +219,6 @@ angular.module('cialcosApp')
         }
 
         openModal(url, fila, objetoTabla, controlador);
-        // var urlAbs = $location.absUrl();
-        // posicion = urlAbs.indexOf('#');
-        // var urlBase = urlAbs.substr(0, posicion);
-        // var modalInstance = $modal.open({
-        //   templateUrl: urlBase+'html/utilitarios/mails.html',
-        //   controller: ModalMailsCtrl,
-        //   resolve: {
-        //     items: function() {
-        //       return {
-        //         registro: angular.copy(fila),
-        //         registros: angular.copy(filas),
-        //         usuario: angular.copy($scope.objeto)
-        //       };
-        //     }
-        //   }
-        // });
-        //
-        // modalInstance.result.then(function(selectedItem) {
-        //   $scope.selected = selectedItem;
-        // }, function(item) {
-        //   if(item != 'cancel'){
-        //     $scope.tablaEmails.reload();
-        //   }
-        // });
       };
 
       var ModalMailsCtrl = function($scope, $modalInstance, items, Entidad) {
@@ -255,34 +247,6 @@ angular.module('cialcosApp')
         };
       };
 
-      // $scope.openTelefonos = function(filas, fila) {
-      //   var urlAbs = $location.absUrl();
-      //   posicion = urlAbs.indexOf('#');
-      //   var urlBase = urlAbs.substr(0, posicion);
-      //   var modalInstance = $modal.open({
-      //     templateUrl: urlBase+'html/utilitarios/telefonos.html',
-      //     controller: ModalTelefonosCtrl,
-      //     resolve: {
-      //       items: function() {
-      //         return {
-      //           registro: angular.copy(fila),
-      //           registros: angular.copy(filas),
-      //           usuario:angular.copy($scope.objeto)
-      //         };
-      //       }
-      //     }
-      //   });
-      //
-      //   modalInstance.result.then(function(selectedItem) {
-      //     $scope.selected = selectedItem;
-      //   }, function(item) {
-      //     if(item != 'cancel'){
-      //       $scope.telefonos.push(item);
-      //       $scope.tablaTelefonos.reload();
-      //     }
-      //   });
-      // };
-
       var ModalTelefonosCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
         $scope.items.editable = true;
@@ -308,34 +272,6 @@ angular.module('cialcosApp')
           irPantallaNuevo(tabla);
         };
       };
-
-      // $scope.openDirecciones = function(filas, fila) {
-      //   var urlAbs = $location.absUrl();
-      //   posicion = urlAbs.indexOf('#');
-      //   var urlBase = urlAbs.substr(0, posicion);
-      //   var modalInstance = $modal.open({
-      //     templateUrl: urlBase+'html/utilitarios/direccion.html',
-      //     controller: ModalDireccionesCtrl,
-      //     resolve: {
-      //       items: function() {
-      //         return {
-      //           registro: angular.copy(fila),
-      //           registros: angular.copy($scope.listaDirecciones),
-      //           usuario:angular.copy($scope.objeto)
-      //         };
-      //       }
-      //     }
-      //   });
-      //
-      //   modalInstance.result.then(function(selectedItem) {
-      //     $scope.selected = selectedItem;
-      //   }, function(item) {
-      //     if(item != 'cancel'){
-      //       $scope.direcciones.push(item);
-      //       $scope.tablaDirecciones.reload();
-      //     }
-      //   });
-      // };
 
       var ModalDireccionesCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
@@ -368,34 +304,6 @@ angular.module('cialcosApp')
         };
       };
 
-      // $scope.openPracticas = function(filas, fila) {
-      //   var urlAbs = $location.absUrl();
-      //   posicion = urlAbs.indexOf('#');
-      //   var urlBase = urlAbs.substr(0, posicion);
-      //   var modalInstance = $modal.open({
-      //     templateUrl: urlBase+'html/utilitarios/practicas.html',
-      //     controller: ModalPracticasCtrl,
-      //     resolve: {
-      //       items: function() {
-      //         return {
-      //           registro: angular.copy(fila),
-      //           registros: angular.copy(filas),
-      //           usuario:angular.copy($scope.objeto)
-      //         };
-      //       }
-      //     }
-      //   });
-      //
-      //   modalInstance.result.then(function(selectedItem) {
-      //     $scope.selected = selectedItem;
-      //   }, function(item) {
-      //     if(item != 'cancel'){
-      //       $scope.practicas.push(item);
-      //       $scope.tablaPracticas.reload();
-      //     }
-      //   });
-      // };
-
       var ModalPracticasCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
         $scope.items.editable = true;
@@ -421,34 +329,6 @@ angular.module('cialcosApp')
           irPantallaNuevo(tabla);
         };
       };
-
-      // $scope.openApoyos = function(filas, fila) {
-      //   var urlAbs = $location.absUrl();
-      //   posicion = urlAbs.indexOf('#');
-      //   var urlBase = urlAbs.substr(0, posicion);
-      //   var modalInstance = $modal.open({
-      //     templateUrl: urlBase+'html/utilitarios/apoyos.html',
-      //     controller: ModalApoyosCtrl,
-      //     resolve: {
-      //       items: function() {
-      //         return {
-      //           registro: angular.copy(fila),
-      //           registros: angular.copy(filas),
-      //           usuario:angular.copy($scope.objeto)
-      //         };
-      //       }
-      //     }
-      //   });
-      //
-      //   modalInstance.result.then(function(selectedItem) {
-      //     $scope.selected = selectedItem;
-      //   }, function(item) {
-      //     if(item != 'cancel'){
-      //       $scope.apoyos.push(item);
-      //       $scope.tablaApoyo.reload();
-      //     }
-      //   });
-      // };
 
       var ModalApoyosCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
@@ -476,34 +356,6 @@ angular.module('cialcosApp')
         };
       };
 
-      // $scope.openDestinos = function(filas, fila) {
-      //   var urlAbs = $location.absUrl();
-      //   posicion = urlAbs.indexOf('#');
-      //   var urlBase = urlAbs.substr(0, posicion);
-      //   var modalInstance = $modal.open({
-      //     templateUrl: urlBase+'html/utilitarios/destinos.html',
-      //     controller: ModalDestinosCtrl,
-      //     resolve: {
-      //       items: function() {
-      //         return {
-      //           registro: angular.copy(fila),
-      //           registros: angular.copy(filas),
-      //           usuario:angular.copy($scope.objeto)
-      //         };
-      //       }
-      //     }
-      //   });
-      //
-      //   modalInstance.result.then(function(selectedItem) {
-      //     $scope.selected = selectedItem;
-      //   }, function(item) {
-      //     if(item != 'cancel'){
-      //       $scope.destinos.push(item);
-      //       $scope.tablaDestino.reload();
-      //     }
-      //   });
-      // };
-
       var ModalDestinosCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
         $scope.items.editable = true;
@@ -521,34 +373,6 @@ angular.module('cialcosApp')
 
       };
 
-      // $scope.openFuentes = function(filas, fila) {
-      //   var urlAbs = $location.absUrl();
-      //   posicion = urlAbs.indexOf('#');
-      //   var urlBase = urlAbs.substr(0, posicion);
-      //   var modalInstance = $modal.open({
-      //     templateUrl: urlBase+'html/utilitarios/fuentes.html',
-      //     controller: ModalFuentesCtrl,
-      //     resolve: {
-      //       items: function() {
-      //         return {
-      //           registro: angular.copy(fila),
-      //           registros: angular.copy(filas),
-      //           usuario:angular.copy($scope.objeto)
-      //         };
-      //       }
-      //     }
-      //   });
-      //
-      //   modalInstance.result.then(function(selectedItem) {
-      //     $scope.selected = selectedItem;
-      //   }, function(item) {
-      //     if(item != 'cancel'){
-      //       $scope.fuentes.push(item);
-      //       $scope.tablaFuentes.reload();
-      //     }
-      //   });
-      // };
-
       var ModalFuentesCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
         $scope.items.editable = true;
@@ -563,34 +387,6 @@ angular.module('cialcosApp')
           $modalInstance.dismiss('cancel');
         };
       };
-
-      // $scope.openIngresos = function(filas, fila) {
-      //   var urlAbs = $location.absUrl();
-      //   posicion = urlAbs.indexOf('#');
-      //   var urlBase = urlAbs.substr(0, posicion);
-      //   var modalInstance = $modal.open({
-      //     templateUrl: urlBase+'html/utilitarios/destinosIngresos.html',
-      //     controller: ModalIngresosCtrl,
-      //     resolve: {
-      //       items: function() {
-      //         return {
-      //           registro: angular.copy(fila),
-      //           registros: angular.copy(filas),
-      //           usuario:angular.copy($scope.objeto)
-      //         };
-      //       }
-      //     }
-      //   });
-      //
-      //   modalInstance.result.then(function(selectedItem) {
-      //     $scope.selected = selectedItem;
-      //   }, function(item) {
-      //     if(item != 'cancel'){
-      //       $scope.ingresos.push(item);
-      //       $scope.tablaIngresos.reload();
-      //     }
-      //   });
-      // };
 
       var ModalIngresosCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
@@ -617,34 +413,6 @@ angular.module('cialcosApp')
           irPantallaNuevo(tabla);
         };
       };
-
-      // $scope.openProductos = function(filas, fila) {
-      //   var urlAbs = $location.absUrl();
-      //   posicion = urlAbs.indexOf('#');
-      //   var urlBase = urlAbs.substr(0, posicion);
-      //   var modalInstance = $modal.open({
-      //     templateUrl: urlBase+'html/utilitarios/productos.html',
-      //     controller: ModalProductosCtrl,
-      //     resolve: {
-      //       items: function() {
-      //         return {
-      //           registro: angular.copy(fila),
-      //           registros: angular.copy(filas),
-      //           usuario:angular.copy($scope.objeto)
-      //         };
-      //       }
-      //     }
-      //   });
-      //
-      //   modalInstance.result.then(function(selectedItem) {
-      //     $scope.selected = selectedItem;
-      //   }, function(item) {
-      //     if(item != 'cancel'){
-      //       $scope.productos.push(item);
-      //       $scope.tablaProductos.reload();
-      //     }
-      //   });
-      // };
 
       var ModalProductosCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
@@ -771,6 +539,7 @@ angular.module('cialcosApp')
           respaldoUsuario: $scope.objeto,
           usuarioConectado: usr,
           irPantalla: true,
+          tabla: 'usuario',
           pantalla: $location.url()
         };
         if($localStorage.dataRedireccion){

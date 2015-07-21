@@ -12,14 +12,16 @@
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Descripcion</label>
                    <div class="col-lg-6">
-                       <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.perdescripcion">
+                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-8 col-xs-12 objeto-sm" ng-model="objeto.perdescripcion">
                    </div>
               </div>
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Perfil padre</label>
                    <div class="col-lg-6">
-                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.perpadre" ng-options="perfilPadre.perid as perfilPadre.perdescripcion for perfilPadre in perfilesPadre">
-                       </select>
+                       <!-- <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.perpadre" ng-options="perfilPadre.perid as perfilPadre.perdescripcion for perfilPadre in perfilesPadre">
+                       </select> -->
+                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione perfil padre" ng-model="objeto.perpadre" simple-query="getPerfiles">
+                       <!-- <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('usuario')"></button> -->
                    </div>
               </div>
               <div class="form-group">
@@ -28,28 +30,28 @@
                       <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.percrear" value="1"> SI
                       <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.percrear" value="0"> NO
                   </div>
-              </div> 
+              </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Editar</label>
                   <div class="col-lg-6">
                       <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.pereditar" value="1"> SI
                       <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.pereditar" value="0"> NO
                   </div>
-              </div> 
+              </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Consultar</label>
                   <div class="col-lg-6">
                       <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.perconsultar" value="1"> SI
                       <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.perconsultar" value="0"> NO
                   </div>
-              </div> 
+              </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Eliminar</label>
                   <div class="col-lg-6">
                       <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.pereliminar" value="1"> SI
                       <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.pereliminar" value="0"> NO
                   </div>
-              </div>              
+              </div>
           </form>
      </div>
      <div class="modal-footer">

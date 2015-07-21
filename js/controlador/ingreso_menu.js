@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('IngresoMenuCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore) {
+.controller('IngresoMenuCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, Administracion) {
 
       $scope.tabla = "menu";
       $scope.objetos = [];
@@ -28,31 +28,11 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        var fecha = new Date();
-
-        if(objeto.menid === undefined){
-          objeto.menestado = 1;
-          objeto.menfechacreacion = fecha;
-          objeto.menusuariocreacion = 2;
-          Entidad.save({tabla:$scope.tabla}, objeto).$promise
-            .then(function(data) {
-              $location.path("ingresomenu");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }else{
-          objeto.menestado = 1;
-          objeto.menfechacreacion = fecha;
-          objeto.menusuariocreacion = 2;
-          Entidad.update({tabla:$scope.tabla, id:objeto.menid}, objeto).$promise
-            .then(function(data) {
-              $location.path("ingresomenu");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }
+        Administracion.guardar($scope.tabla, 'men', objeto, function(id){
+          if($.isNumeric(id)){
+            $location.path("ingresomenu");
+          }
+        });
       };
 
       $scope.cancelar = function(objeto){
@@ -62,15 +42,15 @@ angular.module('cialcosApp')
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, id, true);
-          Entidad.delete({tabla:$scope.tabla, id:objeto.menid}, function(result){
+          Administracion.eliminar($scope.tabla, 'men', objeto, function(result){
             cargar();
           });
         }
       };
 
       function cargar(){
-        Entidad.query({tabla:$scope.tabla},function(objetos){
-          var objetosCopy = angular.copy(objetos)
+        Administracion.cargar($scope.tabla,function(objetos){
+          var objetosCopy = angular.copy(objetos);
           $scope.objetos = objetos;
           $scope.objetos.sort();
           angular.forEach($scope.objetos,function(objeto){

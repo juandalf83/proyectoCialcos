@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('DireccionCtrl', ['$scope', '$modalInstance', 'items', '$location', '$filter', 'Entidad',
-  function($scope, $modalInstance, items, $location, $filter, Entidad) {
+.controller('DireccionCtrl', ['$scope', '$modalInstance', 'items', '$location', '$filter', 'Entidad', 'Administracion',
+  function($scope, $modalInstance, items, $location, $filter, Entidad, Administracion) {
     $scope.items = items;
         $scope.items.editable = true;
         $scope.items.objeto = items.registro;

@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('PantallasCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore) {
+.controller('PantallasCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion', '$localStorage',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, Administracion, $localStorage) {
 
       $scope.tabla = "pantalla";
       $scope.objetos = [];
@@ -26,49 +26,43 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        var fecha = new Date();
-
-        if(objeto.panid === undefined){
-          objeto.panestado = 1;
-          objeto.panfechacreacion = fecha;
-          objeto.panusuariocreacion = 2;
-          console.log(objeto);
-          Entidad.save({tabla:$scope.tabla}, objeto).$promise
-            .then(function(data) {
-              $location.path("pantallas");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }else{
-          objeto.panestado = 1;
-          objeto.panfechacreacion = fecha;
-          objeto.panusuariocreacion = 2;
-          Entidad.update({tabla:$scope.tabla, id:objeto.panid}, objeto).$promise
-            .then(function(data) {
-              $location.path("pantallas");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }
+        Administracion.guardar($scope.tabla, 'pan', objeto, function(id){
+          if($.isNumeric(id)){
+            redireccionar("pantallas");
+          }
+        });
       };
 
       $scope.cancelar = function(objeto){
-        $location.path("pantallas");
+        redireccionar("pantallas");
       };
+
+      function redireccionar(urlRegresar){
+        var usr = $cookieStore.get('usuario');
+        if($localStorage.dataRedireccion){
+          var redireccion = $localStorage.dataRedireccion[usr.usrid];
+          if(redireccion){
+            if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
+              $location.path(redireccion.pantalla);
+            else
+              $location.path(urlRegresar);
+          }
+        }else{
+          $location.path(urlRegresar);
+        }
+      }
 
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, id, true);
-          Entidad.delete({tabla:$scope.tabla, id:objeto.panid}, function(result){
+          Administracion.eliminar($scope.tabla, 'pan', objeto, function(result){
             cargar();
           });
         }
       };
 
       function cargar(){
-        Entidad.query({tabla:$scope.tabla},function(objetos){
+        Administracion.cargar($scope.tabla,function(objetos){
           $scope.objetos = objetos;
           $scope.objetos.sort();
         });

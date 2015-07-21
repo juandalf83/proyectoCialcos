@@ -14,35 +14,7 @@
           <form class="form-horizontal">
             <div class="panel-body centrado">
                 <div class="col-xs-12 col-md-12">
-                    <div class="col-xs-12 col-md-12">
-                      <div class="row btn-primary margen-fila">
-                        <div class="col-xs-12">
-                          <div class="col-xs-9">
-                            <h5 class="modal-title"><strong>ESTRUCTURA</strong></h5>
-                          </div>
-                          <div class="col-xs-3">
-                            <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="openEstructura(estructuras,'')"></button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-xs-12">
-                            <table ng-table="tablaEstructuras" class="table table-striped table-bordered">
-                              <tr ng-repeat="estructura in $data| filter:searchText">
-                              <div class="input-group col-md-3 pull-right" >
-                                  <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                  <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
-                              </div>
-                              <td data-title="'Infraestructura'" width="45%" sortable="'infraestructura'">{{estructura.infid.infdescripcion}}</td>
-                              <td data-title="''" width="20%">
-                                  <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openEstructura(estructuras,estructura)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
-                                  <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(estructura.oifid, 'estructura')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
-                              </td>
-                              </tr>
-                            </table>
-                        </div>
-                      </div>
-                    </div>
+
                     <div class="col-xs-12 col-md-12">
                       <div class="row btn-primary margen-fila">
                         <div class="col-xs-12">
@@ -50,7 +22,7 @@
                             <h5 class="modal-title"><strong>PRODUCTORES</strong></h5>
                           </div>
                           <div class="col-xs-3">
-                            <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="openRepresentante(representantes,'')"></button>
+                            <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="open('usuarioorganizacion','')"></button>
                           </div>
                         </div>
                       </div>
@@ -65,8 +37,8 @@
                               <td data-title="'Productores'" width="45%" sortable="'representante'">{{representante.usrid.usrnombrecompleto}}</td>
                               <td data-title="'Representante'" width="45%" sortable="'principal'">{{representante.usorepresentante}}</td>
                               <td data-title="''" width="10%">
-                                  <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openRepresentante(representantes,representante)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
-                                  <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(representante.usoid, 'representante')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                  <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('usuarioorganizacion', representante)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                  <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(representante, 'usuarioorganizacion', 'uso', tablaRepresentantes)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                               </td>
                               </tr>
                             </table>
@@ -80,7 +52,7 @@
                               <h5 class="modal-title"><strong>DIRECCIONES</strong></h5>
                             </div>
                             <div class="col-xs-3">
-                              <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus pull-right" ng-click="openDirecciones(direcciones,'')"></button>
+                              <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus pull-right" ng-click="open('direccion','')"></button>
                             </div>
                           </div>
                         </div>
@@ -95,13 +67,42 @@
                                 <td data-title="'Tipo Direccion'" width="45%" sortable="'tipo_direccion'">{{direccion.tdrid.tdrdescripcion}}</td>
                                 <td data-title="'Direccion'" width="45%" sortable="'direccion'">{{direccion.dircalleprincipal}} y {{direccion.dircallesecundaria}}</td>
                                 <td data-title="''" width="20%">
-                                    <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="openDirecciones(direcciones, direccion)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
-                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(direccion.dirid, 'direccion')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                    <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('direccion', direccion)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(direccion, 'direccion', 'dir', tablaDirecciones)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                                 </td>
                                 </tr>
                               </table>
                           </div>
                         </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                      <div class="row btn-primary margen-fila">
+                        <div class="col-xs-12">
+                          <div class="col-xs-9">
+                            <h5 class="modal-title"><strong>ESTRUCTURA</strong></h5>
+                          </div>
+                          <div class="col-xs-3">
+                            <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="open('organizaestructura','')"></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-xs-12">
+                            <table ng-table="tablaEstructuras" class="table table-striped table-bordered">
+                              <tr ng-repeat="estructura in $data| filter:searchText">
+                              <div class="input-group col-md-3 pull-right" >
+                                  <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                  <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                              </div>
+                              <td data-title="'Infraestructura'" width="45%" sortable="'infraestructura'">{{estructura.infid.infdescripcion}}</td>
+                              <td data-title="''" width="20%">
+                                  <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('organizaestructura', estructura)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                  <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(estructura, 'organizaestructura', 'oif', tablaEstructuras)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                              </td>
+                              </tr>
+                            </table>
+                        </div>
+                      </div>
                     </div>
                 </div>
             </div>

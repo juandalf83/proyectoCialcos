@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('ParticipadorProductoCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore) {
+.controller('ParticipadorProductoCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Administracion', '$routeParams', '$rootScope','$cookieStore',
+  function($scope, $window, $location, ngTableParams, $filter, Administracion, $routeParams, $rootScope, $cookieStore) {
       $scope.pantalla = "participadorproducto";
       $scope.objetos = [];
       cargar();
@@ -13,17 +13,17 @@ angular.module('cialcosApp')
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, id, true);
-          Entidad.delete({tabla:$scope.pantalla, id:objeto.papid}, function(result){
+          Administracion.eliminar($scope.pantalla, 'pap', objeto, function(result){
             cargar();
           });
         }
       };
 
       function cargar(){
-        Entidad.query({tabla:$scope.pantalla},function(objetos){
-          $scope.objetos = angular.copy(objetos);
-          console.log($scope.objetos);
+        Administracion.cargar($scope.pantalla,function(objetos){
+          $scope.objetos = objetos;
           $scope.objetos.sort();
+          console.log($scope.objetos);
         });
       }
   }

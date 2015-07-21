@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('PerfilesCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore) {
+.controller('PerfilesCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion', '$localStorage',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, Administracion, $localStorage) {
 
       $scope.tabla = "perfil";
       $scope.objetos = [];
@@ -11,12 +11,22 @@ angular.module('cialcosApp')
         $scope.editable = $routeParams.editable;
         Entidad.get({tabla:$scope.tabla, id:$routeParams.id}, function(item) {
           registro = angular.copy(item);
-          console.log(registro);
           if(registro.perid === undefined){
             $scope.titulo = "Ingreso de";
           }else{
-            $scope.titulo = "Edicion de";
-            $scope.objeto = registro;
+            if(registro.perpadre){
+              Entidad.get({tabla:$scope.tabla, id:registro.perpadre}, function(dato){
+                padre = angular.copy(dato);
+                padre.id = padre.perid;
+                padre.text = padre.perdescripcion;
+                registro.perpadre = padre;
+                $scope.titulo = "Edicion de";
+                $scope.objeto = registro;
+              });
+            }else{
+              $scope.titulo = "Edicion de";
+              $scope.objeto = registro;
+            }
           }
         });
       }
@@ -27,49 +37,48 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        var fecha = new Date();
-
-        if(objeto.perid === undefined){
-          objeto.perestado = 1;
-          objeto.perfechacreacion = fecha;
-          objeto.perusuariocreacion = 2;
-          console.log(objeto);
-          Entidad.save({tabla:$scope.tabla}, objeto).$promise
-            .then(function(data) {
-              $location.path("perfiles");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }else{
-          objeto.perestado = 1;
-          objeto.perfechacreacion = fecha;
-          objeto.perusuariocreacion = 2;
-          Entidad.update({tabla:$scope.tabla, id:objeto.perid}, objeto).$promise
-            .then(function(data) {
-              $location.path("perfiles");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }
+        if(objeto.perpadre)
+          objeto.perpadre = objeto.perpadre.perid;
+        Administracion.guardar($scope.tabla, 'per', objeto, function(id){
+          if($.isNumeric(id)){
+            redireccionar("perfiles");
+          }
+        });
       };
 
       $scope.cancelar = function(objeto){
-        $location.path("perfiles");
+        redireccionar("perfiles");
       };
 
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, id, true);
-          Entidad.delete({tabla:$scope.tabla, id:objeto.perid}, function(result){
+          Administracion.eliminar($scope.tabla, 'per', objeto, function(result){
             cargar();
           });
         }
       };
 
+      $scope.getPerfiles = function(term, done){
+        $scope.perfilesPadre = [];
+        Entidad.query({tabla:$scope.tabla}, function(items){
+          angular.forEach(items, function (item) {
+            if(item.perid != $routeParams.id && item.perpadre != $routeParams.id){
+              console.log(item);
+              item.id = item.perid;
+              item.text = item.perdescripcion;
+              $scope.perfilesPadre.push(item);
+            }
+          });
+          done($filter('filter')($scope.perfilesPadre, {text: term}, 'text'));
+        });
+        // getListado ('usuario', 'usr', function(resultados){
+        //   done($filter('filter')(resultados, {text: term}, 'text'));
+        // });
+      };
+
       function cargar(){
-        Entidad.query({tabla:$scope.tabla},function(objetos){
+        Administracion.cargar($scope.tabla,function(objetos){
           var objetosCopy = angular.copy(objetos)
           $scope.objetos = objetos;
           $scope.objetos.sort();
@@ -93,6 +102,21 @@ angular.module('cialcosApp')
           }
         });
       });
+    }
+
+    function redireccionar(urlRegresar){
+      var usr = $cookieStore.get('usuario');
+      if($localStorage.dataRedireccion){
+        var redireccion = $localStorage.dataRedireccion[usr.usrid];
+        if(redireccion){
+          if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
+            $location.path(redireccion.pantalla);
+          else
+            $location.path(urlRegresar);
+        }
+      }else{
+        $location.path(urlRegresar);
+      }
     }
   }
 ]);

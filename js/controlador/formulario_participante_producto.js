@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('FormularioParticipadorCtrl', ['$scope', '$window', '$modal', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$log', '$cookieStore',
-  function($scope, $window, $modal, $location, ngTableParams, $filter, Entidad, $routeParams, $log, $cookieStore) {
+.controller('FormularioParticipadorCtrl', ['$scope', '$window', '$modal', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$log', '$cookieStore', 'Administracion',
+  function($scope, $window, $modal, $location, ngTableParams, $filter, Entidad, $routeParams, $log, $cookieStore, Administracion) {
       $scope.pantalla = "PARTICIPADOR PRODUCTO";
       $scope.objetos = Entidad.query({tabla:'participadorproducto'});
       var unique = {};

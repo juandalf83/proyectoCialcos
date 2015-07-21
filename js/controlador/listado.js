@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('ParametrizacionCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore','$localStorage',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, $localStorage) {
+.controller('ParametrizacionCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore','$localStorage', 'Administracion',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, $localStorage, Administracion) {
 
       $scope.identificadores ={
         apoyoproduccion: 'apy',
@@ -26,7 +26,7 @@ angular.module('cialcosApp')
         unidadmedida: 'ume',
         zona: 'zon',
       };
-      
+
       $scope.objetos = [];
       var menuSeleccionado = $cookieStore.get('menuSeleccionado');
       $scope.tituloListado = menuSeleccionado.nombre;
@@ -116,14 +116,25 @@ angular.module('cialcosApp')
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, objeto.id, true);
-          Entidad.delete({tabla:$routeParams.ubicacion, id:objeto.id}, function(result){
-            cargar();
-          });
+          var fecha = new Date();
+          data[$scope.identificador+'id'] = objeto.id;
+          data[$scope.identificador+'descripcion'] = objeto.descripcion;
+          data[$scope.identificador+'estado'] = 'I';
+          data[$scope.identificador+'fechacreacion'] = fecha;
+          usr = $cookieStore.get('usuario');
+          data[$scope.identificador+'usuariocreacion'] = usr.usrid;
+          Entidad.update({tabla:tabla, id:objeto.id}, data).$promise
+            .then(function(data) {
+              cargar();
+            })
+            .catch(function(error) {
+              console.log("rejected " + JSON.stringify(error));
+            });
         }
       };
 
       function cargar(){
-        Entidad.query({tabla:$routeParams.ubicacion},function(objetos){
+        Entidad.query({tabla:$routeParams.ubicacion, id:'cargar'},function(objetos){
           $scope.objetos = [];
           angular.forEach(objetos, function (objeto) {
             objetosCopy = angular.copy(objeto);

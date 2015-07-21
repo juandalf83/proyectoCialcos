@@ -1,6 +1,15 @@
+$(document).on("focusin", ".datepicker", function () {
+  $(this).datepicker({
+    dateFormat: 'yy-mm-dd',
+    changeMonth: true,
+    changeYear: true,
+    showButtonPanel: true,
+  });
+});
+
 angular.module('cialcosApp')
-.controller('UsuariosPerfilesCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore','$cookieStore',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, $cookieStore) {
+.controller('UsuariosPerfilesCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore','$cookieStore', 'Administracion', '$localStorage',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, $cookieStore, Administracion, $localStorage) {
 
       $scope.tabla = "usuarioperfil";
       $scope.objetos = [];
@@ -12,12 +21,14 @@ angular.module('cialcosApp')
         $scope.editable = $routeParams.editable;
         Entidad.get({tabla:$scope.tabla, id:$routeParams.id}, function(item) {
           registro = angular.copy(item);
-          console.log(registro);
           if(registro.upeid === undefined){
             $scope.titulo = "Ingreso de";
           }else{
             $scope.titulo = "Edicion de";
             $scope.objeto = registro;
+            $scope.objeto.upefechacaducidad = moment($scope.objeto.upefechacaducidad).format('YYYY-MM-DD');
+            agregarCampos('usr', $scope.objeto.usrid);
+            agregarCampos('per', $scope.objeto.perid);
           }
         });
       }
@@ -28,33 +39,12 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        var fecha = new Date();
-
-        if(objeto.upeid === undefined){
-          objeto.upeestado = 1;
-          objeto.upefechacreacion = fecha;
-          objeto.upeusuariocreacion = 2;
-          objeto.upefechacaducidad = new Date(objeto.upefechacaducidad);
-          console.log(objeto);
-          Entidad.save({tabla:$scope.tabla}, objeto).$promise
-            .then(function(data) {
-              $location.path("usuarioperfil");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }else{
-          objeto.upeestado = 1;
-          objeto.upefechacreacion = fecha;
-          objeto.upeusuariocreacion = 2;
-          Entidad.update({tabla:$scope.tabla, id:objeto.upeid}, objeto).$promise
-            .then(function(data) {
-              $location.path("usuarioperfil");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }
+        objeto.upefechacaducidad = new Date(objeto.upefechacaducidad);
+        Administracion.guardar($scope.tabla, 'upe', objeto, function(id){
+          if($.isNumeric(id)){
+            $location.path("usuarioperfil");
+          }
+        });
       };
 
       $scope.cancelar = function(objeto){
@@ -64,17 +54,87 @@ angular.module('cialcosApp')
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, id, true);
-          Entidad.delete({tabla:$scope.tabla, id:objeto.upeid}, function(result){
+          Administracion.eliminar($scope.tabla, 'upe', objeto, function(result){
             cargar();
           });
         }
       };
 
+      $scope.getPerfiles = function(term, done){
+        getListado ('perfil', 'per', function(resultados){
+          done($filter('filter')(resultados, {text: term}, 'text'));
+        });
+      };
+      $scope.getUsuarios = function(term, done){
+        getListado ('usuario', 'usr', function(resultados){
+          done($filter('filter')(resultados, {text: term}, 'text'));
+        });
+      };
       function cargar(){
-        Entidad.query({tabla:$scope.tabla},function(objetos){
+        Administracion.cargar($scope.tabla,function(objetos){
           $scope.objetos = objetos;
           $scope.objetos.sort();
         });
       }
+
+      function getListado (tabla, tipo, callback){
+        var resultados = [];
+        Entidad.query({tabla:tabla}, function(data){
+          values = angular.copy(data);
+          for(var i = 0; i < values.length; i++){
+            if(values[i][tipo+'estado'] == 'A'){
+              values[i].id = values[i][tipo+'id'];
+              if(tabla == 'usuario'){
+                values[i].text = values[i][tipo+'nombrecompleto'];
+              }else{
+                values[i].text = values[i][tipo+'descripcion'];
+              }
+              console.log(values);
+              resultados.push(values[i]);
+            }
+          }
+          callback(resultados);
+        });
+      }
+
+      function agregarCampos (tipo, objeto){
+        if(objeto){
+          objeto.id = objeto[tipo+'id'];
+          objeto.text = objeto[tipo+'descripcion'];
+          if(tipo == 'usr'){
+            objeto.text = objeto[tipo+'nombrecompleto'];
+          }
+        }
+      }
+
+      $scope.agregarNuevo = function(tabla){
+        irPantallaNuevo(tabla);
+      };
+
+      var irPantallaNuevo = function (tabla){
+        var usr = $cookieStore.get('usuario');
+        var data = {};
+        registros = {
+          respaldoUsuario: $scope.objeto,
+          usuarioConectado: usr,
+          irPantalla: true,
+          tabla: 'usuarioperfil',
+          pantalla: $location.url()
+        };
+        if($localStorage.dataRedireccion){
+          $localStorage.dataRedireccion[usr.usrid] = registros;
+        }else{
+          data[usr.usrid] = registros;
+          $localStorage.$default({
+            dataRedireccion: data
+          });
+        }
+        console.log($localStorage.dataRedireccion);
+        if(tabla == 'usuario'){
+          $location.path('formulario_usuario/0/true');
+        }else{
+          $location.path('formulario_perfiles/0/true');
+        }
+      };
   }
 ]);
