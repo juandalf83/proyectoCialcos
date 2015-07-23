@@ -6,7 +6,7 @@
     <div class="form-group">
         <label class="col-lg-3 control-label" for="tarea">Practica</label>
         <div class="col-lg-6">
-            <!-- <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.pprid" ng-options="practica as practica.pprdescripcion for practica in practicasProductivas">
+            <!-- <select ng-disabled="!{{items.editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="items.registro.pprid" ng-options="practica as practica.pprdescripcion for practica in practicasProductivas">
             </select> -->
             <input ng-disabled="!{{items.editable}}" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione practica" ng-model="items.registro.pprid" simple-query="getPracticas">
             <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('practicaproductiva')"></button>

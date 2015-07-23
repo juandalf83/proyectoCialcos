@@ -5,14 +5,18 @@ angular.module('AdministracionDataFactory', [
   var factory = {};
 
   function getMaximoId(tabla, callback){
-    var num = '';
-    var count = Entidad.get({tabla:tabla, id:'numeroRegistros'}).$promise
+    var num = 0;
+    var numString = '';
+    Entidad.get({tabla:tabla, id:'numeroRegistros'}).$promise
       .then(function(data) {
+        console.log(data);
         angular.forEach(data, function(item){
           if($.isNumeric(item))
-            num += item;
+            numString += item;
         });
-        callback(parseInt(num)+1);
+        if(numString)
+          num = parseInt(numString);
+        callback(num+1);
       });
   }
 
@@ -26,6 +30,7 @@ angular.module('AdministracionDataFactory', [
         objeto[identificador+'fechacreacion'] = fecha;
         usr = $cookieStore.get('usuario');
         objeto[identificador+'usuariocreacion'] = usr.usrid;
+        console.log(objeto);
         Entidad.save({tabla:tabla},objeto).$promise
           .then(function(data) {
             callback(objeto[identificador+'id']);

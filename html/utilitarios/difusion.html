@@ -6,7 +6,7 @@
     <div class="form-group">
         <label class="col-lg-3 control-label" for="tarea">Tipo Difusion</label>
         <div class="col-lg-6">
-            <!-- <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.tpdid" ng-options="tipos as tipos.tpddescripcion for tipos in tiposDifusion">
+            <!-- <select ng-disabled="!{{items.editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="items.registro.tpdid" ng-options="tipos as tipos.tpddescripcion for tipos in tiposDifusion">
             </select> -->
             <input ng-disabled="!{{items.editable}}" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione tipo difusion" ng-model="items.registro.tpdid" simple-query="getTiposDifusion">
             <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('tipodifusion')"></button>
@@ -15,7 +15,7 @@
     <div class="form-group">
         <label class="col-lg-3 control-label" for="tarea">Quien Financia</label>
         <div class="col-lg-6">
-            <input ng-disabled="!{{items.editable}}" type="text" class="form-control" ng-model="items.registro.dfcquienfinancia">
+            <input ng-disabled="!{{items.editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="items.registro.dfcquienfinancia">
         </div>
     </div>
     </form>

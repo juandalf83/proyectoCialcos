@@ -6,7 +6,7 @@
     <div class="form-group">
         <label class="col-lg-3 control-label" for="tarea">Destino</label>
         <div class="col-lg-6">
-            <!-- <select ng-disabled="!{{items.editable}}" class="form-control" ng-model="items.registro.deiid" ng-options="destinoIngreso as destinoIngreso.deidescripcion for destinoIngreso in destinosIngreso">
+            <!-- <select ng-disabled="!{{items.editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="items.registro.deiid" ng-options="destinoIngreso as destinoIngreso.deidescripcion for destinoIngreso in destinosIngreso">
             </select> -->
             <input ng-disabled="!{{items.editable}}" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione destino" ng-model="items.registro.deiid" simple-query="getDestino">
             <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('tipousuario')"></button>

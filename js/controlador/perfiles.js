@@ -7,7 +7,6 @@ angular.module('cialcosApp')
       cargar();
 
       if($routeParams.id){
-        obtenerItemPerfilPadre($routeParams.id);
         $scope.editable = $routeParams.editable;
         Entidad.get({tabla:$scope.tabla, id:$routeParams.id}, function(item) {
           registro = angular.copy(item);
@@ -72,14 +71,11 @@ angular.module('cialcosApp')
           });
           done($filter('filter')($scope.perfilesPadre, {text: term}, 'text'));
         });
-        // getListado ('usuario', 'usr', function(resultados){
-        //   done($filter('filter')(resultados, {text: term}, 'text'));
-        // });
       };
 
       function cargar(){
         Administracion.cargar($scope.tabla,function(objetos){
-          var objetosCopy = angular.copy(objetos)
+          var objetosCopy = angular.copy(objetos);
           $scope.objetos = objetos;
           $scope.objetos.sort();
           angular.forEach($scope.objetos,function(objeto){
@@ -93,30 +89,21 @@ angular.module('cialcosApp')
         });
       }
 
-    function obtenerItemPerfilPadre(id){
-      $scope.perfilesPadre = [];
-      Entidad.query({tabla:$scope.tabla}, function(items){
-        angular.forEach(items, function (item) {
-          if(item.perid != id && item.perpadre != id){
-            $scope.perfilesPadre.push(item);
-          }
-        });
-      });
-    }
-
-    function redireccionar(urlRegresar){
-      var usr = $cookieStore.get('usuario');
-      if($localStorage.dataRedireccion){
-        var redireccion = $localStorage.dataRedireccion[usr.usrid];
-        if(redireccion){
-          if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
-            $location.path(redireccion.pantalla);
-          else
+      function redireccionar(urlRegresar){
+        var usr = $cookieStore.get('usuario');
+        if($localStorage.dataRedireccion){
+          var redireccion = $localStorage.dataRedireccion[usr.usrid];
+          if(redireccion){
+            if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
+              $location.path(redireccion.pantalla);
+            else
+              $location.path(urlRegresar);
+          }else{
             $location.path(urlRegresar);
+          }
+        }else{
+          $location.path(urlRegresar);
         }
-      }else{
-        $location.path(urlRegresar);
       }
     }
-  }
 ]);

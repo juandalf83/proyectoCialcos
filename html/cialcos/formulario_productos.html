@@ -12,20 +12,22 @@
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Tipo Producto</label>
                    <div class="col-lg-6">
-                       <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.topid" ng-options="tipo as tipo.topdescripcion for tipo in tiposProductos">
-                       </select>
+                       <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.topid" ng-options="tipo as tipo.topdescripcion for tipo in tiposProductos">
+                       </select> -->
+                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione tipo" ng-model="objeto.topid" simple-query="getTiposProductos">
+                       <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('tipoproducto')"></button>
                    </div>
-              </div>             
+              </div>
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Nombre Producto</label>
                    <div class="col-lg-6">
-                       <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.prodnombreproducto">
+                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.prodnombreproducto">
                    </div>
               </div>
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Precio</label>
                    <div class="col-lg-6">
-                       <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.prodprecio">
+                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.prodprecio">
                    </div>
               </div>
           </form>

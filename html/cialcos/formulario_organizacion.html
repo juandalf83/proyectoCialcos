@@ -8,44 +8,42 @@
           <div class="alert alert-danger alert-dismissable" ng-show="items.isError">
             <strong>Error!</strong> {{items.mensajeError}}.
           </div>
-          <div class="col-xs-12">
-            <button class="btn btn-square btn-sm btn-info pull-right" ng-click="irAdicionales()">Datos adicionales</button>
-          </div>
           <form class="form-horizontal">
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Nombre Organizacion</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.orgnombre">
+                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.orgnombre">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Año</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.organio">
+                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.organio">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Fecha Registro SEP</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="date" class="form-control" ng-model="objeto.orgfecharegistrosep">
+                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm datepicker" ng-model="objeto.orgfecharegistrosep">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Fecha Acreditacion MAGAP</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="date" class="form-control" ng-model="objeto.orgfechaacreditacionmagap">
+                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm datepicker" ng-model="objeto.orgfechaacreditacionmagap">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Total Productores</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.orgtotalreal">
+                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.orgtotalreal">
                   </div>
               </div>
           </form>
      </div>
      <div class="modal-footer">
-          <button ng-show="editable" class="btn btn-square btn-sm btn-primary" ng-click="guardar(objeto)">Guardar</button>
+          <!-- <button ng-show="editable" class="btn btn-square btn-sm btn-primary" ng-click="guardar(objeto)">Guardar</button> -->
+          <button class="btn btn-square btn-sm btn-info pull-right" ng-click="guardar(objeto)">Datos adicionales</button>
           <button class="btn btn-square btn-sm btn-warning" ng-click="cancelar()">Cancelar</button>
      </div>
 </div>

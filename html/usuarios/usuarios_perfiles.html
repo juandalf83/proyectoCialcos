@@ -7,7 +7,7 @@
             <div class="panel-body">
                 <div class="col-xs-12 col-md-12">
                     <div class="row col-xs-12 col-md-3">
-                      <input type="text" placeholder="Filtrar" class="form-control" ng-model="filtro">
+                      <input type="text" placeholder="Filtrar" class="col-sm-6 col-xs-12 objeto-sm" ng-model="filtro">
                     </div>
                     <button type="button" class="btn btn-primary btn-sm btn-square pull-right" ng-click="open(true, 0)">Nuevo</button>
                 </div>
@@ -26,7 +26,7 @@
                             <tr ng-repeat="objeto in objetos | filter:filtro | orderBy:'id'">
                                 <td class="text-center">{{objeto.perid.perdescripcion}}</td>
                                 <td class="text-center">{{objeto.usrid.usrusuario}}</td>
-                                <td class="text-center">{{objeto.upefechacaducidad}}</td>
+                                <td class="text-center">{{objeto.upefechacaducidad | date:'yyyy-MM-dd'}}</td>
                                 <td>
                                     <div class="pull-right">
                                         <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil" ng-click="open(true, objeto.upeid)"></button>

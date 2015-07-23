@@ -39,9 +39,10 @@ angular.module('cialcosApp')
             var redireccion = $localStorage.dataRedireccion[usr.usrid];
             if(redireccion){
               if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
-                reg = redireccion.respaldoUsuario;
-                if($localStorage.dataRedireccion[usr.usrid].tabla == 'usuario')
+                if($localStorage.dataRedireccion[usr.usrid].tabla == 'usuario'){
+                  reg = redireccion.respaldoUsuario;
                   delete $localStorage.dataRedireccion[usr.usrid];
+                }
               }
             }
           }
@@ -60,15 +61,15 @@ angular.module('cialcosApp')
 
             var counts = [5, 10, 15];
 	          var count = 5;
-            $scope.tablaEmails = tablaDinamica(count, counts, 'mail', $scope.objeto.usrid, 'mai', $scope);
-            $scope.tablaTelefonos = tablaDinamica(count, counts, 'telefono', $scope.objeto.usrid, 'tlf', $scope);
-            $scope.tablaDirecciones = tablaDinamica(count, counts, 'direccion', $scope.objeto.usrid, 'dir', $scope);
-            $scope.tablaPracticas = tablaDinamica(count, counts, 'practicausuario', $scope.objeto.usrid, 'ppu', $scope);
-            $scope.tablaApoyo = tablaDinamica(count, counts, 'usuarioapoyo', $scope.objeto.usrid, 'uap', $scope);
-            $scope.tablaDestino = tablaDinamica(count, counts, 'destinoproduccion', $scope.objeto.usrid, 'dep', $scope);
-            $scope.tablaFuentes = tablaDinamica(count, counts, 'fuentesingresos', $scope.objeto.usrid, 'fin', $scope);
-            $scope.tablaIngresos = tablaDinamica(count, counts, 'usuariodesingreso', $scope.objeto.usrid, 'udi', $scope);
-            $scope.tablaProductos = tablaDinamica(count, counts, 'usuarioproducto', $scope.objeto.usrid, 'upr', $scope);
+            $scope.tablaEmails = tablaDinamica(count, counts, 'mail', $scope.objeto.usrid, 'mai', 'usr', $scope);
+            $scope.tablaTelefonos = tablaDinamica(count, counts, 'telefono', $scope.objeto.usrid, 'tlf', 'usr', $scope);
+            $scope.tablaDirecciones = tablaDinamica(count, counts, 'direccion', $scope.objeto.usrid, 'dir', 'usr', $scope);
+            $scope.tablaPracticas = tablaDinamica(count, counts, 'practicausuario', $scope.objeto.usrid, 'ppu', 'usr', $scope);
+            $scope.tablaApoyo = tablaDinamica(count, counts, 'usuarioapoyo', $scope.objeto.usrid, 'uap', 'usr', $scope);
+            $scope.tablaDestino = tablaDinamica(count, counts, 'destinoproduccion', $scope.objeto.usrid, 'dep', 'usr', $scope);
+            $scope.tablaFuentes = tablaDinamica(count, counts, 'fuentesingresos', $scope.objeto.usrid, 'fin', 'usr', $scope);
+            $scope.tablaIngresos = tablaDinamica(count, counts, 'usuariodesingreso', $scope.objeto.usrid, 'udi', 'usr', $scope);
+            $scope.tablaProductos = tablaDinamica(count, counts, 'usuarioproducto', $scope.objeto.usrid, 'upr', 'usr', $scope);
           }
         });
       }
@@ -115,6 +116,8 @@ angular.module('cialcosApp')
               $location.path(redireccion.pantalla);
             else
               $location.path(urlRegresar);
+          }else{
+            $location.path(urlRegresar);
           }
         }else{
           $location.path(urlRegresar);
@@ -136,7 +139,6 @@ angular.module('cialcosApp')
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open("POST", "http://sinagap.magap.gob.ec/enlaces/Service.asmx?op=WBConsultaCed",true);
         xmlhttp.onreadystatechange = function() {
-          console.log(xmlhttp);
           if (xmlhttp.readyState == 4) {
             alert(xmlhttp.responseText);
             // // http://www.terracoder.com convert XML to JSON
@@ -277,11 +279,14 @@ angular.module('cialcosApp')
         $scope.items = items;
         $scope.items.editable = true;
 
+        agregarCampos('tdr', $scope.items.registro.tdrid);
         $scope.getTipoDirecciones = function(term, done){
           getListado ('tipodireccion', 'tdr', function(resultados){
             done($filter('filter')(resultados, {text: term}, 'text'));
           });
         };
+
+        agregarCampos('par', $scope.items.registro.parid);
         $scope.getParroquias = function(term, done){
           getListado ('parroquia', 'par', function(resultados){
             done($filter('filter')(resultados, {text: term}, 'text'));
@@ -308,6 +313,7 @@ angular.module('cialcosApp')
         $scope.items = items;
         $scope.items.editable = true;
 
+        agregarCampos('ppr', $scope.items.registro.pprid);
         $scope.getPracticas = function(term, done){
           getListado ('practicaproductiva', 'ppr', function(resultados){
             done($filter('filter')(resultados, {text: term}, 'text'));
@@ -334,6 +340,7 @@ angular.module('cialcosApp')
         $scope.items = items;
         $scope.items.editable = true;
 
+        agregarCampos('apy', $scope.items.registro.apyid);
         $scope.getApoyo = function(term, done){
           getListado ('apoyoproduccion', 'apy', function(resultados){
             done($filter('filter')(resultados, {text: term}, 'text'));
@@ -418,6 +425,7 @@ angular.module('cialcosApp')
         $scope.items = items;
         $scope.items.editable = true;
 
+        agregarCampos('prod', $scope.items.registro.prodid);
         $scope.getProductos = function(term, done){
           getListado ('producto', 'prod', function(resultados){
             done($filter('filter')(resultados, {text: term}, 'text'));
@@ -466,12 +474,15 @@ angular.module('cialcosApp')
       function getListado (tabla, tipo, callback){
         var resultados = [];
         Entidad.query({tabla:tabla}, function(data){
-        console.log(data);
           values = angular.copy(data);
           for(var i = 0; i < values.length; i++){
             if(values[i][tipo+'estado'] == 'A'){
               values[i].id = values[i][tipo+'id'];
-              values[i].text = values[i][tipo+'descripcion'];
+              if(tabla == 'producto'){
+                values[i].text = values[i][tipo+'nombreproducto'];
+              }else{
+                values[i].text = values[i][tipo+'descripcion'];
+              }
               resultados.push(values[i]);
             }
           }

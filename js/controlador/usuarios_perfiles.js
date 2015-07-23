@@ -8,19 +8,30 @@ $(document).on("focusin", ".datepicker", function () {
 });
 
 angular.module('cialcosApp')
-.controller('UsuariosPerfilesCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore','$cookieStore', 'Administracion', '$localStorage',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, $cookieStore, Administracion, $localStorage) {
+.controller('UsuariosPerfilesCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope', '$cookieStore', 'Administracion', '$localStorage',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, Administracion, $localStorage) {
 
       $scope.tabla = "usuarioperfil";
       $scope.objetos = [];
       cargar();
 
       if($routeParams.id){
-        $scope.perfiles = Entidad.query({tabla:'perfil'});
-        $scope.usuarios = Entidad.query({tabla:'usuario'});
         $scope.editable = $routeParams.editable;
+
         Entidad.get({tabla:$scope.tabla, id:$routeParams.id}, function(item) {
           registro = angular.copy(item);
+          var usr = $cookieStore.get('usuario');
+          if($localStorage.dataRedireccion){
+            var redireccion = $localStorage.dataRedireccion[usr.usrid];
+            if(redireccion){
+              if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
+                if($localStorage.dataRedireccion[usr.usrid].tabla == 'usuarioperfil'){
+                  reg = redireccion.respaldoUsuario;
+                  delete $localStorage.dataRedireccion[usr.usrid];
+                }
+              }
+            }
+          }
           if(registro.upeid === undefined){
             $scope.titulo = "Ingreso de";
           }else{
@@ -70,6 +81,7 @@ angular.module('cialcosApp')
           done($filter('filter')(resultados, {text: term}, 'text'));
         });
       };
+
       function cargar(){
         Administracion.cargar($scope.tabla,function(objetos){
           $scope.objetos = objetos;
@@ -89,7 +101,6 @@ angular.module('cialcosApp')
               }else{
                 values[i].text = values[i][tipo+'descripcion'];
               }
-              console.log(values);
               resultados.push(values[i]);
             }
           }
@@ -104,6 +115,7 @@ angular.module('cialcosApp')
           if(tipo == 'usr'){
             objeto.text = objeto[tipo+'nombrecompleto'];
           }
+          console.log(objeto);
         }
       }
 
@@ -129,7 +141,6 @@ angular.module('cialcosApp')
             dataRedireccion: data
           });
         }
-        console.log($localStorage.dataRedireccion);
         if(tabla == 'usuario'){
           $location.path('formulario_usuario/0/true');
         }else{

@@ -15,9 +15,10 @@ angular.module('cialcosApp')
             var redireccion = $localStorage.dataRedireccion[usr.usrid];
             if(redireccion){
               if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
-                registro = redireccion.respaldoUsuario;
-                if($localStorage.dataRedireccion[usr.usrid].tabla == 'acceso')
+                if($localStorage.dataRedireccion[usr.usrid].tabla == 'acceso'){
+                  registro = redireccion.respaldoUsuario;
                   delete $localStorage.dataRedireccion[usr.usrid];
+                }  
               }
             }
           }

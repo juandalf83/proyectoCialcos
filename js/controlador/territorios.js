@@ -1,6 +1,6 @@
 angular.module('cialcosApp')
-.controller('TerritoriosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams,$rootScope, $cookieStore, Administracion) {
+.controller('TerritoriosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion', '$localStorage',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams,$rootScope, $cookieStore, Administracion, $localStorage) {
       $scope.disabledZona = true;
       $scope.disabledProvincia = true;
       $scope.disabledCanton = true;
@@ -9,39 +9,48 @@ angular.module('cialcosApp')
       cargar();
 
       $scope.guardar = function(objeto, objetos, tabla, identificador, externo, isExterno){
-        var fecha = new Date();
-        var data = {};
-        if(objeto[identificador+'id'] === 0 || objeto[identificador+'id'] === '' || objeto[identificador+'id'] === undefined){
-          objeto[identificador+'id'] = 0;
-          var id = $scope.getMaximoId(objetos);
-          data[identificador+'id'] = id;
-          data[identificador+'descripcion'] = objeto[identificador+'descripcion'];
-          data[identificador+'estado'] = 1;
-          data[identificador+'fechacreacion'] = fecha;
-          data[identificador+'usuariocreacion'] = 2;
-          if(isExterno){
-            data[externo+'id'] = objeto[externo+'id'];
-          }
-          Entidad.save({tabla:tabla},data, function(result){
-            $scope.cancelar(tabla);
-            $rootScope.guardarBitacoraCRUD(true, false, false);
-            cargar();
-          });
-        }else{
-          data[identificador+'id'] = objeto[identificador+'id'];
-          data[identificador+'descripcion'] = objeto[identificador+'descripcion'];
-          data[identificador+'estado'] = 1;
-          data[identificador+'fechacreacion'] = fecha;
-          data[identificador+'usuariocreacion'] = 2;
-          if(isExterno){
-            data[externo+'id'] = objeto[externo+'id'];
-          }
-          Entidad.update({tabla:tabla, id:objeto[identificador+'id']}, data, function(result){
-            $scope.cancelar(tabla);
-            $rootScope.guardarBitacoraCRUD(true, true, false);
-            cargar();
-          });
+        if(isExterno){
+          objeto[externo+'id'] = objeto[externo+'id'];
         }
+        console.log(objeto);
+        Administracion.guardar(tabla, identificador, objeto, function(id){
+          if($.isNumeric(id)){
+            redireccionar(tabla);
+          }
+        });
+        // objeto[identificador+'descripcion'] = objeto[identificador+'descripcion'];
+        // var fecha = new Date();
+        // var data = {};
+        // if(objeto[identificador+'id'] === 0 || objeto[identificador+'id'] === '' || objeto[identificador+'id'] === undefined){
+        //   objeto[identificador+'id'] = 0;
+        //   var id = $scope.getMaximoId(objetos);
+        //   data[identificador+'id'] = id;
+        //   data[identificador+'estado'] = 1;
+        //   data[identificador+'fechacreacion'] = fecha;
+        //   data[identificador+'usuariocreacion'] = 2;
+        //   if(isExterno){
+        //     data[externo+'id'] = objeto[externo+'id'];
+        //   }
+        //   Entidad.save({tabla:tabla},data, function(result){
+        //     $scope.cancelar(tabla);
+        //     $rootScope.guardarBitacoraCRUD(true, false, false);
+        //     cargar();
+        //   });
+        // }else{
+        //   data[identificador+'id'] = objeto[identificador+'id'];
+        //   data[identificador+'descripcion'] = objeto[identificador+'descripcion'];
+        //   data[identificador+'estado'] = 1;
+        //   data[identificador+'fechacreacion'] = fecha;
+        //   data[identificador+'usuariocreacion'] = 2;
+        //   if(isExterno){
+        //     data[externo+'id'] = objeto[externo+'id'];
+        //   }
+        //   Entidad.update({tabla:tabla, id:objeto[identificador+'id']}, data, function(result){
+        //     $scope.cancelar(tabla);
+        //     $rootScope.guardarBitacoraCRUD(true, true, false);
+        //     cargar();
+        //   });
+        // }
       };
 
       $scope.editar = function(objeto, tabla){
@@ -67,9 +76,10 @@ angular.module('cialcosApp')
 
       $scope.eliminar = function(objeto, tabla, identificador){
         if(confirm("Esta seguro de eliminar este registro?")){
-          $rootScope.guardarBitacoraCRUD(false, id, true);
-          Administracion.eliminar(tabla, objeto[identificador+'id'], objeto, function(result){
-            cargar();
+          $rootScope.guardarBitacoraCRUD(false, objeto[identificador+'id'], true);
+          Administracion.eliminar(tabla, identificador, objeto, function(result){
+            //cargar();
+            redireccionar(tabla);
           });
         }
       };
@@ -87,38 +97,50 @@ angular.module('cialcosApp')
             $scope.disabledZona = false;
             break;
           case 'provincia':
-            $scope.provincia = {
-              provid: 0,
-              provdescripcion: '',
-              provestado: 1,
-              provfechacreacion: '',
-              provusuariocreacion: '',
-              zonid: idExt
-            };
-            console.log($scope.provincia);
-            $scope.disabledProvincia = false;
+            if(idExt){
+              $scope.provincia = {
+                provid: 0,
+                provdescripcion: '',
+                provestado: 1,
+                provfechacreacion: '',
+                provusuariocreacion: '',
+                zonid: idExt
+              };
+              console.log($scope.provincia);
+              $scope.disabledProvincia = false;
+            }else{
+              alert('Debe seleccionar una zona');
+            }
             break;
           case 'canton':
-            $scope.canton = {
-              canid: 0,
-              candescripcion: '',
-              canestado: 1,
-              canfechacreacion: '',
-              canusuariocreacion: '',
-              provid: idExt
-            };
-            $scope.disabledCanton = false;
+            if(idExt){
+              $scope.canton = {
+                canid: 0,
+                candescripcion: '',
+                canestado: 1,
+                canfechacreacion: '',
+                canusuariocreacion: '',
+                provid: idExt
+              };
+              $scope.disabledCanton = false;
+            }else{
+              alert('Debe seleccionar una provincia');
+            }
             break;
           case 'parroquia':
-            $scope.parroquia = {
-              parid: 0,
-              pardescripcion: '',
-              parestado: 1,
-              parfechacreacion: '',
-              parusuariocreacion: '',
-              canid: idExt
-            };
-            $scope.disabledParroquia = false;
+            if(idExt){
+              $scope.parroquia = {
+                parid: 0,
+                pardescripcion: '',
+                parestado: 1,
+                parfechacreacion: '',
+                parusuariocreacion: '',
+                canid: idExt
+              };
+              $scope.disabledParroquia = false;
+            }else{
+              alert('Debe seleccionar un canton');
+            }
             break;
         }
       };
@@ -163,8 +185,10 @@ angular.module('cialcosApp')
       function cargar(){
         // $scope.zonas = Entidad.query({tabla:'zona'});
         Administracion.cargar('zona',function(objetos){
+          console.log(objetos);
           $scope.zonas = objetos;
           $scope.zonas.sort();
+
           angular.forEach($scope.zonas, function(zona){
             zona.cssSelect = '';
             zona.select = false;
@@ -186,11 +210,11 @@ angular.module('cialcosApp')
           getElementos(zona.zonid, 'provincia', 'zon', function(elementos){
             $scope.provincias = elementos;
           });
-          deseleccionar(zona, $scope.zonas, 'zon');
-          $scope.cantones = [];
-          $scope.canton = {};
-          $scope.parroquias = [];
-          $scope.parroquia = {};
+          // deseleccionar(zona, $scope.zonas, 'zon');
+          // $scope.cantones = [];
+          // $scope.canton = {};
+          // $scope.parroquias = [];
+          // $scope.parroquia = {};
         }else{
           zona.select = false;
           zona.cssSelect = '';
@@ -263,6 +287,40 @@ angular.module('cialcosApp')
             item.cssSelect = '';
           }
         });
+      }
+
+      function redireccionar(tabla){
+        var usr = $cookieStore.get('usuario');
+        if($localStorage.dataRedireccion){
+          var redireccion = $localStorage.dataRedireccion[usr.usrid];
+          if(redireccion){
+            if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
+              $location.path(redireccion.pantalla);
+            else
+              cargarSegunTabla(tabla);
+          }else{
+            cargarSegunTabla(tabla);
+          }
+        }else{
+          cargarSegunTabla(tabla);
+        }
+      }
+
+      function cargarSegunTabla(tabla){
+        switch(tabla){
+          case 'zona':
+            cargar();
+            break;
+          case 'provincia':
+            $scope.cargarProvincias($scope.zonid);
+            break;
+          case 'canton':
+            $scope.cargarCantones($scope.provid);
+            break;
+          case 'parroquia':
+            $scope.cargarParroquias($scope.canid);
+            break;
+        }
       }
   }
 ]);

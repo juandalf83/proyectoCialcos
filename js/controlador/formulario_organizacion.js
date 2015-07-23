@@ -1,6 +1,15 @@
+$(document).on("focusin", ".datepicker", function () {
+  $(this).datepicker({
+    dateFormat: 'yy-mm-dd',
+    changeMonth: true,
+    changeYear: true,
+    showButtonPanel: true,
+  });
+});
+
 angular.module('cialcosApp')
-.controller('FormularioOrganizacionCtrl', ['$scope', '$window', '$modal', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$log', '$cookieStore', 'Administracion',
-  function($scope, $window, $modal, $location, ngTableParams, $filter, Entidad, $routeParams, $log, $cookieStore, Administracion) {
+.controller('FormularioOrganizacionCtrl', ['$scope', '$window', '$modal', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$log', '$cookieStore', 'Administracion', 'tablaDinamica', '$localStorage',
+  function($scope, $window, $modal, $location, ngTableParams, $filter, Entidad, $routeParams, $log, $cookieStore, Administracion, tablaDinamica, $localStorage) {
       $scope.pantalla = "organizacion";
       $scope.estructuras = [];
       $scope.representantes = [];
@@ -10,378 +19,175 @@ angular.module('cialcosApp')
         $scope.editable = $routeParams.editable;
         Entidad.get({tabla:$scope.pantalla, id:$routeParams.id}, function(item) {
           reg = angular.copy(item);
-          console.log(reg);
+          var usr = $cookieStore.get('usuario');
+          if($localStorage.dataRedireccion){
+            var redireccion = $localStorage.dataRedireccion[usr.usrid];
+            if(redireccion){
+              if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
+                if($localStorage.dataRedireccion[usr.usrid].tabla == 'organizacion'){
+                  reg = redireccion.respaldoUsuario;
+                  delete $localStorage.dataRedireccion[usr.usrid];
+                }
+              }
+            }
+          }
           if(reg.orgid === undefined){
             $scope.titulo = "Ingreso de ";
             $scope.objeto = reg;
           }else{
             $scope.titulo = "Edicion de ";
             $scope.objeto = reg;
-            $scope.objeto.orgfecharegistrosep = new Date($scope.objeto.orgfecharegistrosep);
+            $scope.objeto.orgfecharegistrosep = moment($scope.objeto.orgfecharegistrosep).format('YYYY-MM-DD');
+            $scope.objeto.orgfechaacreditacionmagap = moment($scope.objeto.orgfechaacreditacionmagap).format('YYYY-MM-DD');
 
-            Entidad.query({tabla:'organizaestructura'}).$promise
-              .then(function(data) {
-                $scope.listaEstructuras = angular.copy(data);
-                angular.forEach($scope.listaEstructuras, function(item){
-                  if(item.orgid.orgid == $scope.objeto.orgid){
-                    $scope.estructuras.push(item);
-                  }
-                });
-                $scope.tablaEstructuras = crearTabla($scope.estructuras);
-              });
-            Entidad.query({tabla:'usuarioorganizacion'}).$promise
-              .then(function(data) {
-                $scope.listaUsuarios = angular.copy(data);
-                angular.forEach($scope.listaUsuarios, function(item){
-                  if(item.orgid.orgid == $scope.objeto.orgid){
-                    $scope.representantes.push(item);
-                  }
-                });
-                $scope.tablaRepresentantes = crearTabla($scope.representantes);
-              });
-            Entidad.query({tabla:'direccion'}).$promise
-              .then(function(data) {
-                $scope.listaDirecciones = angular.copy(data);
-                angular.forEach($scope.listaDirecciones, function(item){
-                  if(item.orgid !== undefined){
-                    if(item.orgid.orgid == $scope.objeto.orgid){
-                      $scope.direcciones.push(item);
-                    }
-                  }
-                });
-                $scope.tablaDirecciones = crearTabla($scope.direcciones);
-              });
+            var counts = [5, 10, 15];
+            var count = 5;
+            $scope.tablaEstructuras = tablaDinamica(count, counts, 'organizaestructura', $scope.objeto.orgid, 'oif', 'org', $scope);
+            $scope.tablaRepresentantes = tablaDinamica(count, counts, 'usuarioorganizacion', $scope.objeto.orgid, 'uso', 'org', $scope);
+            $scope.tablaDirecciones = tablaDinamica(count, counts, 'direccion', $scope.objeto.orgid, 'dir', 'org', $scope);
+
           }
         });
       }
 
       $scope.guardar = function(objeto){
-        var fecha = new Date();
-        var usr = '';
-        console.log(objeto);
-        if(objeto.orgid === undefined){
-          objeto.orgid = getMaximoId();
-          objeto.orgestado = 'A';
-          objeto.orgfechacreacion = fecha;
-          objeto.orgfecharegistrosep = new Date(objeto.orgfecharegistrosep);
-          objeto.orgfechaacreditacionmagap = new Date(objeto.orgfechaacreditacionmagap);
-          usr = $cookieStore.get('usuario');
-          objeto.orgusuariocreacion = usr.usrid;
-          console.log(objeto);
-          Entidad.save({tabla:$scope.pantalla}, objeto).$promise
-            .then(function(data) {
-              $location.path("organizaciones");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }else{
-          objeto.orgestado = 'A';
-          objeto.orgfechacreacion = fecha;
-          usr = $cookieStore.get('usuario');
-          objeto.orgusuariocreacion = usr.usrid;
-          objeto.orgfecharegistrosep = new Date(objeto.orgfecharegistrosep);
-          objeto.orgfechaacreditacionmagap = new Date(objeto.orgfechaacreditacionmagap);
-          Entidad.update({tabla:$scope.pantalla, id:objeto.orgid}, objeto).$promise
-            .then(function(data) {
-              $location.path("organizaciones");
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
-        }
+        objeto.orgfecharegistrosep = new Date(objeto.orgfecharegistrosep);
+        objeto.orgfechaacreditacionmagap = new Date(objeto.orgfechaacreditacionmagap);
+        Administracion.guardar('organizacion', 'org', objeto, function(id){
+          if($.isNumeric(id)){
+            $location.path("formulario_adicional_organizacion/"+id+"/true");
+          }
+        });
       };
 
       $scope.cancelar = function(objeto){
-        $location.path("organizaciones");
-      };
-
-      $scope.getMaximoId =  function (){
-        var index = $scope.objetos.length;
-        var id = 0;
-        if(index > 0){
-          $scope.objetos.sort();
-          id = $scope.objetos[0].orgid;
-          angular.forEach($scope.objetos, function (objeto) {
-            if(id < objeto.orgid){
-              id = objeto.orgid;
-            }
-          });
-          id = id + 1;
-        }
-        return id;
-      };
-
-      // $scope.agregarFila = function(tabla) {
-      //   array = $scope.emails;
-      //   if(tabla == 'telefono'){
-      //     array = $scope.telefonos;
-      //   }
-      //   var max = getMaximo(array);
-      //   array.push({});
-      //   console.log("agrega");
-      // };
-      //
-      // $scope.eliminarFila = function (tabla, fila) {
-      //   array = $scope.emails;
-      //   if(tabla == 'telefono'){
-      //     array = $scope.telefonos;
-      //   }
-      //   if (array.length > 0) {
-      //     var index = array.indexOf(fila);
-      //     array.splice(index, 1);
-      //   }
-      // };
-      //
-      // function getMaximo(array) {
-      //   var maximo = 0;
-      //   if (array.length > 0)
-      //     maximo = array[0].orgid;
-      //   angular.forEach(array, function(item, index) {
-      //     if (item.orgid > maximo)
-      //       maximo = item.orgid;
-      //   });
-      //   return  parseInt(maximo) + 1;
-      // }
-
-      $scope.irAdicionales = function(){
-        $location.path("formulario_adicional_organizacion/"+$routeParams.id+"/"+$routeParams.editable);
+        redireccionar("organizaciones");
       };
 
       $scope.irOrganizacion = function(){
-        $location.path("formulario_organizacion/"+$routeParams.id+"/"+$routeParams.editable);
+        redireccionar("formulario_organizacion/"+$routeParams.id+"/"+$routeParams.editable);
       };
 
-      $scope.openEstructura = function(filas, fila) {
-        var urlAbs = $location.absUrl();
-        posicion = urlAbs.indexOf('#');
-        var urlBase = urlAbs.substr(0, posicion);
-        var modalInstance = $modal.open({
-          templateUrl: urlBase+'html/utilitarios/estructuras.html',
-          controller: ModalEstructuraCtrl,
-          resolve: {
-            items: function() {
-              return {
-                registro: angular.copy(fila),
-                registros: angular.copy(filas),
-                organizacion:angular.copy($scope.objeto)
-              };
-            }
-          }
-        });
+      $scope.open = function(tabla, fila) {
+        var url = '';
+        var controlador = '';
+        var objetoTabla = '';
+        switch(tabla){
+          case 'usuarioorganizacion':
+            url = 'html/utilitarios/representantes.html';
+            controlador = ModalRepresentantesCtrl;
+            objetoTabla = $scope.tablaRepresentantes;
+            break;
+          case 'direccion':
+            url = 'html/utilitarios/direccion.html';
+            controlador = ModalDireccionesCtrl;
+            objetoTabla = $scope.tablaDirecciones;
+            break;
+          case 'organizaestructura':
+            url = 'html/utilitarios/estructuras.html';
+            controlador = ModalEstructuraCtrl;
+            objetoTabla = $scope.tablaEstructuras;
+            break;
+        }
 
-        modalInstance.result.then(function(selectedItem) {
-          $scope.selected = selectedItem;
-        }, function(item) {
-          //$log.info('Modal dismissed at: ' + new Date());
-          if(item != 'cancel'){
-            $scope.estructuras.push(item);
-          }
-        });
+        openModal(url, fila, objetoTabla, controlador);
       };
 
       var ModalEstructuraCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
         $scope.items.editable = true;
-        //$scope.items.objeto = {};
-
-        Entidad.query({tabla:'infraestructura'}).$promise
-          .then(function(data) {
-            $scope.infraestructuras = angular.copy(data);
-            console.log($scope.items.registro);
-            //if($scope.items.registro.orgid !== undefined){
-                console.log($scope.infraestructuras);
-                angular.forEach($scope.infraestructuras, function(item){
-                  if($scope.items.registro){
-                    if(item.infid == $scope.items.registro.infid.infid){
-                      console.log(item);
-                      $scope.items.registro.infid = item;
-                    }
-                  }
-                });
-            //}
+        agregarCampos('inf', $scope.items.registro.infid);
+        $scope.getInfraestructura = function(term, done){
+          getListado ('infraestructura', 'inf', function(resultados){
+            done($filter('filter')(resultados, {text: term}, 'text'));
           });
+        };
 
         $scope.ok = function() {
-          var fecha = new Date();
-          var usr = '';
-          if($scope.items.registro.oifid === undefined){
-            $scope.items.registro.oifid = $scope.getIdFormulario();
-            $scope.items.registro.orgid = $scope.items.organizacion;
-            $scope.items.registro.oifestado = 'A';
-            $scope.items.registro.oiffechacreacion = fecha;
-            usr = $cookieStore.get('usuario');
-            $scope.items.registro.oifusuariocreacion = usr.usrid;
-            objeto = angular.copy($scope.items.registro);
-            Entidad.save({tabla:'organizaestructura'}, objeto).$promise
-              .then(function(data) {
-                $modalInstance.dismiss($scope.items.registro);
-              })
-              .catch(function(error) {
-                console.log("rejected " + JSON.stringify(error));
-              });
-          }else{
-            $scope.items.registro.orgid = $scope.items.organizacion;
-            $scope.items.registro.oifestado = 'A';
-            $scope.items.registro.oiffechacreacion = fecha;
-            usr = $cookieStore.get('usuario');
-            $scope.items.registro.oifusuariocreacion = usr.usrid;
-            objeto = angular.copy($scope.items.registro);
-            Entidad.update({tabla:'organizaestructura', id:$scope.items.registro.oifid}, objeto).$promise
-              .then(function(data) {
-                $modalInstance.dismiss($scope.items.registro);
-              })
-              .catch(function(error) {
-                console.log("rejected " + JSON.stringify(error));
-              });
-          }
+          guardarDatosAdicionales('organizaestructura', 'oif', $scope.items.registro, $scope.items.organizacion, function(resultado){
+            $modalInstance.dismiss(resultado);
+          });
         };
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
         };
 
-        $scope.getIdFormulario =  function (){
-          var index = 0;
-          if($scope.items.registros !== undefined)
-            index = $scope.items.registros.length;
-          var id = 1;
-          if(index > 0){
-            $scope.items.registros.sort();
-            id = $scope.items.registros[0].oifid;
-            angular.forEach($scope.items.registros, function (objeto) {
-              if(id < objeto.oifid){
-                id = objeto.oifid;
-              }
-            });
-            id = id + 1;
-          }
-          return id;
+        $scope.agregarNuevo = function(tabla){
+          $modalInstance.dismiss('cancel');
+          irPantallaNuevo(tabla);
         };
-      };
-
-      $scope.openRepresentante = function(filas, fila) {
-        var urlAbs = $location.absUrl();
-        posicion = urlAbs.indexOf('#');
-        var urlBase = urlAbs.substr(0, posicion);
-        var modalInstance = $modal.open({
-          templateUrl: urlBase+'html/utilitarios/representantes.html',
-          controller: ModalRepresentantesCtrl,
-          resolve: {
-            items: function() {
-              return {
-                registro: angular.copy(fila),
-                registros: angular.copy(filas),
-                organizacion:angular.copy($scope.objeto)
-              };
-            }
-          }
-        });
-
-        modalInstance.result.then(function(selectedItem) {
-          $scope.selected = selectedItem;
-        }, function(item, accion) {
-          //$log.info('Modal dismissed at: ' + new Date());
-          if(item != 'cancel'){
-            console.log(accion);
-            if(accion == 'I')
-              $scope.representantes.push(item);
-            else{
-
-            }
-          }
-        });
       };
 
       var ModalRepresentantesCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
         $scope.items.editable = true;
-        //$scope.items.objeto = {};
-
-        Entidad.query({tabla:'usuario'}).$promise
-          .then(function(data) {
-            $scope.usuarios = angular.copy(data);
-            if($scope.items.registro.usrid !== undefined){
-                angular.forEach($scope.usuarios, function(item){
-                  if(item.usrid == $scope.items.registro.usrid.usrid){
-                    $scope.items.registro.usrid = item;
-                  }
-                });
-            }
+        agregarCampos('inf', $scope.items.registro.infid);
+        $scope.getUsuario = function(term, done){
+          getListado ('usuario', 'usr', function(resultados){
+            done($filter('filter')(resultados, {text: term}, 'text'));
           });
+        };
 
         $scope.ok = function() {
-          var fecha = new Date();
-          var usr = '';
-          if($scope.items.registro.usoid === undefined){
-            $scope.items.registro.usoid = $scope.getIdFormulario();
-            $scope.items.registro.orgid = $scope.items.organizacion;
-            $scope.items.registro.usoestado = 'A';
-            $scope.items.registro.usofechacreacion = fecha;
-            usr = $cookieStore.get('usuario');
-            $scope.items.registro.usousuariocreacion = usr.usrid;
-            objeto = angular.copy($scope.items.registro);
-            Entidad.save({tabla:'usuarioorganizacion'}, objeto).$promise
-              .then(function(data) {
-                $modalInstance.dismiss($scope.items.registro);
-              })
-              .catch(function(error) {
-                console.log("rejected " + JSON.stringify(error));
-              });
-          }else{
-            $scope.items.registro.orgid = $scope.items.organizacion;
-            $scope.items.registro.usoestado = 'A';
-            $scope.items.registro.usofechacreacion = fecha;
-            usr = $cookieStore.get('usuario');
-            $scope.items.registro.usousuariocreacion = usr.usrid;
-            objeto = angular.copy($scope.items.registro);
-            Entidad.update({tabla:'usuarioorganizacion', id:$scope.items.registro.usoid}, objeto).$promise
-              .then(function(data) {
-                $modalInstance.dismiss($scope.items.registro);
-              })
-              .catch(function(error) {
-                console.log("rejected " + JSON.stringify(error));
-              });
-          }
+          guardarDatosAdicionales('usuarioorganizacion', 'uso', $scope.items.registro, $scope.items.organizacion, function(resultado){
+            $modalInstance.dismiss(resultado);
+          });
         };
 
         $scope.cancel = function() {
           $modalInstance.dismiss('cancel');
         };
 
-        $scope.getIdFormulario =  function (){
-          var index = 0;
-          if($scope.items.registros !== undefined)
-            index = $scope.items.registros.length;
-          var id = 1;
-          if(index > 0){
-            $scope.items.registros.sort();
-            id = $scope.items.registros[0].usoid;
-            angular.forEach($scope.items.registros, function (objeto) {
-              if(id < objeto.usoid){
-                id = objeto.usoid;
-              }
-            });
-            id = id + 1;
-          }
-          return id;
+        $scope.agregarNuevo = function(tabla){
+          $modalInstance.dismiss('cancel');
+          irPantallaNuevo(tabla);
         };
       };
 
-      $scope.openDirecciones = function(filas, fila) {
+      var ModalDireccionesCtrl = function($scope, $modalInstance, items, Entidad) {
+        $scope.items = items;
+        $scope.items.editable = true;
+
+        $scope.getTipoDirecciones = function(term, done){
+          getListado ('tipodireccion', 'tdr', function(resultados){
+            done($filter('filter')(resultados, {text: term}, 'text'));
+          });
+        };
+        $scope.getParroquias = function(term, done){
+          getListado ('parroquia', 'par', function(resultados){
+            done($filter('filter')(resultados, {text: term}, 'text'));
+          });
+        };
+
+        $scope.ok = function() {
+          guardarDatosAdicionales('direccion', 'dir', $scope.items.registro, $scope.items.organizacion, function(resultado){
+            $modalInstance.dismiss(resultado);
+          });
+        };
+
+        $scope.cancel = function() {
+          $modalInstance.dismiss('cancel');
+        };
+
+        $scope.agregarNuevo = function(tabla){
+          $modalInstance.dismiss('cancel');
+          irPantallaNuevo(tabla);
+        };
+      };
+
+      function openModal(url, fila, tablaModal, modalCtrl) {
         var urlAbs = $location.absUrl();
         posicion = urlAbs.indexOf('#');
         var urlBase = urlAbs.substr(0, posicion);
         var modalInstance = $modal.open({
-          templateUrl: urlBase+'html/utilitarios/direccion.html',
-          controller: ModalDireccionesCtrl,
+          templateUrl: urlBase+url,
+          controller: modalCtrl,
           resolve: {
             items: function() {
               return {
                 registro: angular.copy(fila),
-                registros: angular.copy(filas),
-                registrosCompletos: angular.copy($scope.listaDirecciones),
-                organizacion:angular.copy($scope.objeto)
+                organizacion: angular.copy($scope.objeto)
               };
             }
           }
@@ -390,139 +196,83 @@ angular.module('cialcosApp')
         modalInstance.result.then(function(selectedItem) {
           $scope.selected = selectedItem;
         }, function(item) {
-          //$log.info('Modal dismissed at: ' + new Date());
           if(item != 'cancel'){
-            $scope.direcciones.push(item);
+            tablaModal.reload();
           }
-        });
-      };
-
-      var ModalDireccionesCtrl = function($scope, $modalInstance, items, Entidad) {
-        $scope.items = items;
-        $scope.items.editable = true;
-        //$scope.items.objeto = {};
-
-        Entidad.query({tabla:'tipodireccion'}).$promise
-          .then(function(data) {
-            $scope.tiposDireccion = angular.copy(data);
-            console.log($scope.tiposDireccion);
-            //if($scope.items.registro.orgid !== undefined){
-                angular.forEach($scope.tiposDireccion, function(item){
-                  if($scope.items.registro){
-                    if(item.tdrid == $scope.items.registro.tdrid.tdrid){
-                      $scope.items.registro.tdrid = item;
-                    }
-                  }
-                });
-            //}
-          });
-
-        Entidad.query({tabla:'parroquia'}).$promise
-          .then(function(data) {
-            $scope.parroquias = angular.copy(data);
-            //if($scope.items.registro.orgid !== undefined){
-                angular.forEach($scope.parroquias, function(item){
-                  if($scope.items.registro){
-                    if(item.parid == $scope.items.registro.parid.parid){
-                      $scope.items.registro.parid = item;
-                    }
-                  }
-                });
-            //}
-          });
-
-        $scope.ok = function() {
-          var fecha = new Date();
-          var usr = '';
-          if($scope.items.registro.dirid === undefined){
-            $scope.items.registro.dirid = $scope.getIdFormulario();
-            $scope.items.registro.orgid = $scope.items.organizacion;
-            $scope.items.registro.direstado = 'A';
-            $scope.items.registro.dirfechacreacion = fecha;
-            usr = $cookieStore.get('usuario');
-            $scope.items.registro.dirusuariocreacion = usr.usrid;
-            objeto = angular.copy($scope.items.registro);
-            Entidad.save({tabla:'direccion'}, objeto).$promise
-              .then(function(data) {
-                $modalInstance.dismiss($scope.items.registro);
-              })
-              .catch(function(error) {
-                console.log("rejected " + JSON.stringify(error));
-              });
-          }else{
-            $scope.items.registro.orgid = $scope.items.organizacion;
-            $scope.items.registro.direstado = 'A';
-            $scope.items.registro.dirfechacreacion = fecha;
-            usr = $cookieStore.get('usuario');
-            $scope.items.registro.dirusuariocreacion = usr.usrid;
-            objeto = angular.copy($scope.items.registro);
-            Entidad.update({tabla:'direccion', id:$scope.items.registro.dirid}, objeto).$promise
-              .then(function(data) {
-                $modalInstance.dismiss($scope.items.registro);
-              })
-              .catch(function(error) {
-                console.log("rejected " + JSON.stringify(error));
-              });
-          }
-        };
-
-        $scope.cancel = function() {
-          $modalInstance.dismiss('cancel');
-        };
-
-        $scope.getIdFormulario =  function (){
-          var index = 0;
-          if($scope.items.registrosCompletos !== undefined)
-            index = $scope.items.registrosCompletos.length;
-          var id = 1;
-          if(index > 0){
-            $scope.items.registros.sort();
-            id = $scope.items.registrosCompletos[0].dirid;
-            angular.forEach($scope.items.registrosCompletos, function (objeto) {
-              if(id < objeto.dirid){
-                id = objeto.dirid;
-              }
-            });
-            id = id + 1;
-          }
-          return id;
-        };
-      };
-
-      function crearTabla($registros){
-        var data = $registros;
-        return new ngTableParams({
-          page: 1,
-          count: 5,
-          filter: {
-            nombre: ''
-          },
-          sorting: {
-            nombre: 'asc'
-          }
-        }, {
-          total: data.length,
-          getData: function($defer, params) {
-            var filteredData = $filter('filter')(data, $scope.searchText);
-
-            var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
-
-            params.total(orderedData.length);
-
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-          },
-          $scope: $scope
-
         });
       }
-      function filter_by_fields(data) {
-        var text = $scope.searchText;
-        if (text) {
-          var reg_exp = new RegExp(text, 'i');
-          return !text || reg_exp.test(data.nombre) || reg_exp.test(data.descripcion);
+
+      function guardarDatosAdicionales(tabla, tipo, objeto, organizacion, callback) {
+        objeto.orgid = organizacion;
+        Administracion.guardar(tabla, tipo, objeto, callback);
+      }
+
+      function getListado (tabla, tipo, callback){
+        var resultados = [];
+        Entidad.query({tabla:tabla}, function(data){
+          values = angular.copy(data);
+          for(var i = 0; i < values.length; i++){
+            if(values[i][tipo+'estado'] == 'A'){
+              values[i].id = values[i][tipo+'id'];
+              if(tabla == 'usuario')
+                values[i].text = values[i][tipo+'nombrecompleto'];
+              else
+                values[i].text = values[i][tipo+'descripcion'];
+              resultados.push(values[i]);
+            }
+          }
+          callback(resultados);
+        });
+      }
+
+      function agregarCampos (tipo, objeto){
+        if(objeto){
+          objeto.text = objeto[tipo+'descripcion'];
+          objeto.id = objeto[tipo+'id'];
         }
-        return true;
       }
 
+      var irPantallaNuevo = function (tabla){
+        var usr = $cookieStore.get('usuario');
+        var data = {};
+        registros = {
+          respaldoUsuario: $scope.objeto,
+          usuarioConectado: usr,
+          irPantalla: true,
+          tabla: 'organizacion',
+          pantalla: $location.url()
+        };
+        if($localStorage.dataRedireccion){
+          $localStorage.dataRedireccion[usr.usrid] = registros;
+        }else{
+          data[usr.usrid] = registros;
+          $localStorage.$default({
+            dataRedireccion: data
+          });
+        }
+        if(tabla == 'usuario')
+          $location.path('formulario_usuario/0/true');
+        if(tabla == 'parroquia')
+          $location.path('territorios');
+        else
+          $location.path('formulario/0/'+tabla+'/true');
+      };
+
+      function redireccionar(urlRegresar){
+        var usr = $cookieStore.get('usuario');
+        if($localStorage.dataRedireccion){
+          var redireccion = $localStorage.dataRedireccion[usr.usrid];
+          if(redireccion){
+            if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
+              $location.path(redireccion.pantalla);
+            else
+              $location.path(urlRegresar);
+          }else{
+            $location.path(urlRegresar);
+          }
+        }else{
+          $location.path(urlRegresar);
+        }
+      }
   }
 ]);

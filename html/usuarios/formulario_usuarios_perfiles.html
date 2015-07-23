@@ -12,7 +12,7 @@
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Perfil</label>
                    <div class="col-lg-6">
-                       <!-- <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.perid" ng-options="perfil as perfil.perdescripcion for perfil in perfiles">
+                       <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.perid" ng-options="perfil as perfil.perdescripcion for perfil in perfiles">
                        </select> -->
                        <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione perfil" ng-model="objeto.perid" simple-query="getPerfiles">
                        <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('perfil')"></button>
@@ -21,7 +21,7 @@
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Usuario</label>
                    <div class="col-lg-6">
-                       <!-- <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.usrid" ng-options="usuario as usuario.usrusuario for usuario in usuarios">
+                       <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrid" ng-options="usuario as usuario.usrusuario for usuario in usuarios">
                        </select> -->
                        <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione usuario" ng-model="objeto.usrid" simple-query="getUsuarios">
                        <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('usuario')"></button>

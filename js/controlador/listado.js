@@ -85,6 +85,7 @@ angular.module('cialcosApp')
           data[$scope.identificador+'fechacreacion'] = fecha;
           usr = $cookieStore.get('usuario');
           data[$scope.identificador+'usuariocreacion'] = usr.usrid;
+          console.log(data);
           Entidad.save({tabla:$routeParams.ubicacion},data).$promise
             .then(function(data) {
               redireccionar();
@@ -173,11 +174,14 @@ angular.module('cialcosApp')
         var usr = $cookieStore.get('usuario');
         if($localStorage.dataRedireccion){
           var redireccion = $localStorage.dataRedireccion[usr.usrid];
+          console.log(redireccion);
           if(redireccion){
             if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
               $location.path(redireccion.pantalla);
             else
               $location.path("listado/"+$routeParams.ubicacion);
+          }else{
+            $location.path("listado/"+$routeParams.ubicacion);
           }
         }else{
           $location.path("listado/"+$routeParams.ubicacion);

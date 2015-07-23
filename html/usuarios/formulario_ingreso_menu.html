@@ -12,25 +12,24 @@
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Descripcion</label>
                    <div class="col-lg-6">
-                       <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.mendescripcion">
+                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.mendescripcion">
                    </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Menu padre</label>
                    <div class="col-lg-6">
-                       <!-- <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.menpadre" ng-options="menuPadre.menid as menuPadre.mendescripcion for menuPadre in menusPadre">
+                       <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.menpadre" ng-options="menuPadre.menid as menuPadre.mendescripcion for menuPadre in menusPadre">
                        </select> -->
-                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione usuario" ng-model="objeto.usrid" simple-query="getUsuarios">
-                       <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('usuario')"></button>
+                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione menu padre" ng-model="objeto.menpadre" simple-query="getMenus">
                    </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Pantalla url</label>
                    <div class="col-lg-6">
-                       <!-- <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.panid" ng-options="pantalla as pantalla.panurl for pantalla in pantallas">
+                       <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.panid" ng-options="pantalla as pantalla.panurl for pantalla in pantallas">
                        </select> -->
-                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione usuario" ng-model="objeto.usrid" simple-query="getUsuarios">
-                       <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('usuario')"></button>
+                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione pantalla" ng-model="objeto.panid" simple-query="getPantallas">
+                       <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('pantalla')"></button>
                    </div>
               </div>
           </form>

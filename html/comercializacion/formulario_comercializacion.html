@@ -12,20 +12,20 @@
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Cialco</label>
                   <div class="col-lg-6">
-                      <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.ciaid" ng-options="cialco.ciaid as cialco.tpudescripcion for cialco in cialcos">
+                      <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciaid" ng-options="cialco.ciaid as cialco.tpudescripcion for cialco in cialcos">
                       </select>
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Nombre</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.comnombre">
+                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.comnombre">
                   </div>
               </div>
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Observacion</label>
                    <div class="col-lg-3">
-                       <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.comobservacion">
+                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.comobservacion">
                    </div>
               </div>
               <div class="panel">
@@ -42,19 +42,19 @@
                           </div>
                           <div class="col-lg-12 margen-fila" ng-repeat="frecuencia in frecuencias">
                               <div class="col-lg-2">
-                                  <input ng-disabled="!{{editable}}" placeholder="Descripcion" type="text" class="form-control" ng-model="frecuencia.fredescripcion">
+                                  <input ng-disabled="!{{editable}}" placeholder="Descripcion" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="frecuencia.fredescripcion">
                               </div>
                               <div class="col-lg-2">
-                                  <input ng-disabled="!{{editable}}" placeholder="Fecha inicio" type="text" class="form-control" ng-model="frecuencia.frefechainicio">
+                                  <input ng-disabled="!{{editable}}" placeholder="Fecha inicio" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="frecuencia.frefechainicio">
                               </div>
                               <div class="col-lg-2">
-                                  <input ng-disabled="!{{editable}}" placeholder="Fecha fin" type="text" class="form-control" ng-model="frecuencia.frefechafin">
+                                  <input ng-disabled="!{{editable}}" placeholder="Fecha fin" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="frecuencia.frefechafin">
                               </div>
                               <div class="col-lg-2">
-                                  <input ng-disabled="!{{editable}}" placeholder="Hora inicio" type="text" class="form-control" ng-model="frecuencia.horainicio">
+                                  <input ng-disabled="!{{editable}}" placeholder="Hora inicio" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="frecuencia.horainicio">
                               </div>
                               <div class="col-lg-2">
-                                  <input ng-disabled="!{{editable}}" placeholder="Hora fin" type="text" class="form-control" ng-model="frecuencia.horafin">
+                                  <input ng-disabled="!{{editable}}" placeholder="Hora fin" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="frecuencia.horafin">
                               </div>
                               <div class="col-lg-3">
                                   <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-sm btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarFila('frecuencia', frecuencia)"></button>
@@ -78,17 +78,17 @@
                           </div>
                           <div class="col-lg-12 margen-fila" ng-repeat="producto in productos">
                               <div class="col-lg-3">
-                                  <select ng-disabled="!{{editable}}" class="form-control" ng-model="producto.movid" ng-options="movilizacion.movid as movilizacion.movdescripcion for tipo in movilizaciones">
+                                  <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="producto.movid" ng-options="movilizacion.movid as movilizacion.movdescripcion for tipo in movilizaciones">
                                       <option value="">Movilizacion</option>
                                   </select>
                               </div>
                               <div class="col-lg-3">
-                                  <select ng-disabled="!{{editable}}" class="form-control" ng-model="producto.prodid" ng-options="tipo.prodid as tipo.prodnombreproducto for tipo in listaProductos">
+                                  <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="producto.prodid" ng-options="tipo.prodid as tipo.prodnombreproducto for tipo in listaProductos">
                                       <option value="">Tipo</option>
                                   </select>
                               </div>
                               <div class="col-lg-2">
-                                  <input ng-disabled="!{{editable}}" placeholder="Importancia" type="text" class="form-control" ng-model="producto.cprimportancia">
+                                  <input ng-disabled="!{{editable}}" placeholder="Importancia" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="producto.cprimportancia">
                               </div>
                               <div class="col-lg-3">
                                   <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-sm btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarFila('producto', producto)"></button>

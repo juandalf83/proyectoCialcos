@@ -12,39 +12,39 @@
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Cliente</label>
                   <div class="col-lg-6">
-                      <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.usrid" ng-options="usuario.usrid as usuario.usrnombrecompleto for usuario in usuarios">
+                      <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrid" ng-options="usuario.usrid as usuario.usrnombrecompleto for usuario in usuarios">
                       </select>
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Producto</label>
                   <div class="col-lg-6">
-                      <select ng-disabled="!{{editable}}" class="form-control" ng-model="objeto.cprid" ng-options="comercializacionProducto.cprid as comercializacionProducto.cprimportancia for comercializacionProducto in comercializacionesProductos">
+                      <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.cprid" ng-options="comercializacionProducto.cprid as comercializacionProducto.cprimportancia for comercializacionProducto in comercializacionesProductos">
                       </select>
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Cantidad</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.vencantidad">
+                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.vencantidad">
                   </div>
               </div>
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Precio</label>
                    <div class="col-lg-3">
-                       <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.venpreciounitario">
+                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.venpreciounitario">
                    </div>
               </div>
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Total</label>
                    <div class="col-lg-3">
-                       <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.ventotal">
+                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ventotal">
                    </div>
               </div>
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Iva</label>
                    <div class="col-lg-6">
-                       <input ng-disabled="!{{editable}}" type="text" class="form-control" ng-model="objeto.veniva">
+                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.veniva">
                    </div>
               </div>
           </form>

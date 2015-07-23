@@ -46,6 +46,8 @@ angular.module('cialcosApp')
               $location.path(redireccion.pantalla);
             else
               $location.path(urlRegresar);
+          }else{
+            $location.path(urlRegresar);
           }
         }else{
           $location.path(urlRegresar);

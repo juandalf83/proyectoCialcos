@@ -21,7 +21,7 @@
                             <h5 class="modal-title"><strong>ORGANIZACION</strong></h5>
                           </div>
                           <div class="col-xs-3">
-                            <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="open('organizacion', '')"></button>
+                            <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="open('cialcoorganizacion', '')"></button>
                           </div>
                         </div>
                       </div>
@@ -31,7 +31,7 @@
                               <tr ng-repeat="organizacion in $data| filter:searchText">
                               <div class="input-group col-md-3 pull-right" >
                                   <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                  <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                  <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                               </div>
                               <td data-title="'Nombre'" width="45%" sortable="'nombre'">{{organizacion.orgid.orgnombre}}</td>
                               <td data-title="''" width="20%">
@@ -60,7 +60,7 @@
                               <tr ng-repeat="participante in $data| filter:searchText">
                               <div class="input-group col-md-3 pull-right" >
                                   <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                  <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                  <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                               </div>
                               <td data-title="'Productor'" width="20%" sortable="'productor'">{{participante.usrid.usrnombrecompleto}}</td>
                               <td data-title="'Frecuencia'" width="20%" sortable="'frecuencia'">{{participante.freid.fredescripcion}}</td>
@@ -93,7 +93,7 @@
                                 <tr ng-repeat="direccion in $data| filter:searchText">
                                 <div class="input-group col-md-3 pull-right" >
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                    <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                                 </div>
                                 <td data-title="'Tipo Direccion'" width="45%" sortable="'tipo_direccion'">{{direccion.tdrid.tdrdescripcion}}</td>
                                 <td data-title="'Direccion'" width="45%" sortable="'direccion'">{{direccion.dircalleprincipal}} y {{direccion.dircallesecundaria}}</td>
@@ -123,7 +123,7 @@
                                 <tr ng-repeat="difusion in $data| filter:searchText">
                                 <div class="input-group col-md-3 pull-right" >
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                    <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                                 </div>
                                 <td data-title="'Tipo'" width="45%" sortable="'tipo'">{{difusion.tpdid.tpddescripcion}}</td>
                                 <td data-title="'Quien Financia'" width="45%" sortable="'quien_financia'">{{difusion.dfcquienfinancia}}</td>
@@ -153,7 +153,7 @@
                                 <tr ng-repeat="equipo in $data| filter:searchText">
                                 <div class="input-group col-md-3 pull-right" >
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                    <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                                 </div>
                                 <td data-title="'Descripcion'" width="45%" sortable="'descripcion'">{{equipo.eqdid.eqddescripcion}}</td>
                                 <td data-title="'Cantidad'" width="45%" sortable="'cantidad'">{{equipo.eqccantidad}}</td>
@@ -183,11 +183,11 @@
                                 <tr ng-repeat="horario in $data| filter:searchText">
                                 <div class="input-group col-md-3 pull-right" >
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                    <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                                 </div>
                                 <td data-title="'Descripcion'" width="30%" sortable="'descripcion'">{{horario.hordescripcion}}</td>
-                                <td data-title="'Fecha Inicio'" width="30%" sortable="'fecha_inicio'">{{horario.horfechainicio}}</td>
-                                <td data-title="'Fecha Fin'" width="30%" sortable="'fecha_fin'">{{horario.horfechafin}}</td>
+                                <td data-title="'Fecha Inicio'" width="30%" sortable="'fecha_inicio'">{{horario.horfechainicio | date:'yyyy-MM-dd'}}</td>
+                                <td data-title="'Fecha Fin'" width="30%" sortable="'fecha_fin'">{{horario.horfechafin | date:'yyyy-MM-dd'}}</td>
                                 <td data-title="''" width="20%">
                                     <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('horario', horario)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
                                     <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(horario, 'horario', 'hor', tablaHorarios)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
@@ -214,7 +214,7 @@
                                 <tr ng-repeat="contrato in $data| filter:searchText">
                                 <div class="input-group col-md-3 pull-right" >
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                    <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                                 </div>
                                 <td data-title="'Contrato'" width="45%" sortable="'contrato'">{{contrato.coacontrato}}</td>
                                 <td data-title="'Entidad'" width="45%" sortable="'entidad'">{{contrato.coaentidad}}</td>

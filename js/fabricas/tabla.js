@@ -3,7 +3,7 @@
 angular.module('cialcosApp')
 .factory('tablaDinamica', function(ngTableParams, $timeout, DataTabla){
 
-	return function(count, counts, tabla, idUsuario, tipo, scope)  {
+	return function(count, counts, tabla, idUsuario, tipo, tipoPadre, scope)  {
 		var filter = '';
 		var tableParams = new ngTableParams({
 			page: 0,
@@ -20,8 +20,8 @@ angular.module('cialcosApp')
 					.then(function(data) {
 						var registros = [];
 						for(var i = 0; i < data.length; i++){
-							if(data[i].usrid){
-								if(data[i].usrid.usrid == idUsuario && data[i][tipo+'estado'] == 'A'){
+							if(data[i][tipoPadre+'id']){
+								if(data[i][tipoPadre+'id'][tipoPadre+'id'] == idUsuario && data[i][tipo+'estado'] == 'A'){
 									registros.push(data[i]);
 								}
 							}

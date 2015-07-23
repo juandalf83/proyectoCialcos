@@ -32,7 +32,7 @@
                               <tr ng-repeat="representante in $data| filter:searchText">
                               <div class="input-group col-md-3 pull-right" >
                                   <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                  <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                  <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                               </div>
                               <td data-title="'Productores'" width="45%" sortable="'representante'">{{representante.usrid.usrnombrecompleto}}</td>
                               <td data-title="'Representante'" width="45%" sortable="'principal'">{{representante.usorepresentante}}</td>
@@ -62,7 +62,7 @@
                                 <tr ng-repeat="direccion in $data| filter:searchText">
                                 <div class="input-group col-md-3 pull-right" >
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                    <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                    <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                                 </div>
                                 <td data-title="'Tipo Direccion'" width="45%" sortable="'tipo_direccion'">{{direccion.tdrid.tdrdescripcion}}</td>
                                 <td data-title="'Direccion'" width="45%" sortable="'direccion'">{{direccion.dircalleprincipal}} y {{direccion.dircallesecundaria}}</td>
@@ -92,7 +92,7 @@
                               <tr ng-repeat="estructura in $data| filter:searchText">
                               <div class="input-group col-md-3 pull-right" >
                                   <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
-                                  <input class="form-control col-md-2" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                                  <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                               </div>
                               <td data-title="'Infraestructura'" width="45%" sortable="'infraestructura'">{{estructura.infid.infdescripcion}}</td>
                               <td data-title="''" width="20%">

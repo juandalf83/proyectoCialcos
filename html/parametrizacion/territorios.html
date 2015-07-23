@@ -8,8 +8,10 @@
                 <div class="row">
                     <div class="col-md-3 col-xs-12">
                       <h5 class="align-text-center"><strong>Zonas</strong></h5>
-                      <div>
-                        <input type="text" placeholder="Filtrar" class="form-control" ng-model="filtroZona">
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <input type="text" placeholder="Filtrar" class="col-sm-12 col-xs-12 objeto-sm" ng-model="filtroZona">
+                        </div>
                       </div>
                       <ul class="list-group">
                         <li class="list-group-item" ng-repeat="zona in zonas | filter:filtroZona | orderBy:'zonid'">
@@ -18,18 +20,23 @@
                           <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(zona, 'zona')"></button>
                         </li>
                       </ul>
-                      <div>
-                        <input type="text" class="form-control margen-fila" ng-model="zona.zondescripcion" ng-disabled="disabledZona">
-                        <button type="button" class="btn btn-warning btn-sm btn-square pull-right margen-left" ng-click="cancelar('zona')">Cancelar</button>
-                        <button type="button" class="btn btn-primary btn-sm btn-square pull-right margen-left" ng-click="guardar(zona, zonas, 'zona', 'zon', '', false)">Guardar</button>
-                        <button type="button" class="btn btn-primary btn-sm btn-square pull-right" ng-click="nuevo('zona','zon')">Nuevo</button>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">Registrar</div>
+                        <div class="panel-body">
+                          <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="zona.zondescripcion" ng-disabled="disabledZona">
+                          <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('zona')"></button>
+                          <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(zona, zonas, 'zona', 'zon', '', false)"></button>
+                          <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('zona','zon')"></button>
+                        </div>
                       </div>
                     </div>
 
                     <div class="col-md-3 col-xs-12">
                       <h5 class="align-text-center"><strong>Provincias</strong></h5>
-                      <div>
-                        <input type="text" placeholder="Filtrar" class="form-control" ng-model="filtroProvincia">
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <input type="text" placeholder="Filtrar" class="col-sm-12 col-xs-12 objeto-sm" ng-model="filtroProvincia">
+                        </div>
                       </div>
                       <ul class="list-group">
                         <li class="list-group-item" ng-repeat="provincia in provincias | filter:filtroProvincia | orderBy:'provid'">
@@ -38,18 +45,23 @@
                           <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(provincia, 'provincia')"></button>
                         </li>
                       </ul>
-                      <div>
-                        <input type="text" class="form-control margen-fila" ng-model="provincia.provdescripcion" ng-disabled="disabledProvincia">
-                        <button type="button" class="btn btn-warning btn-sm btn-square pull-right margen-left" ng-click="cancelar('provincia')">Cancelar</button>
-                        <button type="button" class="btn btn-primary btn-sm btn-square pull-right margen-left" ng-click="guardar(provincia, provincias, 'provincia', 'prov', 'zon', true)">Guardar</button>
-                        <button type="button" class="btn btn-primary btn-sm btn-square pull-right" ng-click="nuevo('provincia','prov', zonid)">Nuevo</button>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">Registrar</div>
+                        <div class="panel-body">
+                          <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="provincia.provdescripcion" ng-disabled="disabledProvincia">
+                          <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('provincia')"></button>
+                          <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(provincia, provincias, 'provincia', 'prov', 'zon', true)"></button>
+                          <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('provincia','prov', zonid)"></button>
+                        </div>
                       </div>
                     </div>
 
                     <div class="col-md-3 col-xs-12">
                       <h5 class="align-text-center"><strong>Cantones</strong></h5>
-                      <div>
-                        <input type="text" placeholder="Filtrar" class="form-control" ng-model="filtroCanton">
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <input type="text" placeholder="Filtrar" class="col-sm-12 col-xs-12 objeto-sm" ng-model="filtroCanton">
+                        </div>
                       </div>
                       <ul class="list-group">
                         <li class="list-group-item" ng-repeat="canton in cantones | filter:filtroCanton | orderBy:'canid'">
@@ -58,18 +70,23 @@
                           <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(canton, 'canton')"></button>
                         </li>
                       </ul>
-                      <div>
-                        <input type="text" class="form-control margen-fila" ng-model="canton.candescripcion" ng-disabled="disabledCanton">
-                        <button type="button" class="btn btn-warning btn-sm btn-square pull-right margen-left" ng-click="cancelar('canton')">Cancelar</button>
-                        <button type="button" class="btn btn-primary btn-sm btn-square pull-right margen-left" ng-click="guardar(canton, cantones, 'canton', 'can', 'prov', true)">Guardar</button>
-                        <button type="button" class="btn btn-primary btn-sm btn-square pull-right" ng-click="nuevo('canton','can', provid)">Nuevo</button>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">Registrar</div>
+                        <div class="panel-body">
+                          <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="canton.candescripcion" ng-disabled="disabledCanton">
+                          <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('canton')"></button>
+                          <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(canton, cantones, 'canton', 'can', 'prov', true)"></button>
+                          <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('canton','can', provid)"></button>
+                        </div>
                       </div>
                     </div>
 
                     <div class="col-md-3 col-xs-12">
                       <h5 class="align-text-center"><strong>Parroquias</strong></h5>
-                      <div>
-                        <input type="text" placeholder="Filtrar" class="form-control" ng-model="filtroParroquia">
+                      <div class="row">
+                        <div class="col-xs-12">
+                          <input type="text" placeholder="Filtrar" class="col-sm-12 col-xs-12 objeto-sm" ng-model="filtroParroquia">
+                        </div>
                       </div>
                       <ul class="list-group">
                         <li class="list-group-item" ng-repeat="parroquia in parroquias | filter:filtroParroquia | orderBy:'parid'">
@@ -78,11 +95,14 @@
                           <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(parroquia, 'parroquia')"></button>
                         </li>
                       </ul>
-                      <div>
-                        <input type="text" class="form-control margen-fila" ng-model="parroquia.pardescripcion" ng-disabled="disabledParroquia">
-                        <button type="button" class="btn btn-warning btn-sm btn-square pull-right margen-left" ng-click="cancelar('parroquia')">Cancelar</button>
-                        <button type="button" class="btn btn-primary btn-sm btn-square pull-right margen-left" ng-click="guardar(parroquia, parroquias, 'parroquia', 'par', 'can', true)">Guardar</button>
-                        <button type="button" class="btn btn-primary btn-sm btn-square pull-right" ng-click="nuevo('parroquia','par', canid)">Nuevo</button>
+                      <div class="panel panel-default">
+                        <div class="panel-heading">Registrar</div>
+                        <div class="panel-body">
+                          <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="parroquia.pardescripcion" ng-disabled="disabledParroquia">
+                          <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('parroquia')"></button>
+                          <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(parroquia, parroquias, 'parroquia', 'par', 'can', true)"></button>
+                          <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('parroquia','par', canid)"></button>
+                        </div>
                       </div>
                     </div>
                 </div>
