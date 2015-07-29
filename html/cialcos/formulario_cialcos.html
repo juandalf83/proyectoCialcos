@@ -12,8 +12,6 @@
               <div class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Tipo Cialco</label>
                    <div class="col-lg-6">
-                       <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.tcoid" ng-options="tipo as tipo.tcodescripcion for tipo in tiposCialco">
-                       </select> -->
                        <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione tipo" ng-model="objeto.tcoid" simple-query="getTiposCialcos">
                        <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('tipocialco')"></button>
                    </div>

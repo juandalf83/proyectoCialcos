@@ -1,10 +1,9 @@
 angular.module('cialcosApp')
-.controller('MenuCtrl', ['$scope', '$element', '$location', '$cookieStore', 'Entidad', '$rootScope', '$interval',
-  function($scope, $element, $location, $cookieStore, Entidad, $rootScope, $interval) {
+.controller('MenuCtrl', ['$scope', '$element', '$location', '$cookieStore', 'Entidad', '$rootScope', '$interval', 'Administracion',
+  function($scope, $element, $location, $cookieStore, Entidad, $rootScope, $interval, Administracion) {
     $scope.usrConectado = {nombre: '', estaConectado: '', id: ''};
     $('.dropdown-toggle').dropdown();
     $scope.baseUrl = "#/";
-    $scope.menu = [];
     $rootScope.mensajes = {
       ingresoMenu: 'INGRESA OPCION MENU ',
       crear: 'CREAR ',
@@ -55,55 +54,116 @@ angular.module('cialcosApp')
     };
 
     $scope.irPantalla = function(item){
-      $rootScope.menuSeleccionado = item;
-      $cookieStore.put('menuSeleccionado', item);
-      $rootScope.guardarBitacora($rootScope.menuSeleccionado, $rootScope.mensajes.ingresoMenu+$rootScope.menuSeleccionado.nombre);
-      $location.path(item.url);
+      var usr = $cookieStore.get('usuario');
+      $scope.acceso = {};
+      Administracion.getAccesoMenu(usr.usrid, item.pantallaId, function(acceso){
+        accesoCopy = angular.copy(acceso);
+        if(accesoCopy.length > 0){
+          if(accesoCopy[0].accactualizar) accesoCopy[0].accactualizar = 1;
+          else  accesoCopy[0].accactualizar = 0;
+          if(accesoCopy[0].acceditar) accesoCopy[0].acceditar = 1;
+          else accesoCopy.acceditar = 0;
+          if(accesoCopy[0].acceliminar) accesoCopy[0].acceliminar = 1;
+          else  accesoCopy[0].acceliminar = 0;
+          if(accesoCopy[0].accconsultar) accesoCopy[0].accconsultar = 1;
+          else  accesoCopy[0].accconsultar = 0;
+          $scope.acceso = accesoCopy[0];
+          $cookieStore.put('acceso', accesoCopy[0]);
+        }
+        console.log($scope.acceso);
+        $rootScope.menuSeleccionado = item;
+        $cookieStore.put('menuSeleccionado', item);
+        $rootScope.guardarBitacora($rootScope.menuSeleccionado, $rootScope.mensajes.ingresoMenu+$rootScope.menuSeleccionado.nombre);
+        $location.path(item.url);
+      });
     };
 
     $scope.getInfoItem = function(url){
       console.log("url");
     };
 
-    var usr = $cookieStore.get('usuario');
-    var perfilUsuario = $cookieStore.get('perfil');
-    var acceso = $cookieStore.get('acceso');
-    console.log(usr);
-    if (usr !== undefined) {
-      $scope.perfilUsuario = perfilUsuario;
-      $scope.acceso = acceso;
-      $scope.usrConectado.id = usr.usrid;
-      $scope.usrConectado.nombre = usr.nombrecompleto;
-      $scope.usrConectado.estaConectado = true;
-      console.log($scope.usrConectado);
-      $scope.perfilesMenu = Entidad.query({tabla: 'perfilmenu'});
-      $scope.perfilesMenu.$promise.then(function(perfilMenu){
-        angular.forEach(perfilMenu, function(perfil){
-          if(perfilUsuario.perid == perfil.perid.perid){
-            if(!perfil.menid.menpadre){
-              $scope.menu.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, submenu: []});
-            }else{
-              angular.forEach($scope.menu, function(submenu){
-                if(submenu.id == perfil.menid.menpadre){
+    $rootScope.cargarMenu = function(){
+      var usr = $cookieStore.get('usuario');
+      var perfilUsuario = $cookieStore.get('perfil');
+      var perfilesExtra = $cookieStore.get('perfilesExtra');
+      $rootScope.menu = [];
+      if (usr !== undefined) {
+        $scope.perfilUsuario = perfilUsuario;
+        $scope.usrConectado.id = usr.usrid;
+        $scope.usrConectado.nombre = usr.usrnombrecompleto;
+        $scope.usrConectado.estaConectado = true;
+        perfiles = perfilesExtra.replace(/,+$/,'');
+        Administracion.getMenuExtra(perfiles, function(perfilExtra){
+          Administracion.getMenuPerfil(perfilUsuario.perid, function(perfilMenu){
+            angular.forEach(perfilMenu, function(perfil){
+              if(!perfil.menid.menpadre){
+                if(perfil.pemestado == 'A'){
+                  $scope.menu.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, submenu: []});
+                }else{
+                  getItemExtra(perfilExtra, perfil.menid.menid, $scope.menu, 'menu');
+                }
+              }
+            });
+            angular.forEach(perfilMenu, function(perfil){
+              angular.forEach($scope.menu, function(item){
+                if(item.id == perfil.menid.menpadre){
                   if(!perfil.menid.panid){
-                    submenu.submenu.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, submenu1: []});
+                    if(perfil.pemestado == 'A'){
+                      item.submenu.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, submenu1: []});
+                    }else{
+                      getItemExtra(perfilExtra, perfil.menid.menid, item.submenu, 'submenu');
+                    }
                   }else{
-                    submenu.submenu.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, url: perfil.menid.panid.panurl});
+                    if(perfil.pemestado == 'A'){
+                      item.submenu.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, pantallaId: perfil.menid.panid.panid, url: perfil.menid.panid.panurl});
+                    }else{
+                      getItemExtra(perfilExtra, perfil.menid.menid, item.submenu, 'item');
+                    }
                   }
                 }
               });
-              angular.forEach($scope.menu, function(menu){
-                angular.forEach(menu.submenu, function(submenu){
-                  if(submenu.submenu1){
-                    if(submenu.id == perfil.menid.menpadre){
-                      submenu.submenu1.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, url: perfil.menid.panid.panurl});
+            });
+            angular.forEach(perfilMenu, function(perfil){
+              angular.forEach($scope.menu, function(item){
+                angular.forEach(item.submenu, function(subitem){
+                  if(subitem.submenu1){
+                    if(subitem.id == perfil.menid.menpadre){
+                      if(perfil.pemestado == 'A'){
+                        subitem.submenu1.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, pantallaId: perfil.menid.panid.panid, url: perfil.menid.panid.panurl});
+                      }else{
+                        getItemExtra(perfilExtra, perfil.menid.menid, subitem.submenu1, 'item');
+                      }
                     }
                   }
                 });
               });
-            }
-          }
+            });
+
+            $scope.menu.sort(function(a, b){
+                if(a.nombre < b.nombre) return -1;
+                if(a.nombre > b.nombre) return 1;
+                return 0;
+            });
+          });
         });
+      }
+    };
+
+    function getItemExtra(perfilesExtra, idMenu, menu, tipo){
+      angular.forEach(perfilesExtra, function(perfil){
+        if(perfil.menid.menid == idMenu){
+          switch(tipo){
+          case 'menu':
+              menu.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, submenu: []});
+              break;
+            case 'submenu':
+              menu.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, submenu1: []});
+              break;
+            case 'item':
+              menu.push({id: perfil.menid.menid, nombre: perfil.menid.mendescripcion, pantallaId: perfil.menid.panid.panid, url: perfil.menid.panid.panurl});
+              break;
+          }
+        }
       });
     }
 
@@ -112,7 +172,7 @@ angular.module('cialcosApp')
 
       $cookieStore.remove('estaConectado');
       $cookieStore.remove('usuario');
-
+      $rootScope.menu = [];
       $location.path('/');
     };
 
@@ -132,7 +192,6 @@ angular.module('cialcosApp')
 
     function recuperarMenu(usuario, menuSeleccionado, observacion){
       $scope.bitacora.usrid = usuario;
-      console.log($scope.bitacora);
       Entidad.get({tabla:'menu', id:menuSeleccionado.id}).$promise.then(function(data) {
         $scope.bitacora.menid = data;
 
@@ -141,6 +200,7 @@ angular.module('cialcosApp')
     }
 
     function guardarBit(bitacora, observacion){
+      var usr = $cookieStore.get('usuario');
       var fecha = new Date();
       var hora = fecha.getHours()+":"+fecha.getMinutes();
       bitacora.bitobservacion = observacion;
@@ -149,13 +209,11 @@ angular.module('cialcosApp')
       bitacora.bitfechacreacion = fecha;
       bitacora.bitusuariocreacion = usr.usrid;
       bitacora.bitestado = 'A';
-      console.log(bitacora);
       Entidad.save({tabla:'bitacora'}, bitacora);
     }
 
     $rootScope.guardarBitacoraCRUD = function(editable, id, eliminar){
       var menuSeleccionado = $cookieStore.get('menuSeleccionado');
-      console.log(menuSeleccionado.nombre);
       if(editable){
         if(id){
           $rootScope.guardarBitacora(menuSeleccionado, $rootScope.mensajes.editar+menuSeleccionado.nombre);
@@ -177,7 +235,7 @@ angular.module('cialcosApp')
             $scope.mensajeErrorView = "";
             $scope.isErrorView = false;
             $interval.cancel(intervalo);
-        }, 8000);
+        }, 3000);
     };
 
     $scope.showMensajeErrorModal = function(item, mensaje) {
@@ -187,7 +245,11 @@ angular.module('cialcosApp')
             item.mensajeError = "";
             item.isError = false;
             $interval.cancel(intervalo);
-        }, 8000);
+        }, 3000);
+    };
+
+    $scope.irVisitante = function(){
+      $location.path('visitantes');
     };
   }
 ]);

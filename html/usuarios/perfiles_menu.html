@@ -6,14 +6,53 @@
             </div>
             <div class="panel-body">
                 <div class="col-xs-12 col-md-12">
-                    <div class="row col-xs-12 col-md-3">
+                    <!-- <div class="row col-xs-12 col-md-3">
                       <input type="text" placeholder="Filtrar" class="col-sm-6 col-xs-12 objeto-sm" ng-model="filtro">
+                    </div> -->
+                    <div class="pull-right">
+                        <button class="btn btn-square btn-sm btn-primary" ng-click="guardar()" ng-if="perfilUsuario.percrear || acceso.accactualizar || perfilUsuario.pereditar || acceso.acceditar">Guardar</button>
+                        <button class="btn btn-square btn-sm btn-warning" ng-click="cancelar()">Cancelar</button>
+                    <!-- <button type="button" class="btn btn-primary btn-sm btn-square pull-right" ng-click="open(true, 0)">Nuevo</button> -->
                     </div>
-                    <button type="button" class="btn btn-primary btn-sm btn-square pull-right" ng-click="open(true, 0)">Nuevo</button>
                 </div>
                 <div class="col-xs-10 col-md-12">
                     <hr class="separador" noshade="noshade" size="2"/>
-                    <table class="table table-hover" id="table">
+                    <div class="">
+                         <label class="col-lg-1 control-label" for="tarea">Perfil</label>
+                         <div class="col-lg-6">
+                             <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.perid" ng-options="perfil as perfil.perdescripcion for perfil in perfiles">
+                             </select> -->
+                             <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione perfil" ng-model="objeto.perid" simple-query="getPerfiles" ng-change="getMenuPerfil(objeto.perid)">
+                         </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">MENU</h3>
+                            </div>
+                            <div class="panel-body">
+                                <ul>
+                                  <li ng-repeat="item in arrayMenu">
+                                    <span class="col-xs-6 col-xs-6 col-lg-6">{{item.menid.mendescripcion}}</span>
+                                    <input type="checkbox" ng-model="item.pemestado" ng-true-value="A" ng-false-value="I" ng-change="seleccionar(item)">
+                                    <ul>
+                                      <li ng-repeat="subitem in item.submenu">
+                                        <span class="col-xs-6 col-sm-6 col-lg-6">{{subitem.menid.mendescripcion}}</span>
+                                        <input type="checkbox" ng-model="subitem.pemestado" ng-true-value="A" ng-false-value="I" ng-change="seleccionar(subitem)">
+                                        <ul>
+                                          <li ng-repeat="subitem1 in subitem.submenu1">
+                                            <span class="col-xs-6 col-sm-6 col-lg-6">{{subitem1.menid.mendescripcion}}</span>
+                                            <input type="checkbox" ng-model="subitem1.pemestado" ng-true-value="A" ng-false-value="I" ng-change="seleccionar(subitem1)">
+                                          </li>
+                                        </ul>
+                                      </li>
+                                    </ul>
+                                  </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <table class="table table-hover" id="table">
                         <thead class="">
                             <tr>
                                 <th class="text-center"><h5><strong>Perfil</strong></h5></th>
@@ -34,7 +73,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                    </table>
+                    </table> -->
                 </div>
             </div>
         </div>

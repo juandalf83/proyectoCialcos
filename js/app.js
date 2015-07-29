@@ -2,6 +2,7 @@ angular.module('cialcosApp', [
   'ui.bootstrap',
   'ngResource',
   'ngRoute',
+  'leaflet-directive',
   'ngTable',
   'ngCookies',
   'ngStorage',
@@ -9,21 +10,26 @@ angular.module('cialcosApp', [
   'EntidadFactory',
   'MagapFactory',
   'DataTablaFactory',
-  'AdministracionDataFactory'
+  'AdministracionDataFactory',
 ])
 
 .run(function($rootScope, $location, $cookieStore) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
-      if ($cookieStore.get('estaConectado') == false || $cookieStore.get('estaConectado') == null) {
-        $location.path('/');
-      }else {
-        var formulario = new RegExp("formulario");
-        if(!formulario.test(next.originalPath)){
-          $location.path(next.originalPath);
-        }
-        var ubicacion = new RegExp("ubicacion");
-        if(ubicacion.test(next.originalPath) && !formulario.test(next.originalPath)){
-          $location.path('/listado/'+next.params.ubicacion);
+      var visitantes = new RegExp("visitantes");
+      if(visitantes.test(next.originalPath)){
+        $location.path(next.originalPath);
+      }else{
+        if ($cookieStore.get('estaConectado') == false || $cookieStore.get('estaConectado') == null) {
+          $location.path('/');
+        }else {
+          var formulario = new RegExp("formulario");
+          if(!formulario.test(next.originalPath)){
+            $location.path(next.originalPath);
+          }
+          var ubicacion = new RegExp("ubicacion");
+          if(ubicacion.test(next.originalPath) && !formulario.test(next.originalPath)){
+            $location.path('/listado/'+next.params.ubicacion);
+          }
         }
       }
     });
@@ -149,6 +155,26 @@ angular.module('cialcosApp', [
   .when('/formulario_participador_producto/:id/:editable', {
     templateUrl: 'html/cialcos/formulario_participador_producto.html',
     controller: 'FormularioParticipadorCtrl'
+  })
+  .when('/bitacora', {
+    templateUrl: 'html/usuarios/bitacora.html',
+    controller: 'BitacoraCtrl'
+  })
+  .when('/visitantes', {
+    templateUrl: 'html/visitantes.html',
+    controller: 'VisitanteCtrl'
+  })
+  .when('/consumidores', {
+    templateUrl: 'html/cialcos/consumidores.html',
+    controller: 'ConsumidoresCtrl'
+  })
+  .when('/formulario_consumidores/:id/:editable', {
+    templateUrl: 'html/cialcos/formulario_consumidores.html',
+    controller: 'ConsumidoresCtrl'
+  })
+  .when('/georeferenciacion', {
+    templateUrl: 'html/cialcos/georeferenciacion.html',
+    controller: 'GeoreferenciacionCtrl'
   })
   .otherwise({
     redirectTo: '/'

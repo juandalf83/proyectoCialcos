@@ -18,7 +18,7 @@ angular.module('cialcosApp')
                 if($localStorage.dataRedireccion[usr.usrid].tabla == 'acceso'){
                   registro = redireccion.respaldoUsuario;
                   delete $localStorage.dataRedireccion[usr.usrid];
-                }  
+                }
               }
             }
           }
@@ -69,7 +69,12 @@ angular.module('cialcosApp')
 
       $scope.getUsuarios = function(term, done){
         getListado ('usuario', 'usr', function(resultados){
-          done($filter('filter')(resultados, {text: term}, 'text'));
+          var usuarios = [];
+          angular.forEach(resultados, function(result){
+            if(result.tpuid.tpuid == 1 || result.tpuid.tpuid == 3)
+              usuarios.push(result);
+          });
+          done($filter('filter')(usuarios, {text: term}, 'text'));
         });
       };
       $scope.getPantallas = function(term, done){

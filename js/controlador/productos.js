@@ -27,7 +27,7 @@ angular.module('cialcosApp')
           }else{
             $scope.titulo = "Edicion de";
             $scope.objeto = registro;
-            agregarCampos('tpu', $scope.objeto.tpuid);
+            agregarCampos('top', $scope.objeto.topid);
           }
         });
       }
@@ -38,7 +38,7 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        objeto.prodprecio = parseFloat(objeto.prodprecio);
+        objeto.prodcantidad = parseInt(objeto.prodcantidad);
         Administracion.guardar($scope.tabla, 'prod', objeto, function(id){
           if($.isNumeric(id)){
             $location.path("producto");

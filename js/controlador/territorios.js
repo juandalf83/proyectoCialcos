@@ -1,56 +1,29 @@
 angular.module('cialcosApp')
-.controller('TerritoriosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion', '$localStorage',
-  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams,$rootScope, $cookieStore, Administracion, $localStorage) {
+.controller('TerritoriosCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore', 'Administracion', '$localStorage', 'tablaDinamicaNormal', 'tablaDinamica',
+  function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams,$rootScope, $cookieStore, Administracion, $localStorage, tablaDinamicaNormal, tablaDinamica) {
       $scope.disabledZona = true;
       $scope.disabledProvincia = true;
       $scope.disabledCanton = true;
       $scope.disabledParroquia = true;
 
-      cargar();
+      //cargar();
+      var counts = [5, 10, 25];
+      var count = 5;
+      $scope.tablaZona = tablaDinamicaNormal(count, counts, 'zona', 0, 'zon', 'zon', $scope);
+      $scope.tablaProvincias = tablaDinamica(count, counts, 'provincia', 0, 'prov', 'zon', $scope);
+      $scope.tablaCantones = tablaDinamica(count, counts, 'canton', 0, 'can', 'prov', $scope);
+      $scope.tablaParroquias = tablaDinamica(count, counts, 'parroquia', 0, 'par', 'can', $scope);
 
       $scope.guardar = function(objeto, objetos, tabla, identificador, externo, isExterno){
         if(isExterno){
           objeto[externo+'id'] = objeto[externo+'id'];
         }
-        console.log(objeto);
         Administracion.guardar(tabla, identificador, objeto, function(id){
           if($.isNumeric(id)){
+            objeto[identificador+'descripcion'] = '';
             redireccionar(tabla);
           }
         });
-        // objeto[identificador+'descripcion'] = objeto[identificador+'descripcion'];
-        // var fecha = new Date();
-        // var data = {};
-        // if(objeto[identificador+'id'] === 0 || objeto[identificador+'id'] === '' || objeto[identificador+'id'] === undefined){
-        //   objeto[identificador+'id'] = 0;
-        //   var id = $scope.getMaximoId(objetos);
-        //   data[identificador+'id'] = id;
-        //   data[identificador+'estado'] = 1;
-        //   data[identificador+'fechacreacion'] = fecha;
-        //   data[identificador+'usuariocreacion'] = 2;
-        //   if(isExterno){
-        //     data[externo+'id'] = objeto[externo+'id'];
-        //   }
-        //   Entidad.save({tabla:tabla},data, function(result){
-        //     $scope.cancelar(tabla);
-        //     $rootScope.guardarBitacoraCRUD(true, false, false);
-        //     cargar();
-        //   });
-        // }else{
-        //   data[identificador+'id'] = objeto[identificador+'id'];
-        //   data[identificador+'descripcion'] = objeto[identificador+'descripcion'];
-        //   data[identificador+'estado'] = 1;
-        //   data[identificador+'fechacreacion'] = fecha;
-        //   data[identificador+'usuariocreacion'] = 2;
-        //   if(isExterno){
-        //     data[externo+'id'] = objeto[externo+'id'];
-        //   }
-        //   Entidad.update({tabla:tabla, id:objeto[identificador+'id']}, data, function(result){
-        //     $scope.cancelar(tabla);
-        //     $rootScope.guardarBitacoraCRUD(true, true, false);
-        //     cargar();
-        //   });
-        // }
       };
 
       $scope.editar = function(objeto, tabla){
@@ -78,7 +51,6 @@ angular.module('cialcosApp')
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, objeto[identificador+'id'], true);
           Administracion.eliminar(tabla, identificador, objeto, function(result){
-            //cargar();
             redireccionar(tabla);
           });
         }
@@ -183,87 +155,101 @@ angular.module('cialcosApp')
       };
 
       function cargar(){
-        // $scope.zonas = Entidad.query({tabla:'zona'});
-        Administracion.cargar('zona',function(objetos){
-          console.log(objetos);
-          $scope.zonas = objetos;
-          $scope.zonas.sort();
 
-          angular.forEach($scope.zonas, function(zona){
-            zona.cssSelect = '';
-            zona.select = false;
-            $scope.provincias = [];
-            $scope.provincia = {};
-            $scope.cantones = [];
-            $scope.canton = {};
-            $scope.parroquias = [];
-            $scope.parroquia = {};
-          });
-        });
+        // $scope.zonas = Entidad.query({tabla:'zona'});
+        // Administracion.cargar('zona',function(objetos){
+        //   console.log(objetos);
+        //   $scope.zonas = objetos;
+        //   $scope.zonas.sort();
+        //
+        //   angular.forEach($scope.zonas, function(zona){
+        //     zona.cssSelect = '';
+        //     zona.select = false;
+        //     $scope.provincias = [];
+        //     $scope.provincia = {};
+        //     $scope.cantones = [];
+        //     $scope.canton = {};
+        //     $scope.parroquias = [];
+        //     $scope.parroquia = {};
+        //   });
+        // });
       }
 
       $scope.cargarProvincias = function(zona){
-        if(!zona.select){
-          zona.select = true;
-          zona.cssSelect = 'seleccionado';
-          $scope.zonid = angular.copy(zona);
-          getElementos(zona.zonid, 'provincia', 'zon', function(elementos){
-            $scope.provincias = elementos;
-          });
-          // deseleccionar(zona, $scope.zonas, 'zon');
-          // $scope.cantones = [];
-          // $scope.canton = {};
-          // $scope.parroquias = [];
-          // $scope.parroquia = {};
-        }else{
-          zona.select = false;
-          zona.cssSelect = '';
-          $scope.provincias = [];
-          $scope.provincia = {};
-          $scope.cantones = [];
-          $scope.canton = {};
-          $scope.parroquias = [];
-          $scope.parroquia = {};
-        }
+        $scope.zonid = angular.copy(zona);
+        $scope.tablaProvincias.reloadTable(zona.zonid);
+        // if(!zona.select){
+        //   zona.select = true;
+        //   zona.cssSelect = 'seleccionado';
+        //   $scope.zonid = angular.copy(zona);
+        //   getElementos(zona.zonid, 'provincia', 'zon', function(elementos){
+        //     $scope.provincias = elementos;
+        //     $scope.disabledProvincia = true;
+        //   });
+        // }else{
+        //   zona.select = false;
+        //   zona.cssSelect = '';
+        //   $scope.provincias = [];
+        //   $scope.provincia = {};
+        //   $scope.cantones = [];
+        //   $scope.canton = {};
+        //   $scope.parroquias = [];
+        //   $scope.parroquia = {};
+        //   $scope.disabledProvincia = true;
+        //   $scope.disabledCanton = true;
+        //   $scope.disabledParroquia = true;
+        // }
       };
 
       $scope.cargarCantones = function(provincia){
-        if(!provincia.select){
-          provincia.select = true;
-          provincia.cssSelect = 'seleccionado';
-          $scope.provid = angular.copy(provincia);
-          console.log($scope.provid);
-          getElementos(provincia.provid, 'canton', 'prov', function(elementos){
-            $scope.cantones = elementos;
-          });
-          deseleccionar(provincia, $scope.provincias, 'prov');
-          $scope.parroquias = [];
-          $scope.parroquia = {};
-        }else{
-          provincia.select = false;
-          provincia.cssSelect = '';
-          $scope.cantones = [];
-          $scope.canton = {};
-          $scope.parroquias = [];
-          $scope.parroquia = {};
-        }
+        $scope.provid = angular.copy(provincia);
+        $scope.tablaCantones.reloadTable(provincia.provid);
+        // if(!provincia.select){
+        //   provincia.select = true;
+        //   provincia.cssSelect = 'seleccionado';
+        //   $scope.provid = angular.copy(provincia);
+        //   console.log($scope.provid);
+        //   getElementos(provincia.provid, 'canton', 'prov', function(elementos){
+        //     $scope.cantones = elementos;
+        //     $scope.disabledCanton = true;
+        //   });
+        //   deseleccionar(provincia, $scope.provincias, 'prov');
+        //   $scope.parroquias = [];
+        //   $scope.parroquia = {};
+        // }else{
+        //   provincia.select = false;
+        //   provincia.cssSelect = '';
+        //   $scope.cantones = [];
+        //   $scope.canton = {};
+        //   $scope.parroquias = [];
+        //   $scope.parroquia = {};
+        //   $scope.disabledProvincia = true;
+        //   $scope.disabledCanton = true;
+        //   $scope.disabledParroquia = true;
+        // }
       };
 
       $scope.cargarParroquias = function(canton){
-        if(!canton.select){
-          canton.select = true;
-          canton.cssSelect = 'seleccionado';
-          $scope.canid = angular.copy(canton);
-          getElementos(canton.canid, 'parroquia', 'can', function(elementos){
-            $scope.parroquias = elementos;
-          });
-          deseleccionar(canton, $scope.cantones, 'can');
-        }else{
-          canton.select = false;
-          canton.cssSelect = '';
-          $scope.parroquias = [];
-          $scope.parroquia = {};
-        }
+        $scope.canid = angular.copy(canton);
+        $scope.tablaParroquias.reloadTable(canton.canid);
+        // if(!canton.select){
+        //   canton.select = true;
+        //   canton.cssSelect = 'seleccionado';
+        //   $scope.canid = angular.copy(canton);
+        //   getElementos(canton.canid, 'parroquia', 'can', function(elementos){
+        //     $scope.disabledParroquia = true;
+        //     $scope.parroquias = elementos;
+        //   });
+        //   deseleccionar(canton, $scope.cantones, 'can');
+        // }else{
+        //   canton.select = false;
+        //   canton.cssSelect = '';
+        //   $scope.parroquias = [];
+        //   $scope.parroquia = {};
+        //   $scope.disabledProvincia = true;
+        //   $scope.disabledCanton = true;
+        //   $scope.disabledParroquia = true;
+        // }
       };
 
       function getElementos(id, tabla, tipo, callback){
@@ -309,15 +295,20 @@ angular.module('cialcosApp')
       function cargarSegunTabla(tabla){
         switch(tabla){
           case 'zona':
-            cargar();
+            //cargar();
+            $scope.disabledZona = true;
+            $scope.tablaZona.reload();
             break;
           case 'provincia':
+            $scope.disabledProvincia = true;
             $scope.cargarProvincias($scope.zonid);
             break;
           case 'canton':
+            $scope.disabledCanton = true;
             $scope.cargarCantones($scope.provid);
             break;
           case 'parroquia':
+            $scope.disabledParroquia = true;
             $scope.cargarParroquias($scope.canid);
             break;
         }

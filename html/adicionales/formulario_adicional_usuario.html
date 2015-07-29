@@ -25,9 +25,9 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 table-responsive">
                 <table ng-table="tablaEmails" class="table table-striped table-bordered">
-                  <tr ng-repeat="mail in $data">
+                  <tr ng-repeat="mail in $data | filter:searchText">
                     <div class="input-group col-md-3 pull-right" >
                       <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
                       <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
@@ -36,6 +36,8 @@
                     <td data-title="'Email'" width="45%" sortable="'email'">{{mail.maidireccion}}</td>
                     <td data-title="''" width="20%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('mail', mail)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                    </td>
+                    <td data-title="''" width="20%">
                       <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(mail, 'mail', 'mai', tablaEmails)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                     </td>
                   </tr>
@@ -55,7 +57,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 table-responsive">
                 <table ng-table="tablaTelefonos" class="table table-striped table-bordered">
                   <tr ng-repeat="telfono in $data| filter:searchText">
                     <div class="input-group col-md-3 pull-right" >
@@ -67,6 +69,8 @@
                     <td data-title="'Extension'" width="20%" sortable="'extension'">{{telfono.tlfextension}}</td>
                     <td data-title="''" width="10%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('telefono', telefono)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                    </td>
+                    <td data-title="''" width="20%">
                       <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(telefono, 'telefono', 'tlf', tablaTelefonos)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                     </td>
                   </tr>
@@ -86,7 +90,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 table-responsive">
                 <table ng-table="tablaDirecciones" class="table table-striped table-bordered">
                   <tr ng-repeat="direccion in $data| filter:searchText">
                     <div class="input-group col-md-3 pull-right" >
@@ -97,6 +101,8 @@
                     <td data-title="'Direccion'" width="45%" sortable="'direccion'">{{direccion.dircalleprincipal}} y {{direccion.dircallesecundaria}}</td>
                     <td data-title="''" width="20%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('direccion', direccion)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                    </td>
+                    <td data-title="''" width="20%">
                       <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(direccion, 'direccion', 'dir', tablaDirecciones)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                     </td>
                   </tr>
@@ -104,7 +110,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-md-12">
+          <div ng-if="objeto.tpuid.tpuid == 2" class="col-xs-12 col-md-12">
             <div class="row btn-primary margen-fila">
               <div class="col-xs-12">
                 <div class="col-xs-9">
@@ -116,7 +122,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 table-responsive">
                 <table ng-table="tablaPracticas" class="table table-striped table-bordered">
                   <tr ng-repeat="practica in $data| filter:searchText">
                     <div class="input-group col-md-3 pull-right" >
@@ -128,6 +134,8 @@
                     <td data-title="'SPG'" width="30%" sortable="'spg'">{{practica.ppucerspg}}</td>
                     <td data-title="''" width="20%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('practica', practica)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                    </td>
+                    <td data-title="''" width="20%">
                       <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(practica, 'practica', 'ppu', tablaPracticas)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                     </td>
                   </tr>
@@ -135,7 +143,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-md-12">
+          <div ng-if="objeto.tpuid.tpuid == 2" class="col-xs-12 col-md-12">
             <div class="row btn-primary margen-fila">
               <div class="col-xs-12">
                 <div class="col-xs-9">
@@ -147,7 +155,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 table-responsive">
                 <table ng-table="tablaApoyo" class="table table-striped table-bordered">
                   <tr ng-repeat="apoyo in $data| filter:searchText">
                     <div class="input-group col-md-3 pull-right" >
@@ -158,6 +166,8 @@
                     <td data-title="'Descripcion'" width="45%" sortable="'Descripcion'">{{apoyo.uapdescripcion}}</td>
                     <td data-title="''" width="20%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('apoyo', apoyo)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                    </td>
+                    <td data-title="''" width="20%">
                       <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(apoyo, 'apoyo', 'uap', tablaApoyo)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                     </td>
                   </tr>
@@ -165,7 +175,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-md-12">
+          <div ng-if="objeto.tpuid.tpuid == 2" class="col-xs-12 col-md-12">
             <div class="row btn-primary margen-fila">
               <div class="col-xs-12">
                 <div class="col-xs-9">
@@ -177,7 +187,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 table-responsive">
                 <table ng-table="tablaDestino" class="table table-striped table-bordered">
                   <tr ng-repeat="destino in $data| filter:searchText">
                     <div class="input-group col-md-3 pull-right" >
@@ -188,6 +198,8 @@
                     <td data-title="'Porcentaje'" width="45%" sortable="'porcentaje'">{{destino.depporcentaje}}</td>
                     <td data-title="''" width="20%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('destino', destino)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                    </td>
+                    <td data-title="''" width="20%">
                       <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(destino, 'destino', 'dep', tablaDestino)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                     </td>
                   </tr>
@@ -195,7 +207,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-md-12">
+          <div ng-if="objeto.tpuid.tpuid == 2" class="col-xs-12 col-md-12">
             <div class="row btn-primary margen-fila">
               <div class="col-xs-12">
                 <div class="col-xs-9">
@@ -207,7 +219,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 table-responsive">
                 <table ng-table="tablaFuentes" class="table table-striped table-bordered">
                   <tr ng-repeat="fuente in $data| filter:searchText">
                     <div class="input-group col-md-3 pull-right" >
@@ -217,6 +229,8 @@
                     <td data-title="'Descripcion'" width="45%" sortable="'descripcion'">{{fuente.findescripcion}}</td>
                     <td data-title="''" width="20%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('fuente', fuente)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                    </td>
+                    <td data-title="''" width="20%">
                       <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(fuente, 'fuente', 'fin', tablaFuentes)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                     </td>
                   </tr>
@@ -224,7 +238,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-md-12">
+          <div ng-if="objeto.tpuid.tpuid == 2" class="col-xs-12 col-md-12">
             <div class="row btn-primary margen-fila">
               <div class="col-xs-12">
                 <div class="col-xs-9">
@@ -236,7 +250,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 table-responsive">
                 <table ng-table="tablaIngresos" class="table table-striped table-bordered">
                   <tr ng-repeat="ingreso in $data| filter:searchText">
                     <div class="input-group col-md-3 pull-right" >
@@ -246,6 +260,8 @@
                     <td data-title="'Destino'" width="45%" sortable="'descripcion'">{{ingreso.deiid.deidescripcion}}</td>
                     <td data-title="''" width="20%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('ingreso', ingreso)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                    </td>
+                    <td data-title="''" width="20%">
                       <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(ingreso, 'ingreso', 'dei', tablaIngresos)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                     </td>
                   </tr>
@@ -253,7 +269,7 @@
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-md-12">
+          <div ng-if="objeto.tpuid.tpuid == 2" class="col-xs-12 col-md-12">
             <div class="row btn-primary margen-fila">
               <div class="col-xs-12">
                 <div class="col-xs-9">
@@ -265,7 +281,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-xs-12">
+              <div class="col-xs-12 table-responsive">
                 <table ng-table="tablaProductos" class="table table-striped table-bordered">
                   <tr ng-repeat="producto in $data| filter:searchText">
                     <div class="input-group col-md-3 pull-right" >
@@ -275,6 +291,8 @@
                     <td data-title="'Descripcion'" width="45%" sortable="'descripcion'">{{producto.prodid.prodnombreproducto}}</td>
                     <td data-title="''" width="20%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('producto', producto)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                    </td>
+                    <td data-title="''" width="20%">
                       <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarLista(producto, 'producto', 'prod', tablaProductos)" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
                     </td>
                   </tr>

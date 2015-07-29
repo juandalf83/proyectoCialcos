@@ -1,0 +1,44 @@
+<div id="container" class="row">
+    <div class="centrado">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">CONSUMIDORES</h3>
+            </div>
+            <div class="panel-body">
+                <div class="col-xs-12 col-md-12">
+                    <div class="row col-xs-12 col-md-3">
+                      <input type="text" placeholder="Filtrar" class="col-sm-6 col-xs-12 objeto-sm" ng-model="filtro">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm btn-square pull-right" ng-click="open(true, 0)" ng-if="perfilUsuario.percrear || acceso.accactualizar">Nuevo</button>
+                </div>
+                <div class="col-xs-10 col-md-12 table-responsive">
+                    <hr class="separador" noshade="noshade" size="2"/>
+                    <table class="table table-hover" id="table">
+                        <thead class="">
+                            <tr>
+                                <th class="text-center"><h5><strong>Consumidor</strong></h5></th>
+                                <th class="text-center"><h5><strong>Productor</strong></h5></th>
+                                <th class="text-center"><h5><strong>venta Total</strong></h5></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <tr ng-repeat="objeto in objetos | filter:filtro | orderBy:'orgnombre'">
+                                <td class="text-center">{{objeto.usrid.usrnombrecompleto}}</td>
+                                <td class="text-center">{{objeto.pafid.pafdescripcion}}</td>
+                                <td class="text-center">{{objeto.contotalventa}}</td>
+                                <td>
+                                    <div class="pull-right">
+                                        <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil" ng-click="open(true, objeto.conid)" ng-if="perfilUsuario.pereditar || acceso.acceditar"></button>
+                                        <button popover="Ver" popover-trigger="mouseenter" class="btn btn-sm btn-success btn-square glyphicon glyphicon-search" ng-click="open(false, objeto.conid)" ng-if="perfilUsuario.perconsultar || acceso.accconsultar"></button>
+                                        <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-sm btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminar(objeto)" ng-if="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

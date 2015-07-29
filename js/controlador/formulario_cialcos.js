@@ -185,7 +185,12 @@ angular.module('cialcosApp')
         agregarCampos('usr', $scope.items.registro.usrid);
         $scope.getUsuarios = function(term, done){
           getListado ('usuario', 'usr', function(resultados){
-            done($filter('filter')(resultados, {text: term}, 'text'));
+            var productores = [];
+            angular.forEach(resultados, function(result){
+              if(result.tpuid.tpuid == 2)
+                productores.push(result);
+            });
+            done($filter('filter')(productores, {text: term}, 'text'));
           });
         };
 

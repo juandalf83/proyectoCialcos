@@ -28,8 +28,12 @@ angular.module('AdministracionDataFactory', [
         objeto[identificador+'id'] = id;
         objeto[identificador+'estado'] = 'A';
         objeto[identificador+'fechacreacion'] = fecha;
-        usr = $cookieStore.get('usuario');
-        objeto[identificador+'usuariocreacion'] = usr.usrid;
+        if(identificador == 'vis'){
+          objeto[identificador+'usuariocreacion'] = 0;
+        }else{
+          usr = $cookieStore.get('usuario');
+          objeto[identificador+'usuariocreacion'] = usr.usrid;
+        }
         console.log(objeto);
         Entidad.save({tabla:tabla},objeto).$promise
           .then(function(data) {
@@ -73,6 +77,87 @@ angular.module('AdministracionDataFactory', [
   factory.cargar = function(tabla, callback){
     Entidad.query({tabla:tabla, id:'cargar'},function(objetos){
       objetos.sort();
+      callback(objetos);
+    });
+  };
+
+  factory.getMenuPerfil = function(idPerfil, callback){
+    Entidad.query({tabla:'perfilmenu', id:'getMenu', parametro:idPerfil},function(objetos){
+      objetos.sort();
+      callback(objetos);
+    });
+  };
+
+  factory.getMenuExtra = function(idPerfiles, callback){
+    Entidad.query({tabla:'perfilmenu', id:'getItemsMenu', parametro:idPerfiles},function(objeto){
+      callback(objeto);
+    });
+  };
+
+  factory.countData = function(tabla, callback){
+    var cantidadData = '';
+    Entidad.get({tabla:tabla, id:'count'}).$promise
+    .then(function(cantidad){
+      angular.forEach(cantidad, function(item, index){
+        if($.isNumeric(index))
+          cantidadData += item;
+      });
+      callback(parseInt(cantidadData));
+    });
+  };
+
+  factory.getPerfilesUsuario = function(idUsuario, callback){
+    Entidad.query({tabla:'usuarioperfil', id:'getPerfil', parametro:idUsuario},function(objetos){
+      callback(objetos);
+    });
+  };
+
+  factory.guardarReturnObjeto = function(tabla, identificador, objeto, callback){
+    var fecha = new Date();
+    var data = {};
+    if(!objeto[identificador+'id']){
+      getMaximoId(tabla, function(id){
+        objeto[identificador+'id'] = id;
+        objeto[identificador+'estado'] = 'A';
+        objeto[identificador+'fechacreacion'] = fecha;
+        if(identificador == 'vis'){
+          objeto[identificador+'usuariocreacion'] = 0;
+        }else{
+          usr = $cookieStore.get('usuario');
+          objeto[identificador+'usuariocreacion'] = usr.usrid;
+        }
+        console.log(objeto);
+        Entidad.save({tabla:tabla},objeto).$promise
+          .then(function(data) {
+            callback(objeto);
+          })
+          .catch(function(error) {
+            console.log("rejected " + JSON.stringify(error));
+          });
+      });
+    }else{
+      objeto[identificador+'estado'] = 'A';
+      objeto[identificador+'fechacreacion'] = fecha;
+      usr = $cookieStore.get('usuario');
+      objeto[identificador+'usuariocreacion'] = usr.usrid;
+      Entidad.update({tabla:tabla, id:objeto[identificador+'id']}, objeto).$promise
+        .then(function(data) {
+          callback(objeto);
+        })
+        .catch(function(error) {
+          console.log("rejected " + JSON.stringify(error));
+        });
+    }
+  };
+
+  factory.getDetalleConsumidor = function(idConsumidor, callback){
+    Entidad.query({tabla:'detalleconsumidor', id:'getDetalle', parametro:idConsumidor},function(objetos){
+      callback(objetos);
+    });
+  };
+
+  factory.getAccesoMenu = function(idUsuario, idPantalla, callback){
+    Entidad.query({tabla:'acceso', id:'getAccesoMenu', parametro:idUsuario, parametro2: idPantalla},function(objetos){
       callback(objetos);
     });
   };

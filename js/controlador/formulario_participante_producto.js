@@ -16,12 +16,10 @@ angular.module('cialcosApp')
           var unique = {};
           getListado ('usuarioproducto', 'upr', function(resultados){
             angular.forEach(resultados, function(item){
-              console.log($scope.objeto.pafid.usrid.usrid, item.usrid.usrid);
               if($scope.objeto.pafid.usrid.usrid == item.usrid.usrid){
-                if (!unique[item.usrid.usrid]) {
-                  console.log(item);
+                if (!unique[item.prodid.prodid]) {
                   $scope.productos.push(item);
-                  unique[item.usrid.usrid] = item;
+                  unique[item.prodid.prodid] = item;
                 }
               }
             });
@@ -37,26 +35,6 @@ angular.module('cialcosApp')
           done($filter('filter')(resultados, {text: term}, 'text'));
         });
       };
-
-      // Entidad.query({tabla:'participante'}).$promise
-      //   .then(function(data) {
-      //     $scope.participantes = data;
-      //     Entidad.query({tabla:'usuarioproducto'}).$promise
-      //       .then(function(data) {
-      //         $scope.productos = [];
-      //         angular.forEach($scope.participantes, function(participante){
-      //           angular.forEach(data, function(item){
-      //             if(participante.usrid.usrid == item.usrid.usrid){
-      //               if (!unique[item.usrid.usrid]) {
-      //                 $scope.productos.push(item);
-      //                 unique[item.usrid.usrid] = item;
-      //               }
-      //             }
-      //           });
-      //         });
-      //       });
-      //   });
-      // $scope.unidadesMedida = Entidad.query({tabla:'unidadmedida'});
 
       if($routeParams.id){
         $scope.editable = $routeParams.editable;
@@ -97,35 +75,6 @@ angular.module('cialcosApp')
             $location.path("participadorproducto");
           }
         });
-        // var fecha = new Date();
-        // var usr = '';
-        // if(objeto.papid === undefined){
-        //   objeto.papid = $scope.getMaximoId();
-        //   objeto.papestado = 'A';
-        //   objeto.papfechacreacion = fecha;
-        //   usr = $cookieStore.get('usuario');
-        //   objeto.papusuariocreacion = usr.usrid;
-        //   console.log(objeto);
-        //   Entidad.save({tabla:"participadorproducto"}, objeto).$promise
-        //     .then(function(data) {
-        //       $location.path("participadorproducto");
-        //     })
-        //     .catch(function(error) {
-        //       console.log("rejected " + JSON.stringify(error));
-        //     });
-        // }else{
-        //   objeto.papestado = 'A';
-        //   objeto.papfechacreacion = fecha;
-        //   usr = $cookieStore.get('usuario');
-        //   objeto.papusuariocreacion = usr.usrid;
-        //   Entidad.update({tabla:"participadorproducto", id:objeto.papid}, objeto).$promise
-        //     .then(function(data) {
-        //       $location.path("participadorproducto");
-        //     })
-        //     .catch(function(error) {
-        //       console.log("rejected " + JSON.stringify(error));
-        //     });
-        // }
       };
 
       $scope.cancelar = function(objeto){
@@ -154,22 +103,19 @@ angular.module('cialcosApp')
           for(var i = 0; i < values.length; i++){
             if(values[i][tipo+'estado'] == 'A'){
               values[i].id = values[i][tipo+'id'];
-              if(tabla == 'organizacion'){
-                values[i].text = values[i][tipo+'nombre'];
-              }else{
-
-                if(tabla == 'usuario'){
-                  values[i].text = values[i][tipo+'nombrecompleto'];
-                }
-                if(tabla == 'participante'){
-                  console.log(values[i].usrid.usrnombrecompleto);
-                  values[i].text = values[i].usrid.usrnombrecompleto;
-                }
-                if(tabla == 'usuarioproducto'){
-                  values[i].text = values[i].prodid.prodnombreproducto;
-                }else{
-                  values[i].text = values[i][tipo+'descripcion'];
-                }
+              switch (tabla){
+              case 'usuario':
+                values[i].text = values[i][tipo+'nombrecompleto'];
+                break;
+              case 'participante':
+                values[i].text = values[i].usrid.usrnombrecompleto;
+                break;
+              case 'usuarioproducto':
+                values[i].text = values[i].prodid.prodnombreproducto;
+                break;
+              default:
+                values[i].text = values[i][tipo+'descripcion'];
+                break;
               }
               resultados.push(values[i]);
             }
@@ -177,5 +123,26 @@ angular.module('cialcosApp')
           callback(resultados);
         });
       }
+
+      $scope.agregarNuevo = function (tabla){
+        var usr = $cookieStore.get('usuario');
+        var data = {};
+        registros = {
+          respaldoUsuario: $scope.objeto,
+          usuarioConectado: usr,
+          irPantalla: true,
+          tabla: 'usuario',
+          pantalla: $location.url()
+        };
+        if($localStorage.dataRedireccion){
+          $localStorage.dataRedireccion[usr.usrid] = registros;
+        }else{
+          data[usr.usrid] = registros;
+          $localStorage.$default({
+            dataRedireccion: data
+          });
+        }
+        $location.path('formulario/0/'+tabla+'/true');
+      };
   }
 ]);

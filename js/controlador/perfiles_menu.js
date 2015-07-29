@@ -4,106 +4,57 @@ angular.module('cialcosApp')
 
       $scope.tabla = "perfilmenu";
       $scope.objetos = [];
-      cargar();
+      $scope.arrayMenu = [];
 
-      if($routeParams.id){
-        $scope.editable = $routeParams.editable;
-        Entidad.get({tabla:$scope.tabla, id:$routeParams.id}, function(item) {
-          registro = angular.copy(item);
-          var usr = $cookieStore.get('usuario');
-          if($localStorage.dataRedireccion){
-            var redireccion = $localStorage.dataRedireccion[usr.usrid];
-            if(redireccion){
-              if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
-                if($localStorage.dataRedireccion[usr.usrid].tabla == 'perfilmenu'){
-                  reg = redireccion.respaldoUsuario;
-                  delete $localStorage.dataRedireccion[usr.usrid];
-                }
-              }
-            }
-          }
-          if(registro.pemid === undefined){
-            $scope.titulo = "Ingreso de";
-          }else{
-            $scope.titulo = "Edicion de";
-            $scope.objeto = registro;
-            agregarCampos('per', $scope.objeto.perid);
-            agregarCampos('men', $scope.objeto.menid);
-          }
+      $scope.guardar = function(){
+        var data = [];
+        angular.forEach($scope.arrayMenu, function(menu){
+          data.push(getData(menu));
+          angular.forEach(menu.submenu, function(submenu){
+            data.push(getData(submenu));
+            angular.forEach(submenu.submenu1, function(item){
+            data.push(getData(item));
+            });
+          });
         });
+
+        Entidad.delete({tabla:$scope.tabla, id:$scope.arrayMenu[0].perid.perid}).$promise
+        .then(function(result) {
+          Entidad.save({tabla:$scope.tabla}, data).$promise
+            .then(function(data) {
+              alert("Registros guardados correctamente");
+              $scope.arrayMenu = [];
+              $scope.objeto.perid = '';
+            })
+            .catch(function(error) {
+              console.log("rejected " + JSON.stringify(error));
+            });
+        })
+        .catch(function(error) {
+          console.log("rejected " + JSON.stringify(error));
+        });
+      };
+
+      function getData(item){
+        return {
+          perid: item.perid,
+          menid: item.menid,
+          pemfechacreacion:item.pemfechacreacion,
+          pemestado: item.pemestado,
+          pemusuariocreacion: item.pemusuariocreacion,
+        };
       }
 
-      $scope.open = function(editable, id){
-        $rootScope.guardarBitacoraCRUD(editable, id, false);
-        $location.path("formulario_perfil_menu/"+id+"/"+editable);
-      };
-
-      $scope.guardar = function(objeto){
-        Administracion.guardar($scope.tabla, 'pem', objeto, function(id){
-          if($.isNumeric(id)){
-            $location.path("accesos");
-          }
-        });
-      };
-
-      $scope.cancelar = function(objeto){
+      $scope.cancelar = function(){
+        $scope.arrayMenu = [];
+        $scope.objeto.perid = '';
         $location.path("perfilmenu");
-      };
-
-      $scope.eliminar = function(objeto){
-        if(confirm("Esta seguro de eliminar este registro?")){
-          $rootScope.guardarBitacoraCRUD(false, id, true);
-          Administracion.eliminar($scope.tabla, 'pem', objeto, function(result){
-            cargar();
-          });
-        }
       };
 
       $scope.getPerfiles = function(term, done){
         getListado ('perfil', 'per', function(resultados){
           done($filter('filter')(resultados, {text: term}, 'text'));
         });
-      };
-      $scope.getMenus = function(term, done){
-        getListado ('menu', 'men', function(resultados){
-          done($filter('filter')(resultados, {text: term}, 'text'));
-        });
-      };
-
-      function cargar(){
-        Administracion.cargar($scope.tabla,function(objetos){
-          $scope.objetos = objetos;
-          $scope.objetos.sort();
-        });
-      }
-
-      $scope.agregarNuevo = function(tabla){
-        irPantallaNuevo(tabla);
-      };
-
-      var irPantallaNuevo = function (tabla){
-        var usr = $cookieStore.get('usuario');
-        var data = {};
-        registros = {
-          respaldoUsuario: $scope.objeto,
-          usuarioConectado: usr,
-          irPantalla: true,
-          tabla: 'perfilmenu',
-          pantalla: $location.url()
-        };
-        if($localStorage.dataRedireccion){
-          $localStorage.dataRedireccion[usr.usrid] = registros;
-        }else{
-          data[usr.usrid] = registros;
-          $localStorage.$default({
-            dataRedireccion: data
-          });
-        }
-        if(tabla == 'perfil'){
-          $location.path('formulario_perfiles/0/true');
-        }else{
-          $location.path('formulario_ingreso_menu/0/true');
-        }
       };
 
       function getListado (tabla, tipo, callback){
@@ -121,12 +72,138 @@ angular.module('cialcosApp')
         });
       }
 
-      function agregarCampos (tipo, objeto){
-        if(objeto){
-          console.log(objeto);
-          objeto.id = objeto[tipo+'id'];
-          objeto.text = objeto[tipo+'descripcion'];
+      $scope.getMenuPerfil = function(perfil){
+        Administracion.getMenuPerfil(perfil.perid,function(datos){
+          getDatosMenu (perfil, datos);
+        });
+      };
+
+      function getDatosMenu (perfil, perfilMenu){
+        var usr = $cookieStore.get('usuario');
+        var fecha = new Date();
+        $scope.arrayMenu = [];
+        Entidad.query({tabla:'menu'}, function(data){
+          angular.forEach(data, function(menu){
+            if(!menu.menpadre){
+              $scope.arrayMenu.push({
+                perid: perfil,
+                menid: menu,
+                pemfechacreacion:fecha,
+                pemestado: 'I',
+                pemusuariocreacion: usr.usrid,
+                submenu: []
+              });
+            }
+          });
+          angular.forEach(data, function(menu){
+            angular.forEach($scope.arrayMenu, function(item){
+              if(menu.menpadre == item.menid.menid){
+                item.submenu.push({
+                  perid: perfil,
+                  menid: menu,
+                  pemfechacreacion:fecha,
+                  pemestado: 'I',
+                  pemusuariocreacion: usr.usrid,
+                  submenu1: []
+                });
+              }
+            });
+          });
+          angular.forEach(data, function(menu){
+            angular.forEach($scope.arrayMenu, function(item){
+              angular.forEach(item.submenu, function(subitem){
+                if(menu.menpadre == subitem.menid.menid){
+                  subitem.submenu1.push({
+                    perid: perfil,
+                    menid: menu,
+                    pemfechacreacion:fecha,
+                    pemestado: 'I',
+                    pemusuariocreacion: usr.usrid,
+                  });
+                }
+              });
+            });
+          });
+          validarPerfil(perfilMenu);
+        });
+      }
+
+      function validarPerfil(perfilMenu){
+        angular.forEach($scope.arrayMenu, function(menu){
+          angular.forEach(perfilMenu, function(perfil){
+            if(menu.menid.menid == perfil.menid.menid && perfil.pemestado){
+              menu.pemestado = perfil.pemestado;
+            }else{
+              angular.forEach(menu.submenu, function(submenu){
+                if(submenu.menid.menid == perfil.menid.menid){
+                  submenu.pemestado = perfil.pemestado;
+                }else{
+                  angular.forEach(submenu.submenu1, function(submenu1){
+                    if(submenu1.menid.menid == perfil.menid.menid){
+                      submenu1.pemestado = perfil.pemestado;
+                    }
+                  });
+                }
+              });
+            }
+          });
+        });
+      }
+
+      $scope.seleccionar = function(menu){
+        if(menu.submenu){
+          marcarSubitems(menu, menu.pemestado);
+        }else{
+          if(menu.submenu1){
+            marcarSubitems1(menu, menu.pemestado);
+          }else{
+            marcarItem(menu, menu.pemestado);
+          }
         }
+      };
+
+      function marcarSubitems(menu, estado){
+        angular.forEach(menu.submenu, function(submenu){
+            submenu.pemestado = estado;
+            angular.forEach(submenu.submenu1, function(submenu1){
+              submenu1.pemestado = estado;
+            });
+        });
+      }
+
+      function marcarSubitems1(submenu, estado){
+        var contador = 0;
+        angular.forEach(submenu.submenu1, function(submenu1){
+          submenu1.pemestado = estado;
+        });
+        angular.forEach($scope.arrayMenu, function(menu){
+          if(menu.menid.menid == submenu.menid.menpadre){
+            angular.forEach(menu.submenu, function(subitem){
+              if(subitem.pemestado == 'A' && subitem.menid.menid !== submenu.menid.menid)
+                contador++;
+            });
+            if(contador === 0){
+              menu.pemestado = estado;
+            }
+          }
+        });
+      }
+      function marcarItem(item, estado){
+        var contador = 0;
+        angular.forEach($scope.arrayMenu, function(menu){
+          angular.forEach(menu.submenu, function(submenu){
+            if(submenu.menid.menid == item.menid.menpadre){
+              angular.forEach(submenu.submenu1, function(submenu1){
+                if(submenu1.pemestado == 'A' && submenu1.menid.menid !== item.menid.menid)
+                  contador++;
+              });
+              if(contador === 0){
+                submenu.pemestado = estado;
+                menu.pemestado = estado;
+              }
+            }
+          });
+        });
       }
   }
 ]);

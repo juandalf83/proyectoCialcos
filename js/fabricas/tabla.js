@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('cialcosApp')
-.factory('tablaDinamica', function(ngTableParams, $timeout, DataTabla){
+.factory('tablaDinamica', function(ngTableParams, $timeout, DataTabla, Administracion){
 
 	return function(count, counts, tabla, idUsuario, tipo, tipoPadre, scope)  {
-		var filter = '';
 		var tableParams = new ngTableParams({
-			page: 0,
+			page: 1,
 			count: count,
 		}, {
 			counts: counts,
@@ -15,23 +14,28 @@ angular.module('cialcosApp')
 
 			getData: function ($defer, params) {
 				var req = params.url();
-				// req.data.filter = filter;
-				DataTabla.query({tabla:tabla, from:req.page, to:req.count}).$promise
-					.then(function(data) {
+				console.log(idUsuario);
+				Administracion.cargar(tabla, function(data) {
 						var registros = [];
 						for(var i = 0; i < data.length; i++){
-							if(data[i][tipoPadre+'id']){
-								if(data[i][tipoPadre+'id'][tipoPadre+'id'] == idUsuario && data[i][tipo+'estado'] == 'A'){
-									registros.push(data[i]);
+								if(data[i][tipoPadre+'id']){
+									if(data[i][tipoPadre+'id'][tipoPadre+'id'] == idUsuario){
+										registros.push(data[i]);
+									}
 								}
-							}
 						}
+						var maximo = (req.count * req.page);
+						var minimo = maximo - req.count;
+						var arrayVista = [];
+						for(i = minimo; i < maximo; i++){
+							if(i < registros.length)
+								arrayVista.push(registros[i]);
+						}
+
 						$timeout(function() {
-								// update table params
-								params.total(data.total);
-								// set new data
-								$defer.resolve(registros);
-							}, 500);
+							params.total(registros.length);
+							$defer.resolve(arrayVista);
+						}, 500);
 					});
 			},
 			$scope: scope
@@ -39,9 +43,14 @@ angular.module('cialcosApp')
 		});
 
 		tableParams.search = function(filterData) {
-			filter = filterData;
 			tableParams.reload();
-		}
+		};
+
+		tableParams.reloadTable = function(filterData) {
+			idUsuario = filterData;
+			tableParams.reload();
+		};
+
 		return tableParams;
 	};
 

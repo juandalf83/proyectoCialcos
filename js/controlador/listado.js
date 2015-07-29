@@ -79,20 +79,22 @@ angular.module('cialcosApp')
         var fecha = new Date();
         var data = {};
         if(objeto.id === 0 || objeto.id === '' || objeto.id === undefined){
-          data[$scope.identificador+'id'] = getIdFormulario($scope.objetos, $scope.identificador);
-          data[$scope.identificador+'descripcion'] = objeto.descripcion;
-          data[$scope.identificador+'estado'] = 'A';
-          data[$scope.identificador+'fechacreacion'] = fecha;
-          usr = $cookieStore.get('usuario');
-          data[$scope.identificador+'usuariocreacion'] = usr.usrid;
-          console.log(data);
-          Entidad.save({tabla:$routeParams.ubicacion},data).$promise
-            .then(function(data) {
-              redireccionar();
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
+          getIdFormulario($routeParams.ubicacion, function(id){
+            data[$scope.identificador+'id'] = id;
+            data[$scope.identificador+'descripcion'] = objeto.descripcion;
+            data[$scope.identificador+'estado'] = 'A';
+            data[$scope.identificador+'fechacreacion'] = fecha;
+            usr = $cookieStore.get('usuario');
+            data[$scope.identificador+'usuariocreacion'] = usr.usrid;
+            console.log(data);
+            Entidad.save({tabla:$routeParams.ubicacion},data).$promise
+              .then(function(data) {
+                redireccionar();
+              })
+              .catch(function(error) {
+                console.log("rejected " + JSON.stringify(error));
+              });
+          });
         }else{
           data[$scope.identificador+'id'] = objeto.id;
           data[$scope.identificador+'descripcion'] = objeto.descripcion;
@@ -118,13 +120,17 @@ angular.module('cialcosApp')
         if(confirm("Esta seguro de eliminar este registro?")){
           $rootScope.guardarBitacoraCRUD(false, objeto.id, true);
           var fecha = new Date();
+          var data = {};
           data[$scope.identificador+'id'] = objeto.id;
           data[$scope.identificador+'descripcion'] = objeto.descripcion;
           data[$scope.identificador+'estado'] = 'I';
           data[$scope.identificador+'fechacreacion'] = fecha;
-          usr = $cookieStore.get('usuario');
+          var usr = $cookieStore.get('usuario');
           data[$scope.identificador+'usuariocreacion'] = usr.usrid;
-          Entidad.update({tabla:tabla, id:objeto.id}, data).$promise
+          console.log(data);
+          console.log($routeParams.ubicacion);
+          console.log(objeto.id);
+          Entidad.update({tabla:$routeParams.ubicacion, id:objeto.id}, data).$promise
             .then(function(data) {
               cargar();
             })
@@ -151,23 +157,36 @@ angular.module('cialcosApp')
         });
       }
 
-      function getIdFormulario(objetos, tipo){
-        var index = 0;
-        if(objetos !== undefined){
-          index = objetos.length;
-        }
-        var id = 1;
-        if(index > 0){
-          objetos.sort();
-          id = objetos[0].id;
-          angular.forEach(objetos, function (objeto) {
-            if(id < objeto.id){
-              id = objeto.id;
-            }
+      function getIdFormulario(tabla, callback){
+        var num = 0;
+        var numString = '';
+        Entidad.get({tabla:tabla, id:'numeroRegistros'}).$promise
+        .then(function(data) {
+          console.log(data);
+          angular.forEach(data, function(item){
+            if($.isNumeric(item))
+              numString += item;
           });
-          id = id + 1;
-        }
-        return id;
+          if(numString)
+            num = parseInt(numString);
+          callback(num+1);
+        });
+        // var index = 0;
+        // if(objetos !== undefined){
+        //   index = objetos.length;
+        // }
+        // var id = 1;
+        // if(index > 0){
+        //   objetos.sort();
+        //   id = objetos[0].id;
+        //   angular.forEach(objetos, function (objeto) {
+        //     if(id < objeto.id){
+        //       id = objeto.id;
+        //     }
+        //   });
+        //   id = id + 1;
+        // }
+        // return id;
       }
 
       function redireccionar(){

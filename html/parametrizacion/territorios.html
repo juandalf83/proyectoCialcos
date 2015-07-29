@@ -6,34 +6,52 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-3 col-xs-12">
+                    <div class="col-md-12 col-xs-12">
                       <h5 class="align-text-center"><strong>Zonas</strong></h5>
-                      <div class="row">
+                      <div class="col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">Registrar</div>
+                          <div class="panel-body">
+                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="zona.zondescripcion" ng-disabled="disabledZona">
+                            <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('zona')"></button>
+                            <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(zona, zonas, 'zona', 'zon', '', false)"></button>
+                            <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('zona','zon')" ng-if="perfilUsuario.percrear || acceso.accactualizar"></button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6 col-xs-12 table-responsive">
+                        <table ng-table="tablaZona" class="table table-striped table-bordered">
+                          <tr ng-repeat="zona in $data | filter:searchText">
+                            <div class="input-group col-md-6 pull-right" >
+                              <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
+                            </div>
+                            <td data-title="'Zona'" width="45%">{{zona.zondescripcion}}</td>
+                            <td data-title="''" width="20%">
+                              <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="editar(zona, 'zona')" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                              <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminar(zona, 'zona', 'zon')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                              <button popover="Añadir y Ver Provincias" popover-trigger="mouseenter" class="btn btn-xs btn-primary btn-square glyphicon glyphicon-plus" ng-click="cargarProvincias(zona)"></button>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                      <!-- <div class="row">
                         <div class="col-xs-12">
-                          <input type="text" placeholder="Filtrar" class="col-sm-12 col-xs-12 objeto-sm" ng-model="filtroZona">
+                          <input type="text" placeholder="Filtrar" class="col-sm-3 col-xs-12 objeto-sm" ng-model="filtroZona">
                         </div>
                       </div>
                       <ul class="list-group">
                         <li class="list-group-item" ng-repeat="zona in zonas | filter:filtroZona | orderBy:'zonid'">
                           <span ng-click="cargarProvincias(zona)" class="seleccionable" ng-class="zona.cssSelect">{{zona.zondescripcion}}</span>
-                          <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-sm btn-danger btn-square glyphicon glyphicon-remove pull-right" ng-click="eliminar(zona, 'zona', 'zon')"></button>
-                          <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(zona, 'zona')"></button>
+                          <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove pull-right" ng-click="eliminar(zona, 'zona', 'zon')" ng-if="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                          <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(zona, 'zona')" ng-if="perfilUsuario.pereditar || acceso.acceditar"></button>
                         </li>
-                      </ul>
-                      <div class="panel panel-default">
-                        <div class="panel-heading">Registrar</div>
-                        <div class="panel-body">
-                          <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="zona.zondescripcion" ng-disabled="disabledZona">
-                          <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('zona')"></button>
-                          <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(zona, zonas, 'zona', 'zon', '', false)"></button>
-                          <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('zona','zon')"></button>
-                        </div>
-                      </div>
+                      </ul> -->
+
                     </div>
 
-                    <div class="col-md-3 col-xs-12">
+                    <div class="col-md-12 col-xs-12">
                       <h5 class="align-text-center"><strong>Provincias</strong></h5>
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-xs-12">
                           <input type="text" placeholder="Filtrar" class="col-sm-12 col-xs-12 objeto-sm" ng-model="filtroProvincia">
                         </div>
@@ -41,24 +59,41 @@
                       <ul class="list-group">
                         <li class="list-group-item" ng-repeat="provincia in provincias | filter:filtroProvincia | orderBy:'provid'">
                           <span ng-click="cargarCantones(provincia)" class="seleccionable" ng-class="provincia.cssSelect">{{provincia.provdescripcion}}</span>
-                          <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-sm btn-danger btn-square glyphicon glyphicon-remove pull-right" ng-click="eliminar(provincia, 'provincia', 'prov')"></button>
-                          <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(provincia, 'provincia')"></button>
+                          <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove pull-right" ng-click="eliminar(provincia, 'provincia', 'prov')" ng-if="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                          <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(provincia, 'provincia')" ng-if="perfilUsuario.pereditar || acceso.acceditar"></button>
                         </li>
-                      </ul>
-                      <div class="panel panel-default">
-                        <div class="panel-heading">Registrar</div>
-                        <div class="panel-body">
-                          <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="provincia.provdescripcion" ng-disabled="disabledProvincia">
-                          <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('provincia')"></button>
-                          <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(provincia, provincias, 'provincia', 'prov', 'zon', true)"></button>
-                          <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('provincia','prov', zonid)"></button>
+                      </ul> -->
+                      <div class="col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">Registrar</div>
+                          <div class="panel-body">
+                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="provincia.provdescripcion" ng-disabled="disabledProvincia">
+                            <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('provincia')"></button>
+                            <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(provincia, provincias, 'provincia', 'prov', 'zon', true)"></button>
+                            <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('provincia','prov', zonid)" ng-if="perfilUsuario.percrear || acceso.accactualizar"></button>
+                          </div>
                         </div>
+                      </div>
+                      <div class="col-md-6 col-xs-12 table-responsive">
+                        <table ng-table="tablaProvincias" class="table table-striped table-bordered">
+                          <tr ng-repeat="provincia in $data | filter:searchText1">
+                            <div class="input-group col-md-6 pull-right" >
+                              <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText1" placeholder="Buscar..."/>
+                            </div>
+                            <td data-title="'Provincias'" width="45%">{{provincia.provdescripcion}}</td>
+                            <td data-title="''" width="20%">
+                              <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="editar(provincia, 'provincia')" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                              <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminar(provincia, 'provincia', 'prov')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                              <button popover="Añadir y Ver Cantones" popover-trigger="mouseenter" class="btn btn-xs btn-primary btn-square glyphicon glyphicon-plus" ng-click="cargarCantones(provincia)"></button>
+                            </td>
+                          </tr>
+                        </table>
                       </div>
                     </div>
 
-                    <div class="col-md-3 col-xs-12">
+                    <div class="col-md-12 col-xs-12">
                       <h5 class="align-text-center"><strong>Cantones</strong></h5>
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-xs-12">
                           <input type="text" placeholder="Filtrar" class="col-sm-12 col-xs-12 objeto-sm" ng-model="filtroCanton">
                         </div>
@@ -66,24 +101,41 @@
                       <ul class="list-group">
                         <li class="list-group-item" ng-repeat="canton in cantones | filter:filtroCanton | orderBy:'canid'">
                           <span ng-click="cargarParroquias(canton)" class="seleccionable" ng-class="canton.cssSelect">{{canton.candescripcion}}</span>
-                          <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-sm btn-danger btn-square glyphicon glyphicon-remove pull-right" ng-click="eliminar(canton, 'canton', 'can')"></button>
-                          <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(canton, 'canton')"></button>
+                          <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove pull-right" ng-click="eliminar(canton, 'canton', 'can')" ng-if="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                          <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(canton, 'canton')" ng-if="perfilUsuario.pereditar || acceso.acceditar"></button>
                         </li>
-                      </ul>
-                      <div class="panel panel-default">
-                        <div class="panel-heading">Registrar</div>
-                        <div class="panel-body">
-                          <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="canton.candescripcion" ng-disabled="disabledCanton">
-                          <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('canton')"></button>
-                          <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(canton, cantones, 'canton', 'can', 'prov', true)"></button>
-                          <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('canton','can', provid)"></button>
+                      </ul> -->
+                      <div class="col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">Registrar</div>
+                          <div class="panel-body">
+                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="canton.candescripcion" ng-disabled="disabledCanton">
+                            <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('canton')"></button>
+                            <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(canton, cantones, 'canton', 'can', 'prov', true)"></button>
+                            <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('canton','can', provid)" ng-if="perfilUsuario.percrear || acceso.accactualizar"></button>
+                          </div>
                         </div>
+                      </div>
+                      <div class="col-md-6 col-xs-12 table-responsive">
+                        <table ng-table="tablaCantones" class="table table-striped table-bordered">
+                          <tr ng-repeat="canton in $data | filter:searchText2">
+                            <div class="input-group col-md-6 pull-right" >
+                              <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText2" placeholder="Buscar..."/>
+                            </div>
+                            <td data-title="'Canton'" width="45%">{{canton.candescripcion}}</td>
+                            <td data-title="''" width="20%">
+                              <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="editar(canton, 'canton')" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                              <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminar(canton, 'canton', 'can')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                              <button popover="Añadir y Ver Parroquias" popover-trigger="mouseenter" class="btn btn-xs btn-primary btn-square glyphicon glyphicon-plus" ng-click="cargarParroquias(canton)"></button>
+                            </td>
+                          </tr>
+                        </table>
                       </div>
                     </div>
 
-                    <div class="col-md-3 col-xs-12">
+                    <div class="col-md-12 col-xs-12">
                       <h5 class="align-text-center"><strong>Parroquias</strong></h5>
-                      <div class="row">
+                      <!-- <div class="row">
                         <div class="col-xs-12">
                           <input type="text" placeholder="Filtrar" class="col-sm-12 col-xs-12 objeto-sm" ng-model="filtroParroquia">
                         </div>
@@ -91,18 +143,34 @@
                       <ul class="list-group">
                         <li class="list-group-item" ng-repeat="parroquia in parroquias | filter:filtroParroquia | orderBy:'parid'">
                           <span>{{parroquia.pardescripcion}}</span>
-                          <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-sm btn-danger btn-square glyphicon glyphicon-remove pull-right" ng-click="eliminar(parroquia, 'parroquia', 'par')"></button>
-                          <button popover="Editar" popover-trigger="mouseenter" class="btn btn-sm btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(parroquia, 'parroquia')"></button>
+                          <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove pull-right" ng-click="eliminar(parroquia, 'parroquia', 'par')" ng-if="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                          <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-primary btn-square glyphicon glyphicon-pencil pull-right" ng-click="editar(parroquia, 'parroquia')" ng-if="perfilUsuario.pereditar || acceso.acceditar"></button>
                         </li>
-                      </ul>
-                      <div class="panel panel-default">
-                        <div class="panel-heading">Registrar</div>
-                        <div class="panel-body">
-                          <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="parroquia.pardescripcion" ng-disabled="disabledParroquia">
-                          <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('parroquia')"></button>
-                          <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(parroquia, parroquias, 'parroquia', 'par', 'can', true)"></button>
-                          <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('parroquia','par', canid)"></button>
+                      </ul> -->
+                      <div class="col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">Registrar</div>
+                          <div class="panel-body">
+                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="parroquia.pardescripcion" ng-disabled="disabledParroquia">
+                            <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('parroquia')"></button>
+                            <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(parroquia, parroquias, 'parroquia', 'par', 'can', true)"></button>
+                            <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('parroquia','par', canid)" ng-if="perfilUsuario.percrear || acceso.accactualizar"></button>
+                          </div>
                         </div>
+                      </div>
+                      <div class="col-md-6 col-xs-12 table-responsive">
+                        <table ng-table="tablaParroquias" class="table table-striped table-bordered">
+                          <tr ng-repeat="parroquia in $data | filter:searchText3">
+                            <div class="input-group col-md-6 pull-right" >
+                              <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText3" placeholder="Buscar..."/>
+                            </div>
+                            <td data-title="'Parroquia'" width="45%">{{parroquia.pardescripcion}}</td>
+                            <td data-title="''" width="20%">
+                              <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="editar(parroquia, 'parroquia')" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
+                              <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-xs btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminar(parroquia, 'parroquia', 'par')" ng-show="perfilUsuario.pereliminar || acceso.acceliminar"></button>
+                            </td>
+                          </tr>
+                        </table>
                       </div>
                     </div>
                 </div>

@@ -56,7 +56,7 @@ angular.module('cialcosApp')
 
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
-          $rootScope.guardarBitacoraCRUD(false, id, true);
+          $rootScope.guardarBitacoraCRUD(false, objeto.panid, true);
           Administracion.eliminar($scope.tabla, 'pan', objeto, function(result){
             cargar();
           });

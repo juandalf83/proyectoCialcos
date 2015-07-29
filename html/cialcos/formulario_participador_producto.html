@@ -12,26 +12,18 @@
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Participante</label>
                   <div class="col-lg-6">
-                      <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.pafid" ng-options="participante as participante.usrid.usrnombrecompleto for participante in participantes">
-                      </select> -->
                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione participante" ng-model="objeto.pafid" simple-query="getUsuarios">
-                      <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('participante')"></button>
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Producto</label>
                   <div class="col-lg-6">
-                      <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.uprid" ng-options="producto as producto.prodid.prodnombreproducto for producto in productos">
-                      </select> -->
                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione producto" ng-model="objeto.uprid" simple-query="getProductos">
-                      <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('usuarioproducto')"></button>
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Unidad de Medida</label>
                   <div class="col-lg-6">
-                      <!-- <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.umeid" ng-options="unidadMedida as unidadMedida.umedescripcion for unidadMedida in unidadesMedida">
-                      </select> -->
                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione unidad medida" ng-model="objeto.umeid" simple-query="getUnidadesMedida">
                       <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('unidadmedida')"></button>
                   </div>

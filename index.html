@@ -6,6 +6,7 @@
         <link href="lib/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet"/>
         <link href="lib/jquery-ui-1.10.3/css/cupertino/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" type="text/css"/>
         <link href="lib/ng-table/ng-table.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css">
         <link href="lib/select2/select2.css" rel="stylesheet" type="text/css"/>
         <link rel="stylesheet" href="css/estilo.css"/>
     </head>
@@ -15,10 +16,12 @@
             <img class="img-responsive pull-right" src="imagenes/logo_magap.png" alt="" />
         </div>
         <div ng-controller="MenuCtrl">
-        <div class="row cabecera">
-            <button class="btn btn-danger pull-right" ng-click="salir()">Salir</button>
+        <div class="row cabecera btn-primary barra-menu">
+            <button class="btn btn-danger pull-right margen-left" ng-click="salir()">Salir</button>
+            <button class="btn btn-warning pull-right margen-left" ng-click="irVisitante()">Contactenos</button>
+            <span ng-show="usrConectado.estaConectado" class="btn btn-primary pull-right margen-left">Usuario: {{usrConectado.nombre}}</span>
         </div>
-        <div class="row menu">
+        <div class="row menu cabecera">
             <div class="col-xs-12 col-md-3">
                 <nav ng-show="usrConectado.estaConectado">
                     <div class="list-group">
@@ -58,8 +61,10 @@
         </div>
         <script type="text/javascript" src="lib/jquery-1.11.1/jquery-1.11.1.min.js"></script>
         <script type="text/javascript" src="lib/bootstrap-3.1.1/js/bootstrap.js"></script>
+        <script type="text/javascript" src="lib/leaflet.js"></script>
         <script type="text/javascript" src="lib/angular-1.2.16/angular.js"></script>
         <script type="text/javascript" src="lib/angular-1.2.16/angular-resource.js"></script>
+        <script type="text/javascript" src="lib/angular-leaflet-directive.js"></script>
         <script type="text/javascript" src="lib/angular-1.2.16/angular-cookies.min.js"></script>
         <script type="text/javascript" src="lib/angular-1.2.16/angular-route.min.js"></script>
         <script type="text/javascript" src="lib/angular-1.2.16/ui-bootstrap-tpls-0.11.0.min.js"></script>
@@ -77,6 +82,7 @@
         <script type="text/javascript" src="js/fabricas/data_tabla.js"></script>
         <script type="text/javascript" src="js/fabricas/administrar_data.js"></script>
         <script type="text/javascript" src="js/fabricas/tabla.js"></script>
+        <script type="text/javascript" src="js/fabricas/tablaNormal.js"></script>
         <script type="text/javascript" src="js/fabricas/login.js"></script>
         <script type="text/javascript" src="js/directivas/dateTime.js"></script>
         <script type="text/javascript" src="js/directivas/selectElement.js"></script>
@@ -102,5 +108,9 @@
         <script type="text/javascript" src="js/controlador/productos.js"></script>
         <script type="text/javascript" src="js/controlador/participante_producto.js"></script>
         <script type="text/javascript" src="js/controlador/formulario_participante_producto.js"></script>
+        <script type="text/javascript" src="js/controlador/bitacora.js"></script>
+        <script type="text/javascript" src="js/controlador/visitante.js"></script>
+        <script type="text/javascript" src="js/controlador/consumidor.js"></script>
+        <script type="text/javascript" src="js/controlador/georeferenciacion.js"></script>
     </body>
 </html>

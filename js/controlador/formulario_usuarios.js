@@ -104,7 +104,7 @@ angular.module('cialcosApp')
       };
 
       $scope.cancelar = function(objeto){
-        redireccionar("usuario");
+        redireccionar("usuarios");
       };
 
       function redireccionar(urlRegresar){
@@ -112,10 +112,11 @@ angular.module('cialcosApp')
         if($localStorage.dataRedireccion){
           var redireccion = $localStorage.dataRedireccion[usr.usrid];
           if(redireccion){
-            if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid)
+            if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
               $location.path(redireccion.pantalla);
-            else
+            }else{
               $location.path(urlRegresar);
+            }
           }else{
             $location.path(urlRegresar);
           }
@@ -140,7 +141,7 @@ angular.module('cialcosApp')
         xmlhttp.open("POST", "http://sinagap.magap.gob.ec/enlaces/Service.asmx?op=WBConsultaCed",true);
         xmlhttp.onreadystatechange = function() {
           if (xmlhttp.readyState == 4) {
-            alert(xmlhttp.responseText);
+            //alert(xmlhttp.responseText);
             // // http://www.terracoder.com convert XML to JSON
             // var json = XMLObjectifier.xmlToJSON(xmlhttp.responseXML);
             // var result = json.Body[0].GetQuoteResponse[0].GetQuoteResult[0].Text;
@@ -561,7 +562,7 @@ angular.module('cialcosApp')
             dataRedireccion: data
           });
         }
-        $location.path('formulario/0/'+tabla+'/true');
+        $location.path('formulario/0/'+tabla+'/true');              
       };
   }
 ]);

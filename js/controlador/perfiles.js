@@ -51,7 +51,7 @@ angular.module('cialcosApp')
 
       $scope.eliminar = function(objeto){
         if(confirm("Esta seguro de eliminar este registro?")){
-          $rootScope.guardarBitacoraCRUD(false, id, true);
+          $rootScope.guardarBitacoraCRUD(false, objeto.perid, true);
           Administracion.eliminar($scope.tabla, 'per', objeto, function(result){
             cargar();
           });
@@ -63,10 +63,11 @@ angular.module('cialcosApp')
         Entidad.query({tabla:$scope.tabla}, function(items){
           angular.forEach(items, function (item) {
             if(item.perid != $routeParams.id && item.perpadre != $routeParams.id){
-              console.log(item);
-              item.id = item.perid;
-              item.text = item.perdescripcion;
-              $scope.perfilesPadre.push(item);
+              if(item.perestado == 'A'){
+                item.id = item.perid;
+                item.text = item.perdescripcion;
+                $scope.perfilesPadre.push(item);
+              }
             }
           });
           done($filter('filter')($scope.perfilesPadre, {text: term}, 'text'));

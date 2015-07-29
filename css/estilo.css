@@ -102,3 +102,19 @@ input{
 .table{
   font-size:11px;
 }
+
+.text-error{
+  color: red;
+}
+
+li{
+  list-style: none;
+}
+
+.barra-menu{
+  height: 40px;
+}
+
+.minusculas{
+  text-transform: lowercase !important;  
+}

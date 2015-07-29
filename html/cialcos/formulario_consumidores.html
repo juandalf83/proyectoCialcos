@@ -1,0 +1,93 @@
+<div class="centrado">
+<div class="panel panel-primary">
+     <div class="panel-heading">
+          <h4 class="modal-title">{{titulo}}{{tabla}}</h4>
+     </div>
+
+     <div class="panel-body">
+          <div class="alert alert-danger alert-dismissable" ng-show="items.isError">
+            <strong>Error!</strong> {{items.mensajeError}}.
+          </div>
+          <form class="form-horizontal">
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Consumidor</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!editable || isDetalle" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione consumidor" ng-model="objeto.usrid" simple-query="getConsumidores">
+                      <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('usuario')"></button>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Productor</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!editable || isDetalle" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione productor" ng-model="objeto.pafid" simple-query="getProductores" ng-change="seleccionProductor()">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Total venta</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!editable || isDetalle" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.contotalventa">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Percepcion cialco</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!editable || isDetalle" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.conpercepcioncialco">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Percepcion productos</label>
+                  <div class="col-lg-6">
+                      <input ng-disabled="!editable || isDetalle" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.conpercepsionproductos">
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col-xs-12 col-md-12">
+                    <div class="row btn-primary margen-fila">
+                      <div class="col-xs-12">
+                        <div class="col-xs-9">
+                          <h5 class="modal-title"><strong>DETALLE</strong></h5>
+                        </div>
+                        <div class="col-xs-3">
+                          <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="agregarDetalle()"></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12 table-responsive">
+                          <table class="table table-striped table-bordered">
+                            <thead>
+                              <tr>
+                                <th>PRODUCTO</th>
+                                <th>CANTIDAD</th>
+                                <th>VENTA TOTAL</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr ng-repeat="detalle in detalles">
+                                <td width="50%">
+                                  <input type="hidden" ui-select2-sortable style="width: 100%" allow-clear='true' data-placeholder="Seleccione producto" ng-model="detalle.papid" simple-query="getProductos">
+                                </td>
+                                <td width="20%">
+                                  <input ng-disabled="!editable" type="text" class="col-sm-9 col-xs-12 objeto-sm" ng-model="detalle.detcantidad">
+                                </td>
+                                <td width="20%">
+                                  <input ng-disabled="!editable" type="text" class="col-sm-9 col-xs-12 objeto-sm" ng-model="detalle.detventatotal">
+                                </td>
+                                <td width="10%">
+                                    <button popover="Eliminar" popover-trigger="mouseenter" class="btn btn-sm btn-danger btn-square glyphicon glyphicon-remove" ng-click="eliminarDetalle(detalle)"></button>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </form>
+     </div>
+     <div class="modal-footer">
+          <button ng-show="editable" class="btn btn-square btn-sm btn-primary" ng-click="guardar(objeto)">Guardar</button>
+          <button class="btn btn-square btn-sm btn-warning" ng-click="cancelar()">Cancelar</button>
+     </div>
+</div>
+</div>

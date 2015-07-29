@@ -50,6 +50,9 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
+        console.log(objeto.menpadre);
+        if(objeto.menpadre)
+          objeto.menpadre = objeto.menpadre.id;
         Administracion.guardar($scope.tabla, 'men', objeto, function(id){
           if($.isNumeric(id)){
             redireccionar("ingresomenu");
