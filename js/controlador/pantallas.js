@@ -4,6 +4,8 @@ angular.module('cialcosApp')
 
       $scope.tabla = "pantalla";
       $scope.objetos = [];
+      $scope.error = false;
+      $scope.textoError = '';
       cargar();
 
       if($routeParams.id){
@@ -26,11 +28,15 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        Administracion.guardar($scope.tabla, 'pan', objeto, function(id){
-          if($.isNumeric(id)){
-            redireccionar("pantallas");
-          }
-        });
+        if(objeto.panurl){
+          Administracion.guardar($scope.tabla, 'pan', objeto, function(id){
+            if($.isNumeric(id)){
+              redireccionar("pantallas");
+            }
+          });
+        }else{
+          alert("LA DESCRIPCION ES UN CAMPO OBLIGATORIO");
+        }
       };
 
       $scope.cancelar = function(objeto){
@@ -69,5 +75,24 @@ angular.module('cialcosApp')
           $scope.objetos.sort();
         });
       }
+
+      $scope.validarRepetidos = function(objeto){
+        if(objeto.panurl){
+          Administracion.validarRepetidos($scope.tabla, 'panurl', objeto.panurl,
+          function(result){
+            if(!result){
+              objeto.panurl = '';
+              $scope.error = true;
+              $scope.textoError = 'EL LINK INGRESADO YA EXISTE';
+            }else{
+              $scope.error = false;
+              $scope.textoError = '';
+            }
+          });
+        }else{
+          $scope.error = false;
+          $scope.textoError = '';
+        }
+      };
   }
 ]);

@@ -12,6 +12,8 @@ angular.module('cialcosApp')
   function($scope, $window, $modal, $location, ngTableParams, $filter, Entidad, $routeParams, $log, $cookieStore, Administracion, $localStorage, tablaDinamica) {
       $scope.pantalla = "cialco";
       $scope.registrado = false;
+      $scope.error = false;
+      $scope.textoError = '';
 
       $scope.objetos = Entidad.query({tabla:'cialco'});
 
@@ -57,15 +59,19 @@ angular.module('cialcosApp')
       }
 
       $scope.guardar = function(objeto){
-        objeto.ciacoordX = 0;
-        objeto.ciacoordY = 0;
-        objeto.ciacoordZ = 0;
-        Administracion.guardar($scope.pantalla, 'cia', objeto, function(id){
-          if($.isNumeric(id)){
-            $location.path("formulario_adicional_cialco/"+id+"/true");
-            //$location.path("cialcos");
-          }
-        });
+        if(objeto.ciadescripcion){
+          objeto.ciacoordX = 0;
+          objeto.ciacoordY = 0;
+          objeto.ciacoordZ = 0;
+          Administracion.guardar($scope.pantalla, 'cia', objeto, function(id){
+            if($.isNumeric(id)){
+              $location.path("formulario_adicional_cialco/"+id+"/true");
+              //$location.path("cialcos");
+            }
+          });
+        }else{
+          alert("EL CAMPO DESCRIPCION ES OBLIGATORIO");
+        }
       };
 
 
@@ -460,6 +466,25 @@ angular.module('cialcosApp')
           $location.path('formulario_usuario/0/true');
         }else{
           $location.path('formulario/0/'+tabla+'/true');
+        }
+      };
+
+      $scope.validarRepetidos = function(objeto){
+        if(objeto.ciadescripcion){
+          Administracion.validarRepetidos($scope.pantalla, 'ciadescripcion', objeto.ciadescripcion,
+          function(result){
+            if(!result){
+              objeto.ciadescripcion = '';
+              $scope.error = true;
+              $scope.textoError = 'EL CIALCO INGRESADO YA EXISTE';
+            }else{
+              $scope.error = false;
+              $scope.textoError = '';
+            }
+          });
+        }else{
+          $scope.error = false;
+          $scope.textoError = '';
         }
       };
   }

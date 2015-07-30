@@ -16,7 +16,8 @@ angular.module('cialcosApp', [
 .run(function($rootScope, $location, $cookieStore) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
       var visitantes = new RegExp("visitantes");
-      if(visitantes.test(next.originalPath)){
+      var verMapa = new RegExp("verMapa");
+      if(visitantes.test(next.originalPath) || verMapa.test(next.originalPath)){
         $location.path(next.originalPath);
       }else{
         if ($cookieStore.get('estaConectado') == false || $cookieStore.get('estaConectado') == null) {
@@ -175,6 +176,10 @@ angular.module('cialcosApp', [
   .when('/georeferenciacion', {
     templateUrl: 'html/cialcos/georeferenciacion.html',
     controller: 'GeoreferenciacionCtrl'
+  })
+  .when('/verMapa', {
+    templateUrl: 'html/ver_mapa.html',
+    controller: 'MapaCtrl'
   })
   .otherwise({
     redirectTo: '/'

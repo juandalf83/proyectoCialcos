@@ -2,11 +2,18 @@
 
 angular.module('cialcosApp')
 .factory('tablaDinamicaNormal', function(ngTableParams, $timeout, DataTabla, Administracion){
+	function compare(a,b) {
+	  if (a.bitfecha < b.bitfecha)
+	    return 1;
+	  // if (a.bitfecha > b.bitfecha)
+	  //   return 1;
+	  return 0;
+	}
 
 	return function(count, counts, tabla, idUsuario, tipo, tipoPadre, scope)  {
 		var filter = '';
 		var tableParams = new ngTableParams({
-			page: 0,
+			page: 1,
 			count: count,
 		}, {
 			counts: counts,
@@ -15,18 +22,18 @@ angular.module('cialcosApp')
 
 			getData: function ($defer, params) {
 				var req = params.url();
-				// req.data.filter = filter;
+
 				Administracion.countData(tabla, function(contador){
-							console.log(contador);
-							console.log(req);
 					DataTabla.query({tabla:tabla, from:req.page, to:req.count}).$promise
 						.then(function(data) {
-							console.log(data);
 							var registros = [];
 							for(var i = 0; i < data.length; i++){
 									if(data[i][tipo+'estado'] == 'A'){
 										registros.push(data[i]);
 									}
+							}
+							if(tabla == 'bitacora'){
+								registros.sort(compare);
 							}
 							$timeout(function() {
 									params.total(contador);

@@ -5,8 +5,9 @@ angular.module('cialcosApp')
       $scope.disabledProvincia = true;
       $scope.disabledCanton = true;
       $scope.disabledParroquia = true;
-
-      //cargar();
+      $scope.error = {zona: false, provincia: false, canton: false, parroquia: false};
+      $scope.textoError = {zona: '', provincia: '', canton: '', parroquia: ''};
+      
       var counts = [5, 10, 25];
       var count = 5;
       $scope.tablaZona = tablaDinamicaNormal(count, counts, 'zona', 0, 'zon', 'zon', $scope);
@@ -18,12 +19,16 @@ angular.module('cialcosApp')
         if(isExterno){
           objeto[externo+'id'] = objeto[externo+'id'];
         }
-        Administracion.guardar(tabla, identificador, objeto, function(id){
-          if($.isNumeric(id)){
+        if(objeto[identificador+'descripcion']){
+          Administracion.guardar(tabla, identificador, objeto, function(id){
             objeto[identificador+'descripcion'] = '';
+            $scope.error[tabla] = false;
+            $scope.textoError[tabla] = '';
             redireccionar(tabla);
-          }
-        });
+          });
+        }else{
+          alert("LA DESCRIPCION ESTA VACIA");
+        }
       };
 
       $scope.editar = function(objeto, tabla){
@@ -118,6 +123,8 @@ angular.module('cialcosApp')
       };
 
       $scope.cancelar = function(tabla){
+        $scope.error[tabla] = false;
+        $scope.textoError[tabla] = '';
         switch(tabla) {
           case 'zona':
             $scope.zona = {};
@@ -154,102 +161,28 @@ angular.module('cialcosApp')
         return id;
       };
 
-      function cargar(){
-
-        // $scope.zonas = Entidad.query({tabla:'zona'});
-        // Administracion.cargar('zona',function(objetos){
-        //   console.log(objetos);
-        //   $scope.zonas = objetos;
-        //   $scope.zonas.sort();
-        //
-        //   angular.forEach($scope.zonas, function(zona){
-        //     zona.cssSelect = '';
-        //     zona.select = false;
-        //     $scope.provincias = [];
-        //     $scope.provincia = {};
-        //     $scope.cantones = [];
-        //     $scope.canton = {};
-        //     $scope.parroquias = [];
-        //     $scope.parroquia = {};
-        //   });
-        // });
-      }
-
       $scope.cargarProvincias = function(zona){
         $scope.zonid = angular.copy(zona);
         $scope.tablaProvincias.reloadTable(zona.zonid);
-        // if(!zona.select){
-        //   zona.select = true;
-        //   zona.cssSelect = 'seleccionado';
-        //   $scope.zonid = angular.copy(zona);
-        //   getElementos(zona.zonid, 'provincia', 'zon', function(elementos){
-        //     $scope.provincias = elementos;
-        //     $scope.disabledProvincia = true;
-        //   });
-        // }else{
-        //   zona.select = false;
-        //   zona.cssSelect = '';
-        //   $scope.provincias = [];
-        //   $scope.provincia = {};
-        //   $scope.cantones = [];
-        //   $scope.canton = {};
-        //   $scope.parroquias = [];
-        //   $scope.parroquia = {};
-        //   $scope.disabledProvincia = true;
-        //   $scope.disabledCanton = true;
-        //   $scope.disabledParroquia = true;
-        // }
+        $scope.error.zona = false;
+        $scope.textoError.zona = '';
+        $scope.disabledZona = true;
       };
 
       $scope.cargarCantones = function(provincia){
         $scope.provid = angular.copy(provincia);
         $scope.tablaCantones.reloadTable(provincia.provid);
-        // if(!provincia.select){
-        //   provincia.select = true;
-        //   provincia.cssSelect = 'seleccionado';
-        //   $scope.provid = angular.copy(provincia);
-        //   console.log($scope.provid);
-        //   getElementos(provincia.provid, 'canton', 'prov', function(elementos){
-        //     $scope.cantones = elementos;
-        //     $scope.disabledCanton = true;
-        //   });
-        //   deseleccionar(provincia, $scope.provincias, 'prov');
-        //   $scope.parroquias = [];
-        //   $scope.parroquia = {};
-        // }else{
-        //   provincia.select = false;
-        //   provincia.cssSelect = '';
-        //   $scope.cantones = [];
-        //   $scope.canton = {};
-        //   $scope.parroquias = [];
-        //   $scope.parroquia = {};
-        //   $scope.disabledProvincia = true;
-        //   $scope.disabledCanton = true;
-        //   $scope.disabledParroquia = true;
-        // }
+        $scope.error.provincia = false;
+        $scope.textoError.provincia = '';
+        $scope.disabledProvincia = true;
       };
 
       $scope.cargarParroquias = function(canton){
         $scope.canid = angular.copy(canton);
         $scope.tablaParroquias.reloadTable(canton.canid);
-        // if(!canton.select){
-        //   canton.select = true;
-        //   canton.cssSelect = 'seleccionado';
-        //   $scope.canid = angular.copy(canton);
-        //   getElementos(canton.canid, 'parroquia', 'can', function(elementos){
-        //     $scope.disabledParroquia = true;
-        //     $scope.parroquias = elementos;
-        //   });
-        //   deseleccionar(canton, $scope.cantones, 'can');
-        // }else{
-        //   canton.select = false;
-        //   canton.cssSelect = '';
-        //   $scope.parroquias = [];
-        //   $scope.parroquia = {};
-        //   $scope.disabledProvincia = true;
-        //   $scope.disabledCanton = true;
-        //   $scope.disabledParroquia = true;
-        // }
+        $scope.error.canton = false;
+        $scope.textoError.canton = '';
+        $scope.disabledCanton = true;
       };
 
       function getElementos(id, tabla, tipo, callback){
@@ -262,16 +195,6 @@ angular.module('cialcosApp')
             }
           });
           callback(array);
-        });
-      }
-
-      function deseleccionar(objeto, objetos, identificador){
-        angular.forEach(objetos, function(item){
-          console.log(item[identificador+'id'], objeto[identificador+'id']);
-          if(item[identificador+'id'] != objeto[identificador+'id']){
-            item.select = false;
-            item.cssSelect = '';
-          }
         });
       }
 
@@ -293,6 +216,9 @@ angular.module('cialcosApp')
       }
 
       function cargarSegunTabla(tabla){
+        $scope.error[tabla] = false;
+        $scope.textoError[tabla] = '';
+        console.log("aqui");
         switch(tabla){
           case 'zona':
             //cargar();
@@ -313,5 +239,21 @@ angular.module('cialcosApp')
             break;
         }
       }
+
+      $scope.validarRepetidos = function(objeto, tabla, identificador){
+        if(objeto[identificador+'descripcion']){
+          Administracion.validarRepetidos(tabla, identificador+'descripcion', objeto[identificador+'descripcion'],
+          function(result){
+            if(!result){
+              objeto[identificador+'descripcion'] = '';
+              $scope.error[tabla] = true;
+              $scope.textoError[tabla] = 'LA DESCRIPCION INGRESADA YA EXISTE';
+            }else{
+              $scope.error[tabla] = false;
+              $scope.textoError[tabla] = '';
+            }
+          });
+        }
+      };
   }
 ]);

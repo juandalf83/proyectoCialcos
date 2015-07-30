@@ -21,6 +21,12 @@ angular.module('cialcosApp')
       $scope.ingresos = [];
       $scope.productos = [];
       $scope.extras = false;
+      $scope.errorPassword = false;
+      $scope.errorIdentificacion = false;
+      $scope.errorUsuario = false;
+      $scope.textoErrorPassword = '';
+      $scope.textoErrorIdentificacion = '';
+      $scope.textoErrorUsuario = '';
 
       $scope.tiposIdentificacion = [
         {codigo: 'ci', text: 'Cedula'},
@@ -126,12 +132,12 @@ angular.module('cialcosApp')
       }
 
       $scope.validacionDocumento = function(objeto){
-          if (validarDocumento(objeto.usridentificacion)){
-            $scope.getDatosUsuario(objeto.usridentificacion);
-          }else{
-            objeto.usridentificacion = "";
-            objeto.cssValido = "obligatorio";
-          }
+        if(objeto.usridentificacion){
+          //if (validarDocumento(objeto.usridentificacion)){
+            validarRepetido(objeto);
+            //$scope.getDatosUsuario(objeto.usridentificacion);
+          //}
+        }
       };
 
       $scope.getDatosUsuario = function(identificacion){
@@ -449,7 +455,9 @@ angular.module('cialcosApp')
         };
       };
 
-      $scope.agregarNuevo = irPantallaNuevo;
+      $scope.agregarNuevo = function(tabla){
+        irPantallaNuevo(tabla);
+      };
 
       $scope.getEtnias = function(term, done){
         getListado ('etnia', 'etn', function(resultados){
@@ -562,7 +570,45 @@ angular.module('cialcosApp')
             dataRedireccion: data
           });
         }
-        $location.path('formulario/0/'+tabla+'/true');              
+        $location.path('formulario/0/'+tabla+'/true');
       };
+
+      $scope.minimoLength = function(password){
+        if(password.length < 6){
+          $scope.errorPassword = true;
+          $scope.textoErrorPassword = 'DEBE INGRESAR MINIMO 6 CARACTERES';
+        }else{
+          $scope.errorPassword = false;
+          $scope.textoErrorPassword = '';
+        }
+      };
+
+      $scope.validarUsuario = function(objeto){
+        if(objeto.usrusuario){
+          Administracion.validarRepetidos('usuario', 'usrusuario', objeto.usrusuario, function(result){
+            if(!result){
+              objeto.usrusuario = '';
+              $scope.errorUsuario = true;
+              $scope.textoErrorUsuario = 'EL NOMBRE DE USUARIO YA EXISTE';
+            }else{
+              $scope.errorUsuario = false;
+              $scope.textoErrorUsuario = '';
+            }
+          });
+        }
+      };
+
+      function validarRepetido(objeto){
+        Administracion.validarRepetidos('usuario', 'usridentificacion', objeto.usridentificacion, function(result){
+          if(!result){
+            objeto.usridentificacion = '';
+            $scope.errorIdentificacion = true;
+            $scope.textoErrorIdentificacion = 'LA IDENTIFICACION INGRESADA YA EXISTE';
+          }else{
+            $scope.errorIdentificacion = false;
+            $scope.textoErrorIdentificacion = '';
+          }
+        });
+      }
   }
 ]);

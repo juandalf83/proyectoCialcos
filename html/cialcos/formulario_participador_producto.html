@@ -12,7 +12,7 @@
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Participante</label>
                   <div class="col-lg-6">
-                      <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione participante" ng-model="objeto.pafid" simple-query="getUsuarios">
+                      <input ng-disabled="!editable" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione participante" ng-model="objeto.pafid" simple-query="getUsuarios">
                   </div>
               </div>
               <div class="form-group">
@@ -24,45 +24,45 @@
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Unidad de Medida</label>
                   <div class="col-lg-6">
-                      <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione unidad medida" ng-model="objeto.umeid" simple-query="getUnidadesMedida">
+                      <input ng-disabled="!editable" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione unidad medida" ng-model="objeto.umeid" simple-query="getUnidadesMedida">
                       <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('unidadmedida')"></button>
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Presentación</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.pappresentacion">
+                      <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.pappresentacion">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Precio</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.papprecio">
+                      <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.papprecio">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Cantidad</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.papcantidad">
+                      <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.papcantidad">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Cantidad de Venta</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.papventacantidad">
+                      <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.papventacantidad">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Venta total</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.papventatotal">
+                      <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.papventatotal">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Trueque</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.paptrueque" value="S"> SI
-                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.paptrueque" value="N"> NO
+                      <input ng-disabled="!editable" type="radio" ng-model="objeto.paptrueque" value="S"> SI
+                      <input ng-disabled="!editable" type="radio" ng-model="objeto.paptrueque" value="N"> NO
                   </div>
               </div>
               <div class="modal-footer">

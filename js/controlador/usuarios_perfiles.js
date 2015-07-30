@@ -50,12 +50,16 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        objeto.upefechacaducidad = new Date(objeto.upefechacaducidad);
-        Administracion.guardar($scope.tabla, 'upe', objeto, function(id){
-          if($.isNumeric(id)){
-            $location.path("usuarioperfil");
-          }
-        });
+        if(objeto.upefechacaducidad && objeto.perid && objeto.usrid){
+          objeto.upefechacaducidad = new Date(objeto.upefechacaducidad);
+          Administracion.guardar($scope.tabla, 'upe', objeto, function(id){
+            if($.isNumeric(id)){
+              $location.path("usuarioperfil");
+            }
+          });
+        }else{
+          alert("Todos los campos son obliatorios");
+        }
       };
 
       $scope.cancelar = function(objeto){

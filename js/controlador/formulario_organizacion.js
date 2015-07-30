@@ -14,6 +14,8 @@ angular.module('cialcosApp')
       $scope.estructuras = [];
       $scope.representantes = [];
       $scope.direcciones = [];
+      $scope.error = false;
+      $scope.textoError = '';
 
       if($routeParams.id){
         $scope.editable = $routeParams.editable;
@@ -51,13 +53,17 @@ angular.module('cialcosApp')
       }
 
       $scope.guardar = function(objeto){
-        objeto.orgfecharegistrosep = new Date(objeto.orgfecharegistrosep);
-        objeto.orgfechaacreditacionmagap = new Date(objeto.orgfechaacreditacionmagap);
-        Administracion.guardar('organizacion', 'org', objeto, function(id){
-          if($.isNumeric(id)){
-            $location.path("formulario_adicional_organizacion/"+id+"/true");
-          }
-        });
+        if(objeto.orgnombre){
+          objeto.orgfecharegistrosep = new Date(objeto.orgfecharegistrosep);
+          objeto.orgfechaacreditacionmagap = new Date(objeto.orgfechaacreditacionmagap);
+          Administracion.guardar('organizacion', 'org', objeto, function(id){
+            if($.isNumeric(id)){
+              $location.path("formulario_adicional_organizacion/"+id+"/true");
+            }
+          });
+        }else{
+          alert("EL CAMPO DESCRIPCION ES OBLIGATORIO");
+        }
       };
 
       $scope.cancelar = function(objeto){
@@ -274,5 +280,24 @@ angular.module('cialcosApp')
           $location.path(urlRegresar);
         }
       }
+
+      $scope.validarRepetidos = function(objeto){
+        if(objeto.orgnombre){
+          Administracion.validarRepetidos($scope.pantalla, 'orgnombre', objeto.orgnombre,
+          function(result){
+            if(!result){
+              objeto.orgnombre = '';
+              $scope.error = true;
+              $scope.textoError = 'LA ORGANIZACION INGRESADO YA EXISTE';
+            }else{
+              $scope.error = false;
+              $scope.textoError = '';
+            }
+          });
+        }else{
+          $scope.error = false;
+          $scope.textoError = '';
+        }
+      };
   }
 ]);

@@ -17,20 +17,20 @@ validarDocumento  = function(numero) {
          var n = parseInt(numero.charAt(i));
          if (isNaN(n)) ok=0;
       }
-      if (ok==0){
-         alert("No puede ingresar caracteres en el n�mero");
+      if (ok === 0){
+         alert("No puede ingresar caracteres en el número");
          return false;
       }
 
       if (numero.length < 10 ){
-         alert('El n�mero ingresado no es v�lido');
+         alert('El número ingresado no es válido');
          return false;
       }
 
       /* Los primeros dos digitos corresponden al codigo de la provincia */
       provincia = numero.substr(0,2);
       if (provincia < 1 || provincia > numeroProvincias){
-         alert('El c�digo de la provincia (dos primeros d�gitos) es inv�lido');
+         alert('El código de la provincia (dos primeros dígitos) es inválido');
 		 return false;
       }
 
@@ -52,7 +52,7 @@ validarDocumento  = function(numero) {
       /* menor que 6 (0,1,2,3,4,5) para personas naturales */
 
       if (d3==7 || d3==8){
-         alert('El tercer d�gito ingresado es inv�lido');
+         alert('El tercer dígito ingresado es inválido');
          return false;
       }
 
@@ -107,18 +107,18 @@ validarDocumento  = function(numero) {
       digitoVerificador = residuo==0 ? 0: modulo - residuo;
 
       /* ahora comparamos el elemento de la posicion 10 con el dig. ver.*/
-      if (pub==true){
+      if (pub === true){
          if (digitoVerificador != d9){
-            alert('El ruc de la empresa del sector p�blico es incorrecto.');
+            alert('El ruc de la empresa del sector público es incorrecto.');
             return false;
          }
          /* El ruc de las empresas del sector publico terminan con 0001*/
          if ( numero.substr(9,4) != '0001' ){
-            alert('El ruc de la empresa del sector p�blico debe terminar con 0001');
+            alert('El ruc de la empresa del sector público debe terminar con 0001');
             return false;
          }
       }
-      else if(pri == true){
+      else if(pri === true){
          if (digitoVerificador != d10){
             alert('El ruc de la empresa del sector privado es incorrecto.');
             return false;
@@ -129,9 +129,9 @@ validarDocumento  = function(numero) {
          }
       }
 
-      else if(nat == true){
+      else if(nat === true){
          if (digitoVerificador != d10){
-            alert('El n�mero de c�dula de la persona natural es incorrecto.');
+            alert('El número de cédula de la persona natural es incorrecto.');
             return false;
          }
          if (numero.length >10 && numero.substr(10,3) != '001' ){
@@ -140,4 +140,4 @@ validarDocumento  = function(numero) {
          }
       }
       return true;
-   }
+   };

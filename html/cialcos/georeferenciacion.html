@@ -5,8 +5,47 @@
         <h3 class="panel-title">GEOREFERENCIACION</h3>
       </div>
       <div class="panel-body">
-        <leaflet markers="markers" center="quito" height="480px" width="100%"></leaflet>
+        <leaflet markers="markers" center="quito" height="300px" width="100%" event-broadcast="events"></leaflet>
         {{quito}}
+        <div class="row">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h5 class="panel-title">DATOS</h5>
+            </div>
+            <div class="panel-body">
+              <form class="form-horizontal">
+                  <div class="form-group">
+                       <label class="col-lg-3 control-label" for="tarea">Cialco</label>
+                       <div class="col-lg-6">
+                           <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione cialco" ng-model="objeto" simple-query="getCialcos">
+                       </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-3 control-label" for="tarea">Coordenada X</label>
+                      <div class="col-lg-6">
+                          <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciacoordx">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-3 control-label" for="tarea">Coordenada Y</label>
+                      <div class="col-lg-6">
+                          <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciacoordy">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="col-lg-3 control-label" for="tarea">Coordenada Z</label>
+                      <div class="col-lg-6">
+                          <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciacoordz">
+                      </div>
+                  </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+                 <button class="btn btn-square btn-sm btn-primary" ng-click="guardar(objeto)">Guardar</button>
+                 <button class="btn btn-square btn-sm btn-warning" ng-click="cancelar()">Cancelar</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -12,10 +12,13 @@
                         <div class="panel panel-default">
                           <div class="panel-heading">Registrar</div>
                           <div class="panel-body">
-                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="zona.zondescripcion" ng-disabled="disabledZona">
+                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="zona.zondescripcion" ng-disabled="disabledZona" ng-blur="validarRepetidos(zona, 'zona', 'zon')">
                             <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('zona')"></button>
                             <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(zona, zonas, 'zona', 'zon', '', false)"></button>
                             <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('zona','zon')" ng-if="perfilUsuario.percrear || acceso.accactualizar"></button>
+                            <div class="row">
+                              <span class="col-sm-6 text-error" ng-if="error.zona">{{textoError.zona}}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -67,10 +70,13 @@
                         <div class="panel panel-default">
                           <div class="panel-heading">Registrar</div>
                           <div class="panel-body">
-                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="provincia.provdescripcion" ng-disabled="disabledProvincia">
+                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="provincia.provdescripcion" ng-disabled="disabledProvincia" ng-blur="validarRepetidos(provincia, 'provincia', 'prov')">
                             <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('provincia')"></button>
                             <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(provincia, provincias, 'provincia', 'prov', 'zon', true)"></button>
                             <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('provincia','prov', zonid)" ng-if="perfilUsuario.percrear || acceso.accactualizar"></button>
+                            <div class="row">
+                              <span class="col-sm-6 text-error" ng-if="error.provincia">{{textoError.provincia}}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -109,10 +115,13 @@
                         <div class="panel panel-default">
                           <div class="panel-heading">Registrar</div>
                           <div class="panel-body">
-                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="canton.candescripcion" ng-disabled="disabledCanton">
+                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="canton.candescripcion" ng-disabled="disabledCanton" ng-blur="validarRepetidos(canton, 'canton', 'can')">
                             <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('canton')"></button>
                             <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(canton, cantones, 'canton', 'can', 'prov', true)"></button>
                             <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('canton','can', provid)" ng-if="perfilUsuario.percrear || acceso.accactualizar"></button>
+                            <div class="row">
+                              <span class="col-sm-6 text-error" ng-if="error.canton">{{textoError.canton}}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -151,10 +160,13 @@
                         <div class="panel panel-default">
                           <div class="panel-heading">Registrar</div>
                           <div class="panel-body">
-                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="parroquia.pardescripcion" ng-disabled="disabledParroquia">
+                            <input type="text" class="col-sm-12 col-xs-12 objeto-sm margen-fila" ng-model="parroquia.pardescripcion" ng-disabled="disabledParroquia" ng-blur="validarRepetidos(parroquia, 'parroquia', 'par')">
                             <button type="button" popover="Cancelar" popover-trigger="mouseenter" class="btn btn-warning btn-sm btn-square pull-right glyphicon glyphicon-remove margen-left" ng-click="cancelar('parroquia')"></button>
                             <button type="button" popover="Guardar" popover-trigger="mouseenter" class="btn btn-success btn-sm btn-square pull-right glyphicon glyphicon-floppy-disk margen-left" ng-click="guardar(parroquia, parroquias, 'parroquia', 'par', 'can', true)"></button>
                             <button type="button" popover="Nuevo" popover-trigger="mouseenter" class="btn btn-primary btn-sm btn-square pull-right glyphicon glyphicon-plus" ng-click="nuevo('parroquia','par', canid)" ng-if="perfilUsuario.percrear || acceso.accactualizar"></button>
+                            <div class="row">
+                              <span class="col-sm-6 text-error" ng-if="error.parroquia">{{textoError.parroquia}}</span>
+                            </div>
                           </div>
                         </div>
                       </div>

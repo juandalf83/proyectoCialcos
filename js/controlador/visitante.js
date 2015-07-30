@@ -5,48 +5,19 @@ angular.module('cialcosApp')
       $scope.tabla = "visitante";
       $scope.objetos = [];
 
-      // if($routeParams.id){
-      //   $scope.editable = $routeParams.editable;
-      //   Entidad.get({tabla:$scope.tabla, id:$routeParams.id}, function(item) {
-      //     registro = angular.copy(item);
-      //     var usr = $cookieStore.get('usuario');
-      //     if($localStorage.dataRedireccion){
-      //       var redireccion = $localStorage.dataRedireccion[usr.usrid];
-      //       if(redireccion){
-      //         if(redireccion.irPantalla && usr.usrid == redireccion.usuarioConectado.usrid){
-      //           if($localStorage.dataRedireccion[usr.usrid].tabla == 'acceso'){
-      //             registro = redireccion.respaldoUsuario;
-      //             delete $localStorage.dataRedireccion[usr.usrid];
-      //           }  
-      //         }
-      //       }
-      //     }
-      //     if(registro.accid === undefined){
-      //       $scope.titulo = "Ingreso de";
-      //     }else{
-      //       $scope.titulo = "Edicion de";
-      //       $scope.objeto = registro;
-      //       agregarCampos('usr', $scope.objeto.usrid);
-      //       agregarCampos('pan', $scope.objeto.panid);
-      //       console.log($scope.objeto);
-      //     }
-      //   });
-      // }
-
-      // $scope.open = function(editable, id){
-      //   $rootScope.guardarBitacoraCRUD(editable, id, false);
-      //   $location.path("formulario_accesos/"+id+"/"+editable);
-      // };
-
       $scope.guardar = function(objeto){
           Administracion.guardar($scope.tabla, 'vis', objeto, function(id){
             if($.isNumeric(id)){
+              $rootScope.conMenu = true;
+              $rootScope.cssConMenu = 'col-sm-6 col-md-9';
               $location.path("/");
             }
           });
       };
 
       $scope.cancelar = function(objeto){
+        $rootScope.conMenu = true;
+        $rootScope.cssConMenu = 'col-sm-6 col-md-9';
         $location.path("/");
       };
 
@@ -54,92 +25,6 @@ angular.module('cialcosApp')
         expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         if ( !expr.test(email) )
           alert("Error: La dirección de correo " + email + " es incorrecta.");
-      }
-      // $scope.eliminar = function(objeto){
-      //   if(confirm("Esta seguro de eliminar este registro?")){
-      //     $rootScope.guardarBitacoraCRUD(false, objeto.accid, true);
-      //     Administracion.eliminar($scope.tabla, 'acc', objeto, function(result){
-      //       cargar();
-      //     });
-      //   }
-      // };
-
-      // function cargar(){
-      //   Administracion.cargar($scope.tabla,function(objetos){
-      //     $scope.objetos = objetos;
-      //     $scope.objetos.sort();
-      //   });
-      // }
-
-      // $scope.getUsuarios = function(term, done){
-      //   getListado ('usuario', 'usr', function(resultados){
-      //     done($filter('filter')(resultados, {text: term}, 'text'));
-      //   });
-      // };
-      // $scope.getPantallas = function(term, done){
-      //   getListado ('pantalla', 'pan', function(resultados){
-      //     done($filter('filter')(resultados, {text: term}, 'text'));
-      //   });
-      // };
-
-      // function getListado (tabla, tipo, callback){
-      //   var resultados = [];
-      //   Entidad.query({tabla:tabla}, function(data){
-      //     values = angular.copy(data);
-      //     for(var i = 0; i < values.length; i++){
-      //       if(values[i][tipo+'estado'] == 'A'){
-      //         values[i].id = values[i][tipo+'id'];
-      //         if(tabla == 'usuario'){
-      //           values[i].text = values[i][tipo+'nombrecompleto'];
-      //         }else{
-      //           values[i].text = values[i][tipo+'url'];
-      //         }
-      //         console.log(values);
-      //         resultados.push(values[i]);
-      //       }
-      //     }
-      //     callback(resultados);
-      //   });
-      // }
-
-      // function agregarCampos (tipo, objeto){
-      //   if(objeto){
-      //     objeto.id = objeto[tipo+'id'];
-      //     objeto.text = objeto[tipo+'url'];
-      //     if(tipo == 'usr'){
-      //       objeto.text = objeto[tipo+'nombrecompleto'];
-      //     }
-      //   }
-      // }
-
-      // $scope.agregarNuevo = function(tabla){
-      //   irPantallaNuevo(tabla);
-      // };
-
-      // var irPantallaNuevo = function (tabla){
-      //   var usr = $cookieStore.get('usuario');
-      //   var data = {};
-      //   registros = {
-      //     respaldoUsuario: $scope.objeto,
-      //     usuarioConectado: usr,
-      //     irPantalla: true,
-      //     tabla: 'acceso',
-      //     pantalla: $location.url()
-      //   };
-      //   if($localStorage.dataRedireccion){
-      //     $localStorage.dataRedireccion[usr.usrid] = registros;
-      //   }else{
-      //     data[usr.usrid] = registros;
-      //     $localStorage.$default({
-      //       dataRedireccion: data
-      //     });
-      //   }
-      //   console.log($localStorage.dataRedireccion);
-      //   if(tabla == 'usuario'){
-      //     $location.path('formulario_usuario/0/true');
-      //   }else{
-      //     $location.path('formulario_pantalla/0/true');
-      //   }
-      // };
+      };
   }
 ]);

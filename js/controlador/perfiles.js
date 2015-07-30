@@ -4,6 +4,8 @@ angular.module('cialcosApp')
 
       $scope.tabla = "perfil";
       $scope.objetos = [];
+      $scope.error = false;
+      $scope.textoError = '';
       cargar();
 
       if($routeParams.id){
@@ -36,13 +38,16 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        if(objeto.perpadre)
+        if(objeto.perdescripcion && objeto.perpadre){
           objeto.perpadre = objeto.perpadre.perid;
-        Administracion.guardar($scope.tabla, 'per', objeto, function(id){
-          if($.isNumeric(id)){
-            redireccionar("perfiles");
-          }
-        });
+          Administracion.guardar($scope.tabla, 'per', objeto, function(id){
+            if($.isNumeric(id)){
+              redireccionar("perfiles");
+            }
+          });
+        }else{
+          alert("EXISTEN CAMPOS VACIO");
+        }
       };
 
       $scope.cancelar = function(objeto){
@@ -106,5 +111,24 @@ angular.module('cialcosApp')
           $location.path(urlRegresar);
         }
       }
+
+      $scope.validarRepetidos = function(objeto){
+        if(objeto.perdescripcion){
+          Administracion.validarRepetidos($scope.tabla, 'perdescripcion', objeto.perdescripcion,
+          function(result){
+            if(!result){
+              objeto.perdescripcion = '';
+              $scope.error = true;
+              $scope.textoError = 'EL PERFIL INGRESADO YA EXISTE';
+            }else{
+              $scope.error = false;
+              $scope.textoError = '';
+            }
+          });
+        }else{
+          $scope.error = false;
+          $scope.textoError = '';
+        }
+      };
     }
 ]);

@@ -3,6 +3,8 @@ angular.module('cialcosApp')
   function($scope, $element, $location, $cookieStore, Entidad, $rootScope, $interval, Administracion) {
     $scope.usrConectado = {nombre: '', estaConectado: '', id: ''};
     $('.dropdown-toggle').dropdown();
+    $rootScope.conMenu = true;
+    $rootScope.cssConMenu = 'col-sm-6 col-md-9';
     $scope.baseUrl = "#/";
     $rootScope.mensajes = {
       ingresoMenu: 'INGRESA OPCION MENU ',
@@ -169,7 +171,8 @@ angular.module('cialcosApp')
 
     $scope.salir = function() {
       $scope.usrConectado = {nombre: "", estaConectado: ''};
-
+      $rootScope.conMenu = true;
+      $rootScope.cssConMenu = 'col-sm-6 col-md-9';
       $cookieStore.remove('estaConectado');
       $cookieStore.remove('usuario');
       $rootScope.menu = [];
@@ -249,7 +252,16 @@ angular.module('cialcosApp')
     };
 
     $scope.irVisitante = function(){
+      $rootScope.conMenu = false;
+      $rootScope.cssConMenu = 'col-sm-12 col-md-12';
       $location.path('visitantes');
     };
+
+    $scope.irMapa = function(){
+      $rootScope.conMenu = false;
+      $rootScope.cssConMenu = 'col-sm-12 col-md-12';
+      $location.path('verMapa');
+    };
+
   }
 ]);

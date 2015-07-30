@@ -12,51 +12,52 @@
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Tipo Usuario</label>
                   <div class="col-lg-6">
-                      <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione tipo usuario" ng-model="objeto.tpuid" simple-query="getTiposUsuario">
+                      <input ng-disabled="!editable" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione tipo usuario" ng-model="objeto.tpuid" simple-query="getTiposUsuario">
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Tipo Identificacion</label>
                   <div class="col-lg-6">
-                      <select ng-disabled="!{{editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrtipoidentificacion" ng-options="tipos.codigo as tipos.text for tipos in tiposIdentificacion" ng-required="true">
+                      <select ng-disabled="!editable" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrtipoidentificacion" ng-options="tipos.codigo as tipos.text for tipos in tiposIdentificacion" ng-required="true">
                       </select>
                   </div>
               </div>
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Identificacion</label>
-                  <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usridentificacion" ng-blur="validacionDocumento(objeto)" ng-required="true">
+                  <div class="col-lg-3">
+                      <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usridentificacion" ng-blur="validacionDocumento(objeto)" ng-required="true">
                   </div>
+                  <span class="col-sm-6 text-error" ng-if="errorIdentificacion">{{textoErrorIdentificacion}}</span>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Nombres</label>
                    <div class="col-lg-3">
-                       <input ng-disabled="!{{editable}}" placeholder="Primer nombre" type="text" class="col-sm-12 col-xs-12 objeto-sm" ng-model="objeto.usrprimernombre" ng-required="objeto.usrtipoidentificacion != 'ruc'">
+                       <input ng-disabled="!editable" placeholder="Primer nombre" type="text" class="col-sm-12 col-xs-12 objeto-sm" ng-model="objeto.usrprimernombre" ng-required="objeto.usrtipoidentificacion != 'ruc'">
                    </div>
                    <div class="col-lg-3">
-                       <input ng-disabled="!{{editable}}" placeholder="Segundo nombre" type="text" class="col-sm-12 col-xs-12 objeto-sm" ng-model="objeto.usrsegundonombre" ng-required="objeto.usrtipoidentificacion != 'ruc'">
+                       <input ng-disabled="!editable" placeholder="Segundo nombre" type="text" class="col-sm-12 col-xs-12 objeto-sm" ng-model="objeto.usrsegundonombre" ng-required="objeto.usrtipoidentificacion != 'ruc'">
                    </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Apellidos</label>
                    <div class="col-lg-3">
-                       <input ng-disabled="!{{editable}}" placeholder="Primer apellido" type="text" class="col-sm-12 col-xs-12 objeto-sm" ng-model="objeto.usrprimerapellido" ng-required="objeto.usrtipoidentificacion != 'ruc'">
+                       <input ng-disabled="!editable" placeholder="Primer apellido" type="text" class="col-sm-12 col-xs-12 objeto-sm" ng-model="objeto.usrprimerapellido" ng-required="objeto.usrtipoidentificacion != 'ruc'">
                    </div>
                    <div class="col-lg-3">
-                       <input ng-disabled="!{{editable}}" placeholder="Segundo apellido" type="text" class="col-sm-12 col-xs-12 objeto-sm" ng-model="objeto.usrsegundoapellido" ng-required="objeto.usrtipoidentificacion != 'ruc'">
+                       <input ng-disabled="!editable" placeholder="Segundo apellido" type="text" class="col-sm-12 col-xs-12 objeto-sm" ng-model="objeto.usrsegundoapellido" ng-required="objeto.usrtipoidentificacion != 'ruc'">
                    </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion == 'ruc'" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Razon Social</label>
                    <div class="col-lg-6">
-                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrrazonsocial" ng-required="objeto.usrtipoidentificacion == 'ruc'">
+                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrrazonsocial" ng-required="objeto.usrtipoidentificacion == 'ruc'">
                    </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Fecha de Nacimiento</label>
                    <div class="col-lg-6">
-                       <!-- <input ng-disabled="!{{editable}}" type="date" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrfechanacimiento"> -->
-                       <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm datepicker" ng-model="objeto.usrfechanacimiento" ng-required="true"/>
+                       <!-- <input ng-disabled="!editable" type="date" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrfechanacimiento"> -->
+                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm datepicker" ng-model="objeto.usrfechanacimiento" ng-required="true"/>
                    </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
@@ -68,42 +69,44 @@
               <div ng-if="objeto.usrtipoidentificacion != 'ruc'" class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Genero</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.usrgenero" value="F"> Femenino
-                      <input ng-disabled="!{{editable}}" type="radio" ng-model="objeto.usrgenero" value="M"> Masculino
+                      <input ng-disabled="!editable" type="radio" ng-model="objeto.usrgenero" value="F"> Femenino
+                      <input ng-disabled="!editable" type="radio" ng-model="objeto.usrgenero" value="M"> Masculino
                   </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc' && objeto.tpuid.tpuid == 2" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Etnia</label>
                    <div class="col-lg-6">
-                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione etnia" ng-model="objeto.etnid" simple-query="getEtnias">
+                       <input ng-disabled="!editable" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione etnia" ng-model="objeto.etnid" simple-query="getEtnias">
                        <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('etnia')"></button>
                    </div>
               </div>
               <div ng-if="objeto.usrtipoidentificacion != 'ruc' && objeto.tpuid.tpuid == 2" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Nivel de escolaridad</label>
                    <div class="col-lg-6">
-                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione nivel escolaridad" ng-model="objeto.nieid" simple-query="getNivelesEscolaridad">
+                       <input ng-disabled="!editable" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione nivel escolaridad" ng-model="objeto.nieid" simple-query="getNivelesEscolaridad">
                        <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('nivelescolaridad')"></button>
                    </div>
               </div>
               <div ng-if="objeto.tpuid.tpuid == 2" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Posesión de tierras</label>
                    <div class="col-lg-6">
-                       <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione posesion tierra" ng-model="objeto.ptrid" simple-query="getPosesionTierras">
+                       <input ng-disabled="!editable" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione posesion tierra" ng-model="objeto.ptrid" simple-query="getPosesionTierras">
                        <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('posesiontierra')"></button>
                    </div>
               </div>
               <div ng-if="objeto.tpuid.tpuid == 1 || objeto.tpuid.tpuid == 3" class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Usuario</label>
-                  <div class="col-lg-6">
-                      <input ng-disabled="!{{editable}}" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrusuario">
+                  <div class="col-lg-3">
+                      <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrusuario" ng-blur="validarUsuario(objeto)">
                   </div>
+                  <span class="col-sm-6 text-error" ng-if="errorUsuario">{{textoErrorUsuario}}</span>
               </div>
               <div ng-if="objeto.tpuid.tpuid == 1 || objeto.tpuid.tpuid == 3" class="form-group">
                    <label class="col-lg-3 control-label" for="tarea">Clave</label>
                    <div class="col-lg-3">
-                       <input ng-disabled="!{{editable}}" type="password" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrcontrasenia">
+                       <input ng-disabled="!editable" type="password" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.usrcontrasenia" ng-change="minimoLength(objeto.usrcontrasenia)">
                    </div>
+                   <span class="col-sm-6 text-error" ng-if="errorPassword">{{textoErrorPassword}}</span>
               </div>
               <div class="modal-footer">
                   <!-- <button ng-show="editable" class="btn btn-square btn-sm btn-primary" ng-click="guardar(objeto)">Guardar</button> -->

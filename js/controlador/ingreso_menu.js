@@ -4,6 +4,8 @@ angular.module('cialcosApp')
 
       $scope.tabla = "menu";
       $scope.objetos = [];
+      $scope.error = false;
+      $scope.textoError = '';
       cargar();
 
       if($routeParams.id){
@@ -51,13 +53,16 @@ angular.module('cialcosApp')
 
       $scope.guardar = function(objeto){
         console.log(objeto.menpadre);
-        if(objeto.menpadre)
+        if(objeto.mendescripcion && objeto.menpadre){
           objeto.menpadre = objeto.menpadre.id;
-        Administracion.guardar($scope.tabla, 'men', objeto, function(id){
-          if($.isNumeric(id)){
-            redireccionar("ingresomenu");
-          }
-        });
+          Administracion.guardar($scope.tabla, 'men', objeto, function(id){
+            if($.isNumeric(id)){
+              redireccionar("ingresomenu");
+            }
+          });
+        }else{
+          alert("EXISTEN CAMPOS VACIO");
+        }
       };
 
       $scope.cancelar = function(objeto){
@@ -171,6 +176,25 @@ angular.module('cialcosApp')
           objeto.text = objeto[tipo+'url'];
         }
       }
+
+      $scope.validarRepetidos = function(objeto){
+        if(objeto.mendescripcion){
+          Administracion.validarRepetidos($scope.tabla, 'mendescripcion', objeto.mendescripcion,
+          function(result){
+            if(!result){
+              objeto.mendescripcion = '';
+              $scope.error = true;
+              $scope.textoError = 'EL MENU INGRESADO YA EXISTE';
+            }else{
+              $scope.error = false;
+              $scope.textoError = '';
+            }
+          });
+        }else{
+          $scope.error = false;
+          $scope.textoError = '';
+        }
+      };
 
   }
 ]);

@@ -4,6 +4,8 @@ angular.module('cialcosApp')
 
       $scope.tabla = "producto";
       $scope.objetos = [];
+      $scope.error = false;
+      $scope.textoError = '';
       cargar();
 
       if($routeParams.id){
@@ -38,12 +40,16 @@ angular.module('cialcosApp')
       };
 
       $scope.guardar = function(objeto){
-        objeto.prodcantidad = parseInt(objeto.prodcantidad);
-        Administracion.guardar($scope.tabla, 'prod', objeto, function(id){
-          if($.isNumeric(id)){
-            $location.path("producto");
-          }
-        });
+        if(objeto && objeto.prodnombreproducto && objeto.prodcantidad && objeto.topid){
+          objeto.prodcantidad = parseInt(objeto.prodcantidad);
+          Administracion.guardar($scope.tabla, 'prod', objeto, function(id){
+            if($.isNumeric(id)){
+              $location.path("producto");
+            }
+          });
+        }else{
+          alert("EXISTEN CAMPOS VACIO");
+        }
       };
 
       $scope.cancelar = function(objeto){
@@ -117,6 +123,25 @@ angular.module('cialcosApp')
           });
         }
         $location.path('formulario/0/'+tabla+'/true');
+      };
+
+      $scope.validarRepetidos = function(objeto){
+        if(objeto.prodnombreproducto){
+          Administracion.validarRepetidos($scope.tabla, 'prodnombreproducto', objeto.prodnombreproducto,
+          function(result){
+            if(!result){
+              objeto.prodnombreproducto = '';
+              $scope.error = true;
+              $scope.textoError = 'EL PRODUCTO INGRESADO YA EXISTE';
+            }else{
+              $scope.error = false;
+              $scope.textoError = '';
+            }
+          });
+        }else{
+          $scope.error = false;
+          $scope.textoError = '';
+        }
       };
   }
 ]);

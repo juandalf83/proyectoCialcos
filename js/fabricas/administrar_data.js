@@ -162,5 +162,21 @@ angular.module('AdministracionDataFactory', [
     });
   };
 
+  factory.validarRepetidos = function(tabla, campo, texto, callback){
+    var result = false;
+    Entidad.query({tabla:tabla, id:'find', parametro:campo, parametro2: texto},function(objetos){
+      if(objetos.length === 0){
+        result = true;
+      }
+      callback(result);
+    });
+  };
+
+  factory.getDirecciones = function(idCialco, callback){
+    Entidad.query({tabla:'direccion', id:'getByCialco', parametro:idCialco},function(objetos){
+      callback(objetos);
+    });
+  };
+
   return factory;
 }]);

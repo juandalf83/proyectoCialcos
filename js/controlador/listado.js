@@ -2,6 +2,9 @@ angular.module('cialcosApp')
 .controller('ParametrizacionCtrl', ['$scope', '$window', '$location', 'ngTableParams', '$filter', 'Entidad', '$routeParams', '$rootScope','$cookieStore','$localStorage', 'Administracion',
   function($scope, $window, $location, ngTableParams, $filter, Entidad, $routeParams, $rootScope, $cookieStore, $localStorage, Administracion) {
 
+      $scope.error = false;
+      $scope.textoError = '';
+
       $scope.identificadores ={
         apoyoproduccion: 'apy',
         destinoingresos: 'dei',
@@ -78,37 +81,39 @@ angular.module('cialcosApp')
       $scope.guardar = function(objeto){
         var fecha = new Date();
         var data = {};
-        if(objeto.id === 0 || objeto.id === '' || objeto.id === undefined){
-          getIdFormulario($routeParams.ubicacion, function(id){
-            data[$scope.identificador+'id'] = id;
+        if(objeto.descripcion){
+          if(objeto.id === 0 || objeto.id === '' || objeto.id === undefined){
+            getIdFormulario($routeParams.ubicacion, function(id){
+              data[$scope.identificador+'id'] = id;
+              data[$scope.identificador+'descripcion'] = objeto.descripcion;
+              data[$scope.identificador+'estado'] = 'A';
+              data[$scope.identificador+'fechacreacion'] = fecha;
+              usr = $cookieStore.get('usuario');
+              data[$scope.identificador+'usuariocreacion'] = usr.usrid;
+              console.log(data);
+              Entidad.save({tabla:$routeParams.ubicacion},data).$promise
+                .then(function(data) {
+                  redireccionar();
+                })
+                .catch(function(error) {
+                  console.log("rejected " + JSON.stringify(error));
+                });
+            });
+          }else{
+            data[$scope.identificador+'id'] = objeto.id;
             data[$scope.identificador+'descripcion'] = objeto.descripcion;
             data[$scope.identificador+'estado'] = 'A';
             data[$scope.identificador+'fechacreacion'] = fecha;
             usr = $cookieStore.get('usuario');
             data[$scope.identificador+'usuariocreacion'] = usr.usrid;
-            console.log(data);
-            Entidad.save({tabla:$routeParams.ubicacion},data).$promise
+            Entidad.update({tabla:$routeParams.ubicacion, id:objeto.id}, data).$promise
               .then(function(data) {
-                redireccionar();
+                $location.path("listado/"+$routeParams.ubicacion);
               })
               .catch(function(error) {
                 console.log("rejected " + JSON.stringify(error));
               });
-          });
-        }else{
-          data[$scope.identificador+'id'] = objeto.id;
-          data[$scope.identificador+'descripcion'] = objeto.descripcion;
-          data[$scope.identificador+'estado'] = 'A';
-          data[$scope.identificador+'fechacreacion'] = fecha;
-          usr = $cookieStore.get('usuario');
-          data[$scope.identificador+'usuariocreacion'] = usr.usrid;
-          Entidad.update({tabla:$routeParams.ubicacion, id:objeto.id}, data).$promise
-            .then(function(data) {
-              $location.path("listado/"+$routeParams.ubicacion);
-            })
-            .catch(function(error) {
-              console.log("rejected " + JSON.stringify(error));
-            });
+          }
         }
       };
 
@@ -206,5 +211,21 @@ angular.module('cialcosApp')
           $location.path("listado/"+$routeParams.ubicacion);
         }
       }
+
+      $scope.validarRepetidos = function(objeto){
+        if(objeto.descripcion){
+          Administracion.validarRepetidos($routeParams.ubicacion, $scope.identificador+'descripcion', objeto.descripcion,
+          function(result){
+            if(!result){
+              objeto.descripcion = '';
+              $scope.error = true;
+              $scope.textoError = 'LA DESCRIPCION INGRESADA YA EXISTE';
+            }else{
+              $scope.error = false;
+              $scope.textoError = '';
+            }
+          });
+        }
+      };
   }
 ]);

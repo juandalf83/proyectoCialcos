@@ -19,13 +19,13 @@
         <div class="row cabecera btn-primary barra-menu">
             <button class="btn btn-danger pull-right margen-left" ng-click="salir()">Salir</button>
             <button class="btn btn-warning pull-right margen-left" ng-click="irVisitante()">Contactenos</button>
+            <button class="btn btn-success pull-right margen-left" ng-click="irMapa()">Mapa cialcos</button>
             <span ng-show="usrConectado.estaConectado" class="btn btn-primary pull-right margen-left">Usuario: {{usrConectado.nombre}}</span>
         </div>
         <div class="row menu cabecera">
-            <div class="col-xs-12 col-md-3">
+            <div class="col-xs-12 col-md-3" ng-if="conMenu">
                 <nav ng-show="usrConectado.estaConectado">
                     <div class="list-group">
-                        <!-- <a href="#" class="list-group-item" ng-repeat="link in menu">{{ link.name }}</a> -->
                         <div ng-repeat="grupo in menu">
                             <span class="list-group-item panel-principal-color" ng-click="openSubMenu(grupo)">{{ grupo.nombre }}</span>
                             <div class="list-group" ng-show="grupo.isOpen">
@@ -54,7 +54,7 @@
                     </div>
                 </nav>
             </div>
-            <div class="col-xs-12 col-sm-6 col-md-9">
+            <div class="col-xs-12" ng-class="cssConMenu">
                 <div ng-view></div>
             </div>
         </div>
@@ -98,7 +98,6 @@
         <script type="text/javascript" src="js/controlador/cialcos.js"></script>
         <script type="text/javascript" src="js/controlador/formulario_cialcos.js"></script>
         <script type="text/javascript" src="js/controlador/territorios.js"></script>
-        <script type="text/javascript" src="js/controlador/direcciones.js"></script>
         <script type="text/javascript" src="js/controlador/pantallas.js"></script>
         <script type="text/javascript" src="js/controlador/perfiles.js"></script>
         <script type="text/javascript" src="js/controlador/ingreso_menu.js"></script>
@@ -112,5 +111,6 @@
         <script type="text/javascript" src="js/controlador/visitante.js"></script>
         <script type="text/javascript" src="js/controlador/consumidor.js"></script>
         <script type="text/javascript" src="js/controlador/georeferenciacion.js"></script>
+        <script type="text/javascript" src="js/controlador/ver_mapa.js"></script>
     </body>
 </html>
