@@ -52,13 +52,17 @@ angular.module('cialcosApp')
         });
       }
 
-      $scope.guardar = function(objeto){
+      $scope.guardar = function(objeto, tipo){
         if(objeto.orgnombre){
           objeto.orgfecharegistrosep = new Date(objeto.orgfecharegistrosep);
           objeto.orgfechaacreditacionmagap = new Date(objeto.orgfechaacreditacionmagap);
           Administracion.guardar('organizacion', 'org', objeto, function(id){
             if($.isNumeric(id)){
-              $location.path("formulario_adicional_organizacion/"+id+"/true");
+              if(tipo == 'A'){
+                $location.path("formulario_adicional_organizacion/"+id+"/true");
+              }else{
+                redireccionar("organizaciones");
+              }  
             }
           });
         }else{
@@ -71,7 +75,8 @@ angular.module('cialcosApp')
       };
 
       $scope.irOrganizacion = function(){
-        redireccionar("formulario_organizacion/"+$routeParams.id+"/"+$routeParams.editable);
+        //redireccionar("formulario_organizacion/"+$routeParams.id+"/"+$routeParams.editable);
+        redireccionar("organizaciones");
       };
 
       $scope.open = function(tabla, fila) {

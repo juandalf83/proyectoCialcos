@@ -80,7 +80,7 @@ angular.module('cialcosApp')
         });
       }
 
-      $scope.guardar = function(objeto){
+      $scope.guardar = function(objeto, tipo){
         var fecha = new Date();
         var data = {};
         var validar = true;
@@ -101,7 +101,11 @@ angular.module('cialcosApp')
         if(validar){
           Administracion.guardar('usuario', 'usr', objeto, function(id){
             if($.isNumeric(id)){
-              $location.path("formulario_adicional_usuario/"+id+"/true");
+              if(tipo == 'A'){
+                $location.path("formulario_adicional_usuario/"+id+"/true");
+              }else{
+                redireccionar("usuarios");
+              }
             }
           });
         }else{
@@ -166,7 +170,8 @@ angular.module('cialcosApp')
       };
 
       $scope.irUsuario = function(){
-        redireccionar("formulario_usuario/"+$routeParams.id+"/"+$routeParams.editable);
+        //redireccionar("formulario_usuario/"+$routeParams.id+"/"+$routeParams.editable);
+        redireccionar("usuarios");
       };
 
       $scope.eliminarLista = function(registro, tabla, tipo, objetoTabla){

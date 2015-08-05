@@ -14,6 +14,11 @@ angular.module('cialcosApp')
           registro = angular.copy(item);
           if(registro.perid === undefined){
             $scope.titulo = "Ingreso de";
+            $scope.objeto = {};
+            $scope.objeto.percrear = '0';
+            $scope.objeto.pereditar = '0';
+            $scope.objeto.perconsultar = '0';
+            $scope.objeto.pereliminar = '0';
           }else{
             if(registro.perpadre){
               Entidad.get({tabla:$scope.tabla, id:registro.perpadre}, function(dato){

@@ -58,15 +58,18 @@ angular.module('cialcosApp')
         });
       }
 
-      $scope.guardar = function(objeto){
+      $scope.guardar = function(objeto, tipo){
         if(objeto.ciadescripcion){
           objeto.ciacoordX = 0;
           objeto.ciacoordY = 0;
           objeto.ciacoordZ = 0;
           Administracion.guardar($scope.pantalla, 'cia', objeto, function(id){
             if($.isNumeric(id)){
-              $location.path("formulario_adicional_cialco/"+id+"/true");
-              //$location.path("cialcos");
+              if(tipo == 'A'){
+                $location.path("formulario_adicional_cialco/"+id+"/true");
+              }else{
+                $location.path("cialcos");
+              }
             }
           });
         }else{
@@ -341,7 +344,8 @@ angular.module('cialcosApp')
       };
 
       $scope.irCialco = function(){
-        $location.path("formulario_cialcos/"+$routeParams.id+"/"+$routeParams.editable);
+        //$location.path("formulario_cialcos/"+$routeParams.id+"/"+$routeParams.editable);
+        $location.path("cialcos");
       };
 
       $scope.agregarNuevo = function(tabla){

@@ -9,12 +9,12 @@
             <strong>Error!</strong> {{items.mensajeError}}.
           </div>
           <div class="col-xs-12">
-            <button class="btn btn-square btn-sm btn-warning pull-right" ng-click="irCialco()">Regresar</button>
+            <button class="btn btn-square btn-sm btn-success pull-right" ng-click="irCialco()">Guardar</button>
           </div>
           <form class="form-horizontal">
             <div class="panel-body centrado">
                 <div class="col-xs-12 col-md-12">
-                    <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-md-12" ng-if="objeto.tcoid.tcoid != 1">
                       <div class="row btn-primary margen-fila">
                         <div class="col-xs-12">
                           <div class="col-xs-9">
@@ -43,7 +43,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-md-12" ng-if="objeto.tcoid.tcoid != 1">
                       <div class="row btn-primary margen-fila">
                         <div class="col-xs-12">
                           <div class="col-xs-9">
@@ -106,7 +106,7 @@
                           </div>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-md-12" ng-if="objeto.tcoid.tcoid == 2">
                         <div class="row btn-primary margen-fila">
                           <div class="col-xs-12">
                             <div class="col-xs-9">
@@ -136,7 +136,7 @@
                           </div>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-md-12" ng-if="objeto.tcoid.tcoid == 1 || objeto.tcoid.tcoid == 2">
                         <div class="row btn-primary margen-fila">
                           <div class="col-xs-12">
                             <div class="col-xs-9">
@@ -166,7 +166,7 @@
                           </div>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-md-12" ng-if="objeto.tcoid.tcoid != 1 || objeto.tcoid.tcoid != 3">
                         <div class="row btn-primary margen-fila">
                           <div class="col-xs-12">
                             <div class="col-xs-9">
@@ -197,7 +197,7 @@
                           </div>
                         </div>
                     </div>
-                    <div class="col-xs-12 col-md-12">
+                    <div class="col-xs-12 col-md-12" ng-if="objeto.tcoid.tcoid != 1 || objeto.tcoid.tcoid != 3">
                         <div class="row btn-primary margen-fila">
                           <div class="col-xs-12">
                             <div class="col-xs-9">

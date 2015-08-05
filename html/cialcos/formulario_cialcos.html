@@ -13,11 +13,11 @@
                    <label class="col-lg-3 control-label" for="tarea">Tipo Cialco</label>
                    <div class="col-lg-6">
                        <input ng-disabled="!editable" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione tipo" ng-model="objeto.tcoid" simple-query="getTiposCialcos">
-                       <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('tipocialco')"></button>
+                       <!-- <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('tipocialco')"></button> -->
                    </div>
               </div>
               <div class="form-group">
-                  <label class="col-lg-3 control-label" for="tarea">Descripcion</label>
+                  <label class="col-lg-3 control-label" for="tarea">Nombre</label>
                   <div class="col-lg-6">
                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciadescripcion" ng-blur="validarRepetidos(objeto)">
                       <span class="col-sm-6 text-error" ng-if="error">{{textoError}}</span>
@@ -65,26 +65,26 @@
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciaentregaconcentrada" value="S"> SI
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciaentregaconcentrada" value="N"> NO
                   </div>
-                  <label class="col-lg-3 control-label" for="tarea">Certificacion</label>
-                  <div class="col-lg-2">
+                  <label  ng-if="objeto.tcoid.tcoid == 5" class="col-lg-3 control-label" for="tarea">Certificacion</label>
+                  <div  ng-if="objeto.tcoid.tcoid == 5" class="col-lg-2">
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciacertificacion" value="S"> SI
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciacertificacion" value="N"> NO
                   </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" ng-if="objeto.tcoid.tcoid == 5">
                   <label class="col-lg-3 control-label" for="tarea">Venta local</label>
                   <div class="col-lg-6">
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciavantalocal" value="S"> SI
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciavantalocal" value="N"> NO
                   </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" ng-if="objeto.tcoid.tcoid == 4">
                   <label class="col-lg-3 control-label" for="tarea">Direccion Entrega Concentrada</label>
                   <div class="col-lg-6">
                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciadireccionconcentrada">
                   </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" ng-if="objeto.tcoid.tcoid == 4">
                   <label class="col-lg-3 control-label" for="tarea">Costo de Canasta</label>
                   <div class="col-lg-6">
                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciacostocanasta">
@@ -96,8 +96,8 @@
                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciadestino">
                   </div>
               </div>
-              <div class="form-group">
-                  <label class="col-lg-3 control-label" for="tarea">Tipo apoyo</label>
+              <div class="form-group" ng-if="objeto.tcoid.tcoid == 4">
+                  <label class="col-lg-3 control-label" for="tarea">Tipo entrega</label>
                   <div class="col-lg-6">
                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciatipoapoyo">
                   </div>
@@ -121,8 +121,9 @@
                    </div>
               </div>
               <div class="modal-footer">
-                   <button class="btn btn-square btn-sm btn-info pull-right" ng-click="guardar(objeto)">Datos adicionales</button>
-                   <button class="btn btn-square btn-sm btn-warning" ng-click="cancelar()">Cancelar</button>
+                   <button class="btn btn-square btn-sm btn-warning pull-right margen-left" ng-click="cancelar()">Cancelar</button>
+                   <button class="btn btn-square btn-sm btn-info pull-right margen-left" ng-click="guardar(objeto, 'A')">Datos adicionales</button>
+                   <button class="btn btn-square btn-sm btn-primary pull-right margen-left" ng-click="guardar(objeto, 'G')">Guardar</button>
               </div>
           </form>
      </div>

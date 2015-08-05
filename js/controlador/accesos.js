@@ -23,7 +23,12 @@ angular.module('cialcosApp')
             }
           }
           if(registro.accid === undefined){
+            $scope.objeto = {};
             $scope.titulo = "Ingreso de";
+            $scope.objeto.accactualizar = '0';
+            $scope.objeto.acceditar = '0';
+            $scope.objeto.accconsultar = '0';
+            $scope.objeto.acceliminar = '0';
           }else{
             $scope.titulo = "Edicion de";
             $scope.objeto = registro;
@@ -78,9 +83,26 @@ angular.module('cialcosApp')
         });
       };
       $scope.getPantallas = function(term, done){
-        getListado ('pantalla', 'pan', function(resultados){
-          done($filter('filter')(resultados, {text: term}, 'text'));
-        });
+        var pantallas = [];
+        if($scope.objeto.usrid){
+          Administracion.getPerfilesUsuario($scope.objeto.usrid.usrid, function(perfiles){
+            var perfil = perfiles[perfiles.length-1];
+            Administracion.getMenuExtra(perfil.perid.perid, function(perfilesMenu){
+              menus = angular.copy(perfilesMenu);
+              angular.forEach(menus, function(item){
+                if(item.menid.panid){
+                  var pantalla = item.menid.panid;
+                  pantalla.id = pantalla.panid;
+                  pantalla.text = item.menid.mendescripcion;
+                  pantallas.push(pantalla);
+                }
+              });
+              done($filter('filter')(pantallas, {text: term}, 'text'));
+            });
+          });
+        }else{
+          alert("DEBE SELECCIONAR UN USUARIO");
+        }
       };
 
       function getListado (tabla, tipo, callback){
@@ -95,7 +117,6 @@ angular.module('cialcosApp')
               }else{
                 values[i].text = values[i][tipo+'url'];
               }
-              console.log(values);
               resultados.push(values[i]);
             }
           }
