@@ -5,8 +5,8 @@
      </div>
 
      <div class="panel-body">
-          <div class="alert alert-danger alert-dismissable" ng-show="items.isError">
-            <strong>Error!</strong> {{items.mensajeError}}.
+          <div class="row">
+              <h5 class="col-xs-12">Tu puedes ser parte del cambio, llena tus datos y dejanos saber tus dudas, comentarios y/o sugerencias</h5><br><br>
           </div>
           <form name="myForm" class="form-horizontal">
               <div class="form-group">
@@ -22,16 +22,22 @@
                   </div>
               </div>
               <div class="form-group">
-                  <label class="col-lg-3 control-label" for="tarea">Correo</label>
+                  <label class="col-lg-3 control-label" for="tarea">Correo Electronico</label>
                   <div class="col-lg-6">
-                      <input type="email" name="correo" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.viscorreo">
+                      <input type="email" name="correo" class="col-sm-6 col-xs-12 objeto-sm minusculas" ng-model="objeto.viscorreo" ng-blur="validarEmail(objeto)">
                   </div>
-              </div>              
+              </div>
+              <div class="form-group">
+                  <label class="col-lg-3 control-label" for="tarea">Comentario</label>
+                  <div class="col-lg-6">
+                      <textarea name="Name" class="col-sm-8 col-xs-12" rows="3" cols="40" ng-model="objeto.viscomentario"></textarea>
+                  </div>
+              </div>
           </form>
      </div>
      <div class="modal-footer">
-          <button class="btn btn-square btn-sm btn-primary pull-right" ng-click="guardar(objeto)">Guardar</button>
-          <button class="btn btn-square btn-sm btn-warning" ng-click="cancelar()">Cancelar</button>
+          <button class="btn btn-square btn-sm btn-primary pull-right margen-left" ng-click="guardar(objeto)">Enviar</button>
+          <button class="btn btn-square btn-sm btn-warning margen-left" ng-click="cancelar()">Cancelar</button>
      </div>
 </div>
 </div>

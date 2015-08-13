@@ -62,7 +62,7 @@ angular.module('cialcosApp')
                 $location.path("formulario_adicional_organizacion/"+id+"/true");
               }else{
                 redireccionar("organizaciones");
-              }  
+              }
             }
           });
         }else{
@@ -136,11 +136,19 @@ angular.module('cialcosApp')
         agregarCampos('inf', $scope.items.registro.infid);
         $scope.getUsuario = function(term, done){
           getListado ('usuario', 'usr', function(resultados){
-            done($filter('filter')(resultados, {text: term}, 'text'));
+            var usuarios = [];
+            angular.forEach(resultados, function(item){
+              console.log(item);
+              if(item.tpuid.tpuid == 2){
+                usuarios.push(item);
+              }
+            });
+            done($filter('filter')(usuarios, {text: term}, 'text'));
           });
         };
 
         $scope.ok = function() {
+          console.log($scope.items.registro);
           guardarDatosAdicionales('usuarioorganizacion', 'uso', $scope.items.registro, $scope.items.organizacion, function(resultado){
             $modalInstance.dismiss(resultado);
           });

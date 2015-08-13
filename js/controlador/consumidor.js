@@ -112,8 +112,9 @@ angular.module('cialcosApp')
           console.log(resultados);
           var consumidores = [];
           angular.forEach(resultados, function(result){
-            if(result.tpuid.tpuid == 4)
+            if(result.tpuid.tpuid == 4){              
               consumidores.push(result);
+            }
           });
           done($filter('filter')(consumidores, {text: term}, 'text'));
         });
@@ -121,7 +122,8 @@ angular.module('cialcosApp')
 
       $scope.getProductores = function(term, done){
         getListado ('participante', 'paf', function(resultados){
-          done($filter('filter')(resultados, {text: term}, 'text'));
+          var productores = [];
+          done($filter('filter')(productores, {text: term}, 'text'));
         });
       };
 

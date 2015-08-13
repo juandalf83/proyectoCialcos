@@ -17,7 +17,7 @@
             <div class="row btn-primary margen-fila">
               <div class="col-xs-12">
                 <div class="col-xs-9">
-                  <h5 class="modal-title"><strong>EMAILS</strong></h5>
+                  <h5 class="modal-title"><strong>CORREOS ELECTRONICOS</strong></h5>
                 </div>
                 <div class="col-xs-3">
                   <button class="btn btn-square btn-sm btn-info glyphicon glyphicon-plus  pull-right" ng-click="open('mail', '')"></button>
@@ -33,7 +33,7 @@
                       <input class="col-sm-12 col-xs-12 objeto-sm" type="text" ng-model="searchText" placeholder="Buscar..."/>
                     </div>
                     <td data-title="'Tipo Mail'" width="45%" sortable="'tipo_mail'">{{mail.tpmid.tpmdescripcion}}</td>
-                    <td data-title="'Email'" width="45%" sortable="'email'">{{mail.maidireccion}}</td>
+                    <td data-title="'Correo Electronico'" width="45%" sortable="'email'">{{mail.maidireccion}}</td>
                     <td data-title="''" width="20%">
                       <button popover="Editar" popover-trigger="mouseenter" class="btn btn-xs btn-success btn-square glyphicon glyphicon-pencil" ng-click="open('mail', mail)" ng-show="perfilUsuario.pereditar || acceso.acceditar"></button>
                     </td>

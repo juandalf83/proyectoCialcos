@@ -323,6 +323,9 @@ angular.module('cialcosApp')
         };
         $scope.getParroquias = function(term, done){
           getListado ('parroquia', 'par', function(resultados){
+            angular.forEach(resultados, function(item){
+              item.text = item.canid.provid.provdescripcion+" / "+item.canid.candescripcion+" / "+item.pardescripcion;
+            });
             done($filter('filter')(resultados, {text: term}, 'text'));
           });
         };

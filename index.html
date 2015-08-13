@@ -27,10 +27,10 @@
                 <nav ng-show="usrConectado.estaConectado">
                     <div class="list-group">
                         <div ng-repeat="grupo in menu">
-                            <span class="list-group-item panel-principal-color" ng-click="openSubMenu(grupo)">{{ grupo.nombre }}</span>
+                            <span class="list-group-item panel-principal-color indicador-menu" ng-click="openSubMenu(grupo)">{{ grupo.nombre }}</span>
                             <div class="list-group" ng-show="grupo.isOpen">
                                 <div class="btn-group-vertical element-width-all" role="group">
-                                    <div ng-repeat="submenu in grupo.submenu" class="col-xs-12 col-md-12 menu-button">
+                                    <div ng-repeat="submenu in grupo.submenu" class="col-xs-12 col-md-12 menu-button indicador-menu">
                                         <button ng-if="!submenu.submenu1" type="button"
                                                 class="btn btn-default element-width-all"
                                                 aria-expanded="false"

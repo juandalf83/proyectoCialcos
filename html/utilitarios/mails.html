@@ -1,21 +1,19 @@
 <div class="modal-header">
-    <h3 class="modal-title">EMAIL</h3>
+    <h3 class="modal-title">CORREO ELECTRONICO</h3>
 </div>
 <div class="modal-body">
     <form class="form-horizontal">
     <div class="form-group">
         <label class="col-lg-3 control-label" for="tarea">Tipo</label>
         <div class="col-lg-6">
-            <!-- <select ng-disabled="!{{items.editable}}" class="col-sm-6 col-xs-12 objeto-sm" ng-model="items.registro.tpmid" ng-options="tipo as tipo.tpmdescripcion for tipo in tipos">
-            </select> -->
             <input ng-disabled="!{{items.editable}}" type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione tipo email" ng-model="items.registro.tpmid" simple-query="getTipoEmail">
             <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('tipomail')"></button>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-lg-3 control-label" for="tarea">Email</label>
+        <label class="col-lg-3 control-label" for="tarea">Correo Electronico</label>
         <div class="col-lg-6">
-            <input ng-disabled="!{{items.editable}}" type="text" class="col-sm-10 col-xs-12 objeto-sm minusculas" ng-model="items.registro.maidireccion">
+            <input ng-disabled="!{{items.editable}}" type="text" class="col-sm-10 col-xs-12 objeto-sm minusculas" ng-model="items.registro.maidireccion" ng-blur="validarEmail(items.registro)">
         </div>
     </div>
     </form>

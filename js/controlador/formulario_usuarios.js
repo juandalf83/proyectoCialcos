@@ -24,9 +24,12 @@ angular.module('cialcosApp')
       $scope.errorPassword = false;
       $scope.errorIdentificacion = false;
       $scope.errorUsuario = false;
+      $scope.errorConfirmacion = false;
       $scope.textoErrorPassword = '';
       $scope.textoErrorIdentificacion = '';
       $scope.textoErrorUsuario = '';
+      $scope.textoErrorConfirmacion = '';
+      $scope.confirmacion = {otraClave: ''};
 
       $scope.tiposIdentificacion = [
         {codigo: 'ci', text: 'Cedula'},
@@ -84,6 +87,7 @@ angular.module('cialcosApp')
         var fecha = new Date();
         var data = {};
         var validar = true;
+        var mensajeError = "Exiten datos obligatorios vacios";
         if(objeto.usrtipoidentificacion == 'ci'){
           if(objeto.usrprimernombre && objeto.usrsegundonombre && objeto.usrprimerapellido && objeto.usrsegundoapellido)
             objeto.usrnombrecompleto = objeto.usrprimernombre+" "+objeto.usrsegundonombre+" "+objeto.usrprimerapellido+" "+objeto.usrsegundoapellido;
@@ -95,8 +99,9 @@ angular.module('cialcosApp')
           else
             validar = false;
         }
-        if(objeto.usrfechanacimiento)
+        if(objeto.usrfechanacimiento){
           objeto.usrfechanacimiento = new Date(objeto.usrfechanacimiento);
+        }
 
         if(validar){
           Administracion.guardar('usuario', 'usr', objeto, function(id){
@@ -109,7 +114,7 @@ angular.module('cialcosApp')
             }
           });
         }else{
-          $scope.showMensajeError("Exiten datos obligatoris vacios");
+          alert(mensajeError);
         }
       };
 
@@ -259,6 +264,14 @@ angular.module('cialcosApp')
           $modalInstance.dismiss('cancel');
           irPantallaNuevo(tabla);
         };
+
+        $scope.validarEmail = function(objeto) {
+          expr = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+          if (!expr.test(objeto.maidireccion)){
+            alert("Error: La dirección de correo " + objeto.maidireccion + " es incorrecta.");
+            objeto.maidireccion = "";
+          }
+        };
       };
 
       var ModalTelefonosCtrl = function($scope, $modalInstance, items, Entidad) {
@@ -290,7 +303,7 @@ angular.module('cialcosApp')
       var ModalDireccionesCtrl = function($scope, $modalInstance, items, Entidad) {
         $scope.items = items;
         $scope.items.editable = true;
-
+        $scope.items.canton = '';
         agregarCampos('tdr', $scope.items.registro.tdrid);
         $scope.getTipoDirecciones = function(term, done){
           getListado ('tipodireccion', 'tdr', function(resultados){
@@ -298,10 +311,29 @@ angular.module('cialcosApp')
           });
         };
 
+        agregarCampos('par', $scope.items.canton);
+        $scope.getProvincias = function(term, done){
+          getListado ('parroquia', 'par', function(resultados){
+            var cantones = [];
+            angular.forEach(resultados, function(item){
+              item.canid.id = item.canid.canid;
+              item.canid.text = item.canid.candescripcion;
+              cantones[item.canid.canid] = item.canid;
+            });
+            done($filter('filter')(cantones, {text: term}, 'text'));
+          });
+        };
+
         agregarCampos('par', $scope.items.registro.parid);
         $scope.getParroquias = function(term, done){
           getListado ('parroquia', 'par', function(resultados){
-            done($filter('filter')(resultados, {text: term}, 'text'));
+            var parroquias = [];
+            angular.forEach(resultados, function(item){
+              if(item.canid.canid == $scope.items.canton.id){
+                parroquias.push(item);
+              }
+            });
+            done($filter('filter')(parroquias, {text: term}, 'text'));
           });
         };
 
@@ -579,6 +611,9 @@ angular.module('cialcosApp')
       };
 
       $scope.minimoLength = function(password){
+        $scope.confirmacion.otraClave = '';
+        $scope.errorConfirmacion = false;
+        $scope.textoErrorConfirmacion = '';
         if(password.length < 6){
           $scope.errorPassword = true;
           $scope.textoErrorPassword = 'DEBE INGRESAR MINIMO 6 CARACTERES';
@@ -615,5 +650,25 @@ angular.module('cialcosApp')
           }
         });
       }
+
+      $scope.minimoLengthConfirmacion = function(password){
+        if(password.length < 6){
+          $scope.errorConfirmacion = true;
+          $scope.textoErrorConfirmacion = 'DEBE INGRESAR MINIMO 6 CARACTERES';
+        }else{
+          $scope.errorConfirmacion = false;
+          $scope.textoErrorConfirmacion = '';
+          console.log(password);
+          if($scope.objeto.usrcontrasenia != password){
+            $scope.errorConfirmacion = true;
+            $scope.textoErrorConfirmacion = "La contraseña no ha sido confirmada";
+            $scope.objeto.usrcontrasenia = '';
+            $scope.confirmacion.otraClave = '';
+          }else{
+            $scope.errorConfirmacion = false;
+            $scope.textoErrorConfirmacion = '';
+          }
+        }
+      };
   }
 ]);

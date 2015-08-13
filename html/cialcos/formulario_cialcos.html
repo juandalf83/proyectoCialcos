@@ -26,42 +26,42 @@
               <div class="form-group">
                   <label class="col-lg-3 control-label" for="tarea">Observacion</label>
                   <div class="col-lg-6">
-                      <textarea class="col-sm-6 col-xs-12 objeto-sm" width="100%" ng-model="objeto.ciaobservacion"></textarea>
+                      <textarea class="col-sm-12 col-xs-12" rows="3" cols="40" width="100%" ng-model="objeto.ciaobservacion"></textarea>
                   </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" ng-if="objeto.tcoid.tcoid == 2">
                   <label class="col-lg-3 control-label" for="tarea">Aporte Cialco</label>
                   <div class="col-lg-6">
                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciaaportecialco">
                   </div>
               </div>
               <div class="form-group">
-                  <label class="col-lg-3 control-label" for="tarea">Sistema de Registro</label>
-                  <div class="col-lg-2">
-                      <input ng-disabled="!editable" type="radio" ng-model="objeto.ciasistemaregistro" value="S"> SI
-                      <input ng-disabled="!editable" type="radio" ng-model="objeto.ciasistemaregistro" value="N"> NO
-                  </div>
-                  <label class="col-lg-3 control-label" for="tarea">Reglamento</label>
-                  <div class="col-lg-2">
+                  <!-- <label class="col-lg-3 control-label" ng-if="objeto.tcoid.tcoid == 5">Certificacion</label>
+                  <div class="col-lg-2" ng-if="objeto.tcoid.tcoid == 5">
+                      <input ng-disabled="!editable" type="radio" ng-model="objeto.ciacertificacion" value="S"> SI
+                      <input ng-disabled="!editable" type="radio" ng-model="objeto.ciacertificacion" value="N"> NO
+                  </div> -->
+                  <label class="col-lg-3 control-label" ng-if="objeto.tcoid.tcoid == 2">Reglamento</label>
+                  <div class="col-lg-2" ng-if="objeto.tcoid.tcoid == 2">
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciareglamento" value="S"> SI
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciareglamento" value="N"> NO
                   </div>
               </div>
               <div class="form-group">
-                  <label class="col-lg-3 control-label" for="tarea">Garantia</label>
-                  <div class="col-lg-2">
+                  <label class="col-lg-3 control-label"  ng-if="objeto.tcoid.tcoid == 2">Garantia</label>
+                  <div class="col-lg-2" ng-if="objeto.tcoid.tcoid == 2">
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciagarantia" value="S"> SI
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciagarantia" value="N"> NO
                   </div>
-                  <label class="col-lg-3 control-label" for="tarea">Entrega dispersa</label>
-                  <div class="col-lg-2">
+                  <label class="col-lg-3 control-label" ng-if="objeto.tcoid.tcoid == 4">Entrega dispersa</label>
+                  <div class="col-lg-2" ng-if="objeto.tcoid.tcoid == 4">
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciaentregadispersa" value="S"> SI
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciaentregadispersa" value="N"> NO
                   </div>
               </div>
               <div class="form-group">
-                  <label class="col-lg-3 control-label" for="tarea">Entrega concentrada</label>
-                  <div class="col-lg-2">
+                  <label class="col-lg-3 control-label" ng-if="objeto.tcoid.tcoid == 4">Entrega concentrada</label>
+                  <div class="col-lg-2" ng-if="objeto.tcoid.tcoid == 4">
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciaentregaconcentrada" value="S"> SI
                       <input ng-disabled="!editable" type="radio" ng-model="objeto.ciaentregaconcentrada" value="N"> NO
                   </div>
@@ -90,10 +90,10 @@
                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciacostocanasta">
                   </div>
               </div>
-              <div class="form-group">
-                  <label class="col-lg-3 control-label" for="tarea">Destino</label>
+              <div class="form-group" ng-if="objeto.tcoid.tcoid == 5">
+                  <label class="col-lg-3 control-label" for="tarea">Tipo Apoyo</label>
                   <div class="col-lg-6">
-                      <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciadestino">
+                      <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciatipoapoyo">
                   </div>
               </div>
               <div class="form-group" ng-if="objeto.tcoid.tcoid == 4">
@@ -102,7 +102,7 @@
                       <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ciatipoapoyo">
                   </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" ng-if="objeto.tcoid.tcoid == 6">
                    <label class="col-lg-3 control-label" for="tarea">Proceso Contratacion</label>
                    <div class="col-lg-6">
                        <!-- <select ng-disabled="!editable" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.ptaid" ng-options="procesoContratacion as procesoContratacion.ptadescripcion for procesoContratacion in procesosContratacion">
@@ -111,7 +111,7 @@
                        <button class="btn btn-square btn-sm btn-info pull-right glyphicon glyphicon-plus" ng-click="agregarNuevo('procesocontratacion')"></button>
                    </div>
               </div>
-              <div class="form-group">
+              <div class="form-group" ng-if="objeto.tcoid.tcoid == 2 || objeto.tcoid.tcoid == 4">
                    <label class="col-lg-3 control-label" for="tarea">Frecuencia</label>
                    <div class="col-lg-6">
                        <!-- <select ng-disabled="!editable" class="col-sm-6 col-xs-12 objeto-sm" ng-model="objeto.freid" ng-options="frecuencia as frecuencia.fredescripcion for frecuencia in frecuencias">

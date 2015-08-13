@@ -108,6 +108,13 @@
                    </div>
                    <span class="col-sm-6 text-error" ng-if="errorPassword">{{textoErrorPassword}}</span>
               </div>
+              <div ng-if="objeto.tpuid.tpuid == 1 || objeto.tpuid.tpuid == 3" class="form-group">
+                   <label class="col-lg-3 control-label" for="tarea">Confirmar Clave</label>
+                   <div class="col-lg-3">
+                       <input ng-disabled="!editable" type="password" class="col-sm-6 col-xs-12 objeto-sm" ng-model="confirmacion.otraClave" ng-change="minimoLengthConfirmacion(confirmacion.otraClave)">
+                   </div>
+                   <span class="col-sm-6 text-error" ng-if="errorConfirmacion">{{textoErrorConfirmacion}}</span>
+              </div>
               <div class="modal-footer">
                   <!-- <button ng-show="editable" class="btn btn-square btn-sm btn-primary" ng-click="guardar(objeto)">Guardar</button> -->
                   <button class="btn btn-square btn-sm btn-warning pull-right margen-left" ng-click="cancelar()">Cancelar</button>
