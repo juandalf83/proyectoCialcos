@@ -5,7 +5,7 @@ function ($scope, $window, $location, $filter, Administracion, $routeParams, $ro
         quito: {
             lat: -0.237,
             lng: -78.513,
-            zoom: 13
+            zoom: 9
         },
         defaults: {
             scrollWheelZoom: false
@@ -19,6 +19,7 @@ function ($scope, $window, $location, $filter, Administracion, $routeParams, $ro
         markers: {}
     });
     $scope.markers = {};
+    $scope.productos = [];
     $scope.addMarkers = function() {
       Administracion.cargar('cialco', function(data){
         values = angular.copy(data);
@@ -33,28 +34,14 @@ function ($scope, $window, $location, $filter, Administracion, $routeParams, $ro
             $scope.markers[item.ciaid] = mark;
           }
         });
-        console.log($scope.markers);
-        // angular.extend($scope, {
-        //     markers: {
-        //         m1: {
-        //             lat: -0.237,
-        //             lng: -78.513,
-        //             message: "I'm a static marker",
-        //         },
-        //         // m2: {
-        //         //     lat: -0.237,
-        //         //     lng: 0,
-        //         //     focus: true,
-        //         //     message: "Hey, drag me if you want",
-        //         //     draggable: false
-        //         // }
-        //     }
-        // });
       });
     };
 
     $scope.$on('leafletDirectiveMarker.click', function(e, args) {
-      getDireccion(args.modelName);
+      Administracion.get('cialco', parseInt(args.modelName), function(objeto){
+        console.log(objeto);
+        getDireccion(angular.copy(objeto));
+      });
     });
 
     $scope.addMarkers();
@@ -90,21 +77,52 @@ function ($scope, $window, $location, $filter, Administracion, $routeParams, $ro
     $scope.$watch('objeto', function (new_value, old_value) {
       if (new_value !== old_value) {
         $scope.markers[new_value.ciaid].focus = true;
-        getDireccion(new_value.ciaid);
+        getDireccion(new_value);
       }
     }, true);
 
-    function getDireccion(idCialco){
-      Administracion.getDirecciones(parseInt(idCialco), function(data){
+    function getDireccion(cialco){
+      var id = parseInt(cialco.ciaid);
+      Administracion.getDirecciones(id, function(data){
         if(data.length > 0){
           angular.forEach(data, function(item){
             if(item.dirprincipal == 'S'){
               $scope.registro = item;
+              var calleSecundaria = "";
+              var numero = "";
+              if(item.dircallesecundaria){
+                calleSecundaria = " y "+item.dircallesecundaria;
+              }
+              if(item.dirnumero){
+                numero = " Nro "+item.dirnumero;
+              }
+              $scope.markers[id].message = cialco.ciadescripcion + "<br>" + item.dircalleprincipal + calleSecundaria + numero;
             }
           });
+          cialco.text = cialco.ciadescripcion;
+          cialco.id = cialco.ciaid;
+          $scope.objeto = cialco;
+          getProductos(id);
         }else{
           $scope.registro = {};
         }
+      });
+    }
+
+    function getProductos(idCialco){
+      Administracion.getParticipantes(idCialco, function(data){
+        var participantes = angular.copy(data);
+        angular.forEach(participantes, function(participante){
+          Administracion.getParticipadorProductos(participante.pafid, function(items){
+            var productos = angular.copy(items);
+            angular.forEach(productos, function(producto){
+              var item = angular.copy(producto);
+              if($.inArray(item.uprid.prodid.prodnombreproducto, $scope.productos)){
+                $scope.productos.push(item.uprid.prodid.prodnombreproducto);
+              }
+            });
+          });
+        });
       });
     }
 }]);

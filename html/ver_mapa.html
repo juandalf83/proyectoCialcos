@@ -26,24 +26,6 @@
                       </div>
                   </div>
                   <div class="form-group">
-                      <label class="col-lg-3 control-label" for="tarea">Calle Principal</label>
-                      <div class="col-lg-6">
-                          <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="registro.dircalleprincipal">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <label class="col-lg-3 control-label" for="tarea">Calle secundaria</label>
-                      <div class="col-lg-6">
-                          <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="registro.dircallesecundaria">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <label class="col-lg-3 control-label" for="tarea">Numero</label>
-                      <div class="col-lg-6">
-                          <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="registro.dirnumero">
-                      </div>
-                  </div>
-                  <div class="form-group">
                       <label class="col-lg-3 control-label" for="tarea">Referencial</label>
                       <div class="col-lg-6">
                           <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="registro.dirreferencial">
@@ -55,6 +37,23 @@
                           <input ng-disabled="!editable" type="text" class="col-sm-6 col-xs-12 objeto-sm" ng-model="registro.dircomunidad">
                       </div>
                   </div>
+                  <div class="row">
+                    <div class="col-xs-12 table-responsive">
+                        <table class="table table-striped table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Productos</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr ng-repeat="producto in productos">
+                              <td>{{producto}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
+                </div>
               </form>
             </div>
             <div class="modal-footer">
@@ -62,15 +61,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-sm-12 col-xs-12 barra-mapa">
-          <label class="col-sm-3 col-xs-12 control-label" for="tarea">Buscar Cialco</label>
-          <div class="col-sm-6 col-xs-12">
-            <input type="hidden" ui-select2-sortable style="width: 80%" allow-clear='true' data-placeholder="Seleccione cialco" ng-model="objeto" simple-query="getCialcos" ng-chance="seleccionar(objeto)">
-          </div>
-          <div class="col-sm-3 col-xs-12">
-            <button class="btn btn-warning pull-right margen-left" ng-click="cancelar()">Salir</button>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>

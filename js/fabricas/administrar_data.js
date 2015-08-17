@@ -27,6 +27,9 @@ angular.module('AdministracionDataFactory', [
       getMaximoId(tabla, function(id){
         objeto[identificador+'id'] = id;
         objeto[identificador+'estado'] = 'A';
+        if(identificador == 'uso'){
+          objeto[identificador+'Estado'] = 'A';
+        }
         objeto[identificador+'fechacreacion'] = fecha;
         if(identificador == 'vis'){
           objeto[identificador+'usuariocreacion'] = 0;
@@ -174,6 +177,24 @@ angular.module('AdministracionDataFactory', [
 
   factory.getDirecciones = function(idCialco, callback){
     Entidad.query({tabla:'direccion', id:'getByCialco', parametro:idCialco},function(objetos){
+      callback(objetos);
+    });
+  };
+
+  factory.get = function(tabla, id, callback){
+    Entidad.get({tabla:tabla, id:id},function(objeto){
+      callback(objeto);
+    });
+  };
+
+  factory.getParticipantes = function(idCialco, callback){
+    Entidad.query({tabla:'participante', id:'getByCialco', parametro:idCialco},function(objetos){
+      callback(objetos);
+    });
+  };
+
+  factory.getParticipadorProductos = function(idParticipante, callback){
+    Entidad.query({tabla:'participadorproducto', id:'getByParticipante', parametro:idParticipante},function(objetos){
       callback(objetos);
     });
   };

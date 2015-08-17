@@ -651,14 +651,9 @@ angular.module('cialcosApp')
         });
       }
 
-      $scope.minimoLengthConfirmacion = function(password){
-        if(password.length < 6){
-          $scope.errorConfirmacion = true;
-          $scope.textoErrorConfirmacion = 'DEBE INGRESAR MINIMO 6 CARACTERES';
-        }else{
+      $scope.confirmarClave = function(password){
           $scope.errorConfirmacion = false;
           $scope.textoErrorConfirmacion = '';
-          console.log(password);
           if($scope.objeto.usrcontrasenia != password){
             $scope.errorConfirmacion = true;
             $scope.textoErrorConfirmacion = "La contraseña no ha sido confirmada";
@@ -668,6 +663,15 @@ angular.module('cialcosApp')
             $scope.errorConfirmacion = false;
             $scope.textoErrorConfirmacion = '';
           }
+      };
+
+      $scope.minimoLengthConfirmacion = function(password){
+        if(password.length < 6){
+          $scope.errorConfirmacion = true;
+          $scope.textoErrorConfirmacion = 'DEBE INGRESAR MINIMO 6 CARACTERES';
+        }else{
+          $scope.errorConfirmacion = false;
+          $scope.textoErrorConfirmacion = '';
         }
       };
   }

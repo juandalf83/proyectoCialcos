@@ -148,7 +148,6 @@ angular.module('cialcosApp')
         };
 
         $scope.ok = function() {
-          console.log($scope.items.registro);
           guardarDatosAdicionales('usuarioorganizacion', 'uso', $scope.items.registro, $scope.items.organizacion, function(resultado){
             $modalInstance.dismiss(resultado);
           });
